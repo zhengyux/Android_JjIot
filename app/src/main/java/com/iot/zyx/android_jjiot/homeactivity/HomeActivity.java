@@ -1,52 +1,70 @@
-package com.iot.zyx.android_jjiot;
+package com.iot.zyx.android_jjiot.homeactivity;
 
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+/**
+ * 项目名称：Android_JjIot
+ * 类描述：
+ * 创建人：xuan
+ * 创建时间：2018/10/26 16:53
+ * 修改人：xuan
+ * 修改时间：2018/10/26 16:53
+ * 修改备注：
+ */
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class HomeActivity extends AppCompatActivity
+import com.iot.zyx.android_jjiot.BaseActivity;
+import com.iot.zyx.android_jjiot.R;
+
+import butterknife.BindView;
+
+public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    @BindView(R.id.home_toolbar)
+    Toolbar homeToolbar;
+    @BindView(R.id.content_home_recycler)
+    RecyclerView contentHomeRecycler;
+    @BindView(R.id.home_nav_view)
+    NavigationView homeNavView;
+    @BindView(R.id.home_drawer_layout)
+    DrawerLayout homeDrawerLayout;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    protected int setLayout() {
+        return R.layout.activity_home;
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    @Override
+    protected void initView() {
+        setSupportActionBar(homeToolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+                this, homeDrawerLayout, homeToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        homeDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        homeNavView.setNavigationItemSelectedListener(this);
+    }
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected void initListener() {
+
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+
+        if (homeDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            homeDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -93,9 +111,7 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        homeDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 }
