@@ -16,4 +16,20 @@
     <string name="message_setting_back">用户从设置回来了</string>
     <string name="message_post_succeed">获取SD卡权限成功</string>
     <string name="message_post_failed">获取SD卡权限失败</string>
+    <string name="title_activity_login">登录</string>
+
+    <!-- 登录 -->
+    <string name="Switchover_host">切换主机</string>
+    <string name="remember_password">忘记密码</string>
+    <string name="user_name">用户名</string>
+    <string name="prompt_password">密码</string>
+    <string name="action_sign_in">登录</string>
+    <string name="action_sign_in_short">登录</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 </resources>
