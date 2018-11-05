@@ -3,42 +3,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/bg_login"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:background="@mipmap/bg_login"
     tools:context=".loginactivity.LoginActivity">
 
     <RelativeLayout
-        android:background="@color/login_title"
         android:layout_width="match_parent"
-        android:layout_height="88px">
-
-    <TextView
-        android:textColor="@color/white"
-        android:textSize="36px"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:text="@string/title_activity_login"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_height="44dp"
+        android:background="@color/login_title">
 
         <TextView
-            android:paddingRight="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="@string/title_activity_login"
             android:textColor="@color/white"
-            android:textSize="28px"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/login_Switchover_host_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
+            android:paddingRight="8dp"
             android:text="@string/Switchover_host"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:textColor="@color/white"
+            android:textSize="14dp" />
 
     </RelativeLayout>
 
     <ImageView
-        android:layout_marginTop="156px"
-        android:src="@mipmap/dl_logo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="78dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:src="@mipmap/dl_logo" />
 
 
     <ScrollView
@@ -50,65 +53,71 @@
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="80px"
-            android:paddingRight="80px"
-            android:paddingTop="100px"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:paddingTop="50dp">
 
             <android.support.design.widget.TextInputLayout
-                android:textColorHint="@color/login_tv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="true"
+                android:textColorHint="@color/login_tv">
 
                 <EditText
-                    android:theme="@style/LoginEditText"
-                    android:drawablePadding="20px"
-                    android:drawableLeft="@mipmap/icon_zh"
-                    android:id="@+id/email"
+                    android:id="@+id/login_user_name_edt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/icon_zh"
+                    android:drawablePadding="10dp"
                     android:hint="@string/user_name"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:theme="@style/LoginEditText" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:textColorHint="@color/login_tv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="true"
+                android:textColorHint="@color/login_tv">
 
                 <EditText
-                    android:theme="@style/LoginEditText"
-                    android:drawablePadding="20px"
-                    android:drawableLeft="@mipmap/icon_mm"
-                    android:id="@+id/password"
+                    android:id="@+id/login_password_edt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/icon_mm"
+                    android:drawablePadding="10dp"
                     android:hint="@string/prompt_password"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:theme="@style/LoginEditText" />
 
             </android.support.design.widget.TextInputLayout>
 
 
             <CheckBox
-                android:textColor="@color/login_tv"
-                android:layout_marginTop="16dp"
-                android:text="@string/remember_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <ImageView
-                android:src="@mipmap/btn_dl"
-                android:id="@+id/email_sign_in_button"
+                android:id="@+id/login_remember_password_chk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="66px" />
+                android:layout_marginTop="10dp"
+                android:text="@string/remember_password"
+                android:textColor="@color/login_tv"
+                android:textSize="13dp" />
+
+            <ImageView
+                android:id="@+id/login_sign_in_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="33dp"
+                android:src="@mipmap/btn_dl" />
 
         </LinearLayout>
     </ScrollView>

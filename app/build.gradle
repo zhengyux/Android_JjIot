@@ -3,7 +3,6 @@ apply plugin: 'com.android.application'
 android {
 
 
-
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.iot.zyx.android_jjiot"
@@ -35,4 +34,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.yanzhenjie:permission:1.0.5'
     implementation 'me.yatoooon:screenadaptation:1.1.1'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
 }

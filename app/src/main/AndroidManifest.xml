@@ -26,7 +26,8 @@
             android:value="1.0" />
         <meta-data
             android:name="unit"
-            android:value="px" />
+            android:value="dp" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.iot.zyx.android_jjiot.fileprovider"
@@ -40,19 +41,17 @@
         <activity
             android:name=".homeactivity.HomeActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".loginactivity.LoginActivity"
-            android:label="@string/title_activity_login">
-
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".switchover_hostactivity.SwitchoverHostActivity"></activity>
     </application>
 
 </manifest>

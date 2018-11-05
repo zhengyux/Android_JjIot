@@ -13,6 +13,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,6 +22,9 @@ import android.view.MenuItem;
 import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 
 public class HomeActivity extends BaseActivity
@@ -28,12 +32,13 @@ public class HomeActivity extends BaseActivity
 
     @BindView(R.id.home_toolbar)
     Toolbar homeToolbar;
-    @BindView(R.id.content_home_recycler)
-    RecyclerView contentHomeRecycler;
+    @BindView(R.id.home_content_recycler)
+    RecyclerView homeContentRecycler;
     @BindView(R.id.home_nav_view)
     NavigationView homeNavView;
     @BindView(R.id.home_drawer_layout)
     DrawerLayout homeDrawerLayout;
+    HomeContentAdapter homeContentAdapter;
 
     @Override
     protected int setLayout() {
@@ -48,6 +53,18 @@ public class HomeActivity extends BaseActivity
         homeDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         homeNavView.setNavigationItemSelectedListener(this);
+        homeContentRecycler.setLayoutManager(new GridLayoutManager(this,3));
+        HomeContentBean homeContentBean = new HomeContentBean();
+        List<HomeContentBean.EmployeesBean> ls = new ArrayList<>();
+        ls.add(new HomeContentBean.EmployeesBean());
+        ls.add(new HomeContentBean.EmployeesBean());
+        ls.add(new HomeContentBean.EmployeesBean());
+        ls.add(new HomeContentBean.EmployeesBean());
+        ls.add(new HomeContentBean.EmployeesBean());
+        homeContentBean.setEmployees(ls);
+
+        homeContentAdapter = new HomeContentAdapter(R.layout.home_content_recycler_item,homeContentBean.getEmployees());
+        homeContentRecycler.setAdapter(homeContentAdapter);
     }
 
     @Override

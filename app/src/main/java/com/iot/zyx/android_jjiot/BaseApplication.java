@@ -1,6 +1,7 @@
 package com.iot.zyx.android_jjiot;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
@@ -14,10 +15,16 @@ import com.yatoooon.screenadaptation.ScreenAdapterTools;
  * 修改备注：
  */
 public class BaseApplication extends Application {
-
+    private static Context mContext;
     @Override
     public void onCreate() {
         super.onCreate();
         ScreenAdapterTools.init(this);
+        mContext = getApplicationContext();
     }
+
+    public static Context getContext(){
+        return mContext;
+    }
+
 }

@@ -1,46 +1,33 @@
 package com.iot.zyx.android_jjiot.loginactivity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.R;
+import com.iot.zyx.android_jjiot.homeactivity.HomeActivity;
+import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostActivity;
 
-import static android.Manifest.permission.READ_CONTACTS;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-/**
- * A login screen that offers login via email/password.
- */
-public class LoginActivity extends BaseActivity{
+public class LoginActivity extends BaseActivity {
+    @BindView(R.id.login_Switchover_host_txt)
+    TextView loginSwitchoverHostTxt;
+    @BindView(R.id.login_user_name_edt)
+    EditText loginUserNameEdt;
+    @BindView(R.id.login_password_edt)
+    EditText loginPasswordEdt;
+    @BindView(R.id.login_remember_password_chk)
+    CheckBox loginRememberPasswordChk;
+    @BindView(R.id.login_sign_in_img)
+    ImageView loginSignInImg;
+
     @Override
     protected int setLayout() {
         return R.layout.activity_login;
@@ -59,6 +46,18 @@ public class LoginActivity extends BaseActivity{
     @Override
     protected void initListener() {
 
+    }
+
+    @OnClick({R.id.login_Switchover_host_txt, R.id.login_sign_in_img})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.login_Switchover_host_txt:
+                openActivity(SwitchoverHostActivity.class);
+                break;
+            case R.id.login_sign_in_img:
+                openActivityAndCloseThis(HomeActivity.class);
+                break;
+        }
     }
 }
 
