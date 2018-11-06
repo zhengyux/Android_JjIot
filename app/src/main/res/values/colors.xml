@@ -155,4 +155,5 @@
     <color name="login_title">#14162a</color><!--登录界面标题 -->
     <color name="login_btn">#F83351</color>
     <color name="login_tv">#d1d1d1</color>
+    <color name="switchover_host_bg">#212847</color>
 </resources>

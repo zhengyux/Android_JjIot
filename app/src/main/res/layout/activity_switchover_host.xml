@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/switchover_host_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".switchover_hostactivity.SwitchoverHostActivity">
@@ -47,9 +47,10 @@
             android:id="@+id/add_host_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/btn_dl" />
+            android:src="@mipmap/btn_zjzj" />
     </RelativeLayout>
 
 

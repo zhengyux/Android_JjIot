@@ -1,11 +1,13 @@
 package com.iot.zyx.android_jjiot.switchover_hostactivity;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.R;
+import com.iot.zyx.android_jjiot.util.widget.RxDialogEditSureCancel;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -19,6 +21,8 @@ public class SwitchoverHostActivity extends BaseActivity {
     RecyclerView switchoverHostRecycler;
     @BindView(R.id.add_host_img)
     ImageView addHostImg;
+
+
 
     @Override
     protected int setLayout() {
@@ -48,7 +52,27 @@ public class SwitchoverHostActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.add_host_img:
+                showAddHostdialog();
                 break;
         }
     }
+
+    public void showAddHostdialog() {
+        final RxDialogEditSureCancel rxDialogEditSureCancel = new RxDialogEditSureCancel(SwitchoverHostActivity.this);//提示弹窗
+        rxDialogEditSureCancel.setTitle("增加主机");
+        rxDialogEditSureCancel.getSureView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rxDialogEditSureCancel.cancel();
+            }
+        });
+        rxDialogEditSureCancel.getCancelView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rxDialogEditSureCancel.cancel();
+            }
+        });
+        rxDialogEditSureCancel.show();
+    }
+
 }

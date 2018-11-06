@@ -16,11 +16,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.R;
+import com.iot.zyx.android_jjiot.controlactivity.ControlActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +43,8 @@ public class HomeActivity extends BaseActivity
     @BindView(R.id.home_drawer_layout)
     DrawerLayout homeDrawerLayout;
     HomeContentAdapter homeContentAdapter;
+    //退出时的时间
+    private long mExitTime;
 
     @Override
     protected int setLayout() {
@@ -74,6 +80,13 @@ public class HomeActivity extends BaseActivity
 
     @Override
     protected void initListener() {
+
+        homeContentAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                openActivity(ControlActivity.class);
+            }
+        });
 
     }
 
@@ -130,5 +143,24 @@ public class HomeActivity extends BaseActivity
         }
         homeDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            exit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            toastShort("再次返回退出程序");
+            mExitTime = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+        }
     }
 }
