@@ -32,4 +32,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <!-- 设备管理 -->
+    <string name="device_management">设备管理</string>
+    <!-- 添加zigbee -->
+    <string name="add_zigbee">添加ZigBee设备</string>
 </resources>

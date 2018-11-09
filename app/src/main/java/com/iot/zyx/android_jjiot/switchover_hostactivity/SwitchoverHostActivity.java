@@ -59,7 +59,7 @@ public class SwitchoverHostActivity extends BaseActivity {
 
     public void showAddHostdialog() {
         final RxDialogEditSureCancel rxDialogEditSureCancel = new RxDialogEditSureCancel(SwitchoverHostActivity.this);//提示弹窗
-        rxDialogEditSureCancel.setTitle("增加主机");
+        rxDialogEditSureCancel.setTitle("请输入主机id");
         rxDialogEditSureCancel.getSureView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

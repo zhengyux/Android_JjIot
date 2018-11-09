@@ -25,6 +25,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.R;
 import com.iot.zyx.android_jjiot.controlactivity.ControlActivity;
+import com.iot.zyx.android_jjiot.device_managementactivity.DeviceManagementActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,8 +137,8 @@ public class HomeActivity extends BaseActivity
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
-
+        } else if (id == R.id.home_drawer_device_management) {
+                openActivity(DeviceManagementActivity.class);
         } else if (id == R.id.nav_send) {
 
         }

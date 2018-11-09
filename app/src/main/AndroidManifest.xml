@@ -52,7 +52,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".switchover_hostactivity.SwitchoverHostActivity" />
-        <activity android:name=".controlactivity.ControlActivity"></activity>
+        <activity android:name=".controlactivity.ControlActivity" />
+        <activity android:name=".device_managementactivity.DeviceManagementActivity" />
+        <activity android:name=".add_zigbeeactivity.AddZigBeeActivity"></activity>
     </application>
 
 </manifest>
