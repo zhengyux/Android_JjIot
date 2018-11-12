@@ -54,7 +54,8 @@
         <activity android:name=".switchover_hostactivity.SwitchoverHostActivity" />
         <activity android:name=".controlactivity.ControlActivity" />
         <activity android:name=".device_managementactivity.DeviceManagementActivity" />
-        <activity android:name=".add_zigbeeactivity.AddZigBeeActivity"></activity>
+        <activity android:name=".add_zigbeeactivity.AddZigBeeActivity" />
+        <activity android:name=".televisionactivity.TelevisionActivity"></activity>
     </application>
 
 </manifest>

@@ -33,6 +33,7 @@
             android:src="@mipmap/icon_top_back" />
     </RelativeLayout>
     <android.support.design.widget.TabLayout
+        android:background="#2b2f4d"
         android:id="@+id/control_tab"
         app:tabTextColor="@color/white"
         app:tabSelectedTextColor="@color/red"

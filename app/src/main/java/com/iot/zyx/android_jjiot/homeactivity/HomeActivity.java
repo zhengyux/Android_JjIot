@@ -26,6 +26,7 @@ import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.R;
 import com.iot.zyx.android_jjiot.controlactivity.ControlActivity;
 import com.iot.zyx.android_jjiot.device_managementactivity.DeviceManagementActivity;
+import com.iot.zyx.android_jjiot.televisionactivity.TelevisionActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +86,12 @@ public class HomeActivity extends BaseActivity
         homeContentAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                openActivity(ControlActivity.class);
+                if(position==2){
+                    openActivity(TelevisionActivity.class);
+                }else {
+                    openActivity(ControlActivity.class);
+                }
+
             }
         });
 

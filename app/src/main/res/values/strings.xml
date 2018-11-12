@@ -36,4 +36,6 @@
     <string name="device_management">设备管理</string>
     <!-- 添加zigbee -->
     <string name="add_zigbee">添加ZigBee设备</string>
+    <!-- TV/AV -->
+    <string name="television">TV/AV</string>
 </resources>
