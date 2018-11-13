@@ -24,6 +24,8 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.R;
+import com.iot.zyx.android_jjiot.add_zigbeeactivity.AddZigBeeActivity;
+import com.iot.zyx.android_jjiot.air_conditioningactivity.AirConditioningActivity;
 import com.iot.zyx.android_jjiot.controlactivity.ControlActivity;
 import com.iot.zyx.android_jjiot.device_managementactivity.DeviceManagementActivity;
 import com.iot.zyx.android_jjiot.televisionactivity.TelevisionActivity;
@@ -88,6 +90,8 @@ public class HomeActivity extends BaseActivity
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if(position==2){
                     openActivity(TelevisionActivity.class);
+                }if(position==3){
+                    openActivity(AirConditioningActivity.class);
                 }else {
                     openActivity(ControlActivity.class);
                 }
@@ -135,8 +139,8 @@ public class HomeActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.home_drawer_add_zigbee) {
+            openActivity(AddZigBeeActivity.class);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

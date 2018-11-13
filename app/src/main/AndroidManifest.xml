@@ -55,7 +55,8 @@
         <activity android:name=".controlactivity.ControlActivity" />
         <activity android:name=".device_managementactivity.DeviceManagementActivity" />
         <activity android:name=".add_zigbeeactivity.AddZigBeeActivity" />
-        <activity android:name=".televisionactivity.TelevisionActivity"></activity>
+        <activity android:name=".televisionactivity.TelevisionActivity" />
+        <activity android:name=".air_conditioningactivity.AirConditioningActivity"></activity>
     </application>
 
 </manifest>
