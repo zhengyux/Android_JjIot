@@ -22,8 +22,8 @@ public class ControlActivity extends BaseActivity {
     ImageView controlBackImg;
     @BindView(R.id.control_tab)
     TabLayout controlTab;
-    @BindView(R.id.control_recycler)
-    RecyclerView controlRecycler;
+    @BindView(R.id.control_elist)
+    RecyclerView controlElist;
 
     @Override
     protected int setLayout() {

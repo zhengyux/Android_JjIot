@@ -15,18 +15,18 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:background="@color/black"
+            android:background="@color/login_title"
             android:id="@+id/home_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:statusBarScrim="@android:color/black"
+            app:statusBarScrim="@color/login_title"
             app:toolbarId="@+id/home_toolbar">
 
             <android.support.v7.widget.Toolbar
-                android:background="@color/black"
+                android:background="@color/login_title"
                 android:id="@+id/home_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"

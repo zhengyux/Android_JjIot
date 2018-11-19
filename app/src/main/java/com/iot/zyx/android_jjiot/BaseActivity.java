@@ -55,7 +55,7 @@ import okhttp3.Call;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-
+    protected String TAG = getClass().getSimpleName();
     /***封装toast对象**/
     private Toast toast;
     /***封装dialog对象**/

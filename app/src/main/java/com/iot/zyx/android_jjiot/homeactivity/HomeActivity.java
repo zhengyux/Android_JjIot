@@ -90,7 +90,7 @@ public class HomeActivity extends BaseActivity
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if(position==2){
                     openActivity(TelevisionActivity.class);
-                }if(position==3){
+                }else if(position==3){
                     openActivity(AirConditioningActivity.class);
                 }else {
                     openActivity(ControlActivity.class);
