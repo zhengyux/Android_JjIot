@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,7 +24,7 @@ public class ControlActivity extends BaseActivity {
     @BindView(R.id.control_tab)
     TabLayout controlTab;
     @BindView(R.id.control_elist)
-    RecyclerView controlElist;
+    ExpandableListView controlElist;
 
     @Override
     protected int setLayout() {
