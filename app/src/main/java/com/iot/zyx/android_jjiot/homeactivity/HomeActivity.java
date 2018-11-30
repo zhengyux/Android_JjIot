@@ -9,6 +9,7 @@ package com.iot.zyx.android_jjiot.homeactivity;
  * 修改时间：2018/10/26 16:53
  * 修改备注：
  */
+
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,18 +23,25 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.iot.zyx.android_jjiot.API;
 import com.iot.zyx.android_jjiot.BaseActivity;
+import com.iot.zyx.android_jjiot.BaseParameter;
 import com.iot.zyx.android_jjiot.R;
 import com.iot.zyx.android_jjiot.add_zigbeeactivity.AddZigBeeActivity;
 import com.iot.zyx.android_jjiot.air_conditioningactivity.AirConditioningActivity;
 import com.iot.zyx.android_jjiot.controlactivity.ControlActivity;
 import com.iot.zyx.android_jjiot.device_managementactivity.DeviceManagementActivity;
 import com.iot.zyx.android_jjiot.televisionactivity.TelevisionActivity;
+import com.iot.zyx.android_jjiot.BaseRespone;
+import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
+import com.iot.zyx.android_jjiot.util.network.GsonUtil;
+import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import okhttp3.Call;
 
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -63,7 +71,7 @@ public class HomeActivity extends BaseActivity
         homeDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         homeNavView.setNavigationItemSelectedListener(this);
-        homeContentRecycler.setLayoutManager(new GridLayoutManager(this,3));
+        homeContentRecycler.setLayoutManager(new GridLayoutManager(this, 3));
         HomeContentBean homeContentBean = new HomeContentBean();
         List<HomeContentBean.EmployeesBean> ls = new ArrayList<>();
         ls.add(new HomeContentBean.EmployeesBean());
@@ -73,7 +81,7 @@ public class HomeActivity extends BaseActivity
         ls.add(new HomeContentBean.EmployeesBean());
         homeContentBean.setEmployees(ls);
 
-        homeContentAdapter = new HomeContentAdapter(R.layout.home_content_recycler_item,homeContentBean.getEmployees());
+        homeContentAdapter = new HomeContentAdapter(R.layout.home_content_recycler_item, homeContentBean.getEmployees());
         homeContentRecycler.setAdapter(homeContentAdapter);
     }
 
@@ -88,11 +96,11 @@ public class HomeActivity extends BaseActivity
         homeContentAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if(position==2){
+                if (position == 2) {
                     openActivity(TelevisionActivity.class);
-                }else if(position==3){
+                } else if (position == 3) {
                     openActivity(AirConditioningActivity.class);
-                }else {
+                } else {
                     openActivity(ControlActivity.class);
                 }
 
@@ -148,9 +156,9 @@ public class HomeActivity extends BaseActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.home_drawer_device_management) {
-                openActivity(DeviceManagementActivity.class);
-        } else if (id == R.id.nav_send) {
-
+            openActivity(DeviceManagementActivity.class);
+        } else if (id == R.id.home_drawer_open_network) {
+            openNetwork();
         }
         homeDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -174,4 +182,34 @@ public class HomeActivity extends BaseActivity
             System.exit(0);
         }
     }
+
+    public void openNetwork() {
+        BaseParameter baseParameter = new BaseParameter();
+        String Josnstr = GsonUtil.GsonString(baseParameter);
+        OkhttpUtil.okHttpPostJson(API.OPEN_NETWORK, Josnstr, new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                toastShort("打开网络失败");
+            }
+
+            @Override
+            public void onResponse(String response) {
+                try{
+                    BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
+                    if(baseRespone.getResult().equals("00")){
+                        toastShort("打开网络成功");
+                    }else {
+                        toastShort("打开网络失败");
+                    }
+                }catch (Exception e){
+
+                }
+
+
+
+            }
+        });
+    }
+
+
 }

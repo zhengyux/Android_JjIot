@@ -17,6 +17,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.ForwardingSink;
@@ -42,6 +44,8 @@ class RequestUtil {
     private OkHttpClient mOkHttpClient;//OKhttpClient对象
     private Request mOkHttpRequest;//请求对象
     private Request.Builder mRequestBuilder;//请求对象的构建者
+    private Request mRequest;
+    private WebSocket mWebSocket;
 
 
     RequestUtil(String methodType, String url, Map<String, String> paramsMap, Map<String, String> headerMap, CallBackUtil callBack) {
@@ -62,6 +66,9 @@ class RequestUtil {
         this(methodType,url,null,null,null,null,fileMap,fileType,paramsMap,headerMap,callBack);
     }
 
+    RequestUtil(){}
+
+
     private RequestUtil(String methodType, String url, String jsonStr , File file , List<File> fileList, String fileKey , Map<String,File> fileMap, String fileType, Map<String, String> paramsMap, Map<String, String> headerMap, CallBackUtil callBack) {
         mMetyodType = methodType;
         mUrl = url;
@@ -75,6 +82,15 @@ class RequestUtil {
         mHeaderMap = headerMap;
         mCallBack = callBack;
         getInstance();
+    }
+
+     WebSocket WebSocket(String url, WebSocketListener webSocketListener){
+        mOkHttpClient = new OkHttpClient();
+        mRequest = new Request.Builder().url(url).build();
+        mOkHttpClient.newBuilder().readTimeout(20, TimeUnit.SECONDS).connectTimeout(15,TimeUnit.SECONDS).build();
+        mWebSocket=mOkHttpClient.newWebSocket(mRequest,webSocketListener);
+        mOkHttpClient.dispatcher().executorService().shutdown();
+        return mWebSocket;
     }
 
 

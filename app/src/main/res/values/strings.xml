@@ -35,6 +35,8 @@
     </string>
     <!-- 设备管理 -->
     <string name="device_management">设备管理</string>
+    <!-- 添加设备 -->
+    <string name="add_device">添加设备</string>
     <!-- 添加zigbee -->
     <string name="add_zigbee">添加ZigBee设备</string>
     <string name="add_zigbee_tips">请在10秒内按一下新设备按钮</string>

@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+
 /**
  * Created by fighting on 2017/4/7.
  */
@@ -19,6 +22,18 @@ public class OkhttpUtil {
     public static final String FILE_TYPE_IMAGE = "image/*";
     public static final String FILE_TYPE_AUDIO = "audio/*";
     public static final String FILE_TYPE_VIDEO = "video/*";
+
+
+    /**
+     * WebSocket
+     * @param url
+     * @param webSocketListener
+     * @return
+     */
+    public static WebSocket okHttpWebSocket(String url, WebSocketListener webSocketListener){
+       return new RequestUtil().WebSocket(url,webSocketListener);
+    }
+
 
 
     /**

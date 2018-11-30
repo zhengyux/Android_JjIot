@@ -1,19 +1,22 @@
 package com.iot.zyx.android_jjiot.controlactivity;
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.iot.zyx.android_jjiot.API;
 import com.iot.zyx.android_jjiot.BaseActivity;
+import com.iot.zyx.android_jjiot.BaseParameter;
 import com.iot.zyx.android_jjiot.R;
+import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
+import com.iot.zyx.android_jjiot.util.network.GsonUtil;
+import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class ControlActivity extends BaseActivity {
 
@@ -25,6 +28,8 @@ public class ControlActivity extends BaseActivity {
     TabLayout controlTab;
     @BindView(R.id.control_elist)
     ExpandableListView controlElist;
+    ControlLampEListViewAdapter controlLampEListViewAdapter;
+    ControlLampApiBean controlLampApiBean;
 
     @Override
     protected int setLayout() {
@@ -38,7 +43,7 @@ public class ControlActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        getDevice();
     }
 
     @Override
@@ -48,10 +53,38 @@ public class ControlActivity extends BaseActivity {
 
     @OnClick(R.id.control_back_img)
     public void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.control_back_img:
                 finish();
                 break;
         }
     }
+
+    public void getDevice() {
+        OkhttpUtil.okHttpPostJson(API.DEVICE_GET, GsonUtil.GsonString(new BaseParameter()), new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                    toastShort("服务器连接失败");
+            }
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+
+                    controlLampApiBean = GsonUtil.GsonToBean(response,ControlLampApiBean.class);
+                    controlLampEListViewAdapter = new ControlLampEListViewAdapter(ControlActivity.this,controlLampApiBean);
+                    controlElist.setAdapter(controlLampEListViewAdapter);
+
+
+                }catch (Exception e){
+
+                }
+
+
+            }
+        });
+    }
+
+
 }

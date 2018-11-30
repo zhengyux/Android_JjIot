@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -73,6 +74,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(setLayout());
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         ButterKnife.bind(this);
@@ -193,6 +195,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     //跳转Activity并关闭当前Activity
     public void openActivityAndCloseThis(Class<?> targetActivityClass) {
         openActivity(targetActivityClass);
+        this.finish();
+    }
+
+    //跳转Activity并关闭当前Activity携带bundle
+    public void openActivityAndCloseThis(Class<?> targetActivityClass, Bundle bundle) {
+        openActivity(targetActivityClass,bundle);
         this.finish();
     }
 
