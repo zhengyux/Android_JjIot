@@ -32,20 +32,23 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:background="#2b2f4d"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
         android:orientation="horizontal">
 
         <Spinner
+            android:overlapAnchor="false"
             android:id="@+id/device_management_left_spn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"></Spinner>
 
         <Spinner
+            android:overlapAnchor="false"
             android:id="@+id/device_management_right_spn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"></Spinner>
 
     </LinearLayout>
