@@ -11,12 +11,12 @@ import java.util.List;
  * 修改时间：2018/11/29 15:31
  * 修改备注：
  */
-public class ControlLampApiBean {
+public class ControlApiBean {
 
     /**
      * result : 00
      * message : success
-     * data : {"list":[{"id":10000,"productkey":"a1UEceRK3Pu","devicename":"deviceName_123","areaId":"10001","uuid":"2981813c6a063e8d82d9a9d4d45ce371","deviceuid":"4E-C0","endpoint":"01","name":"我的名字","date":"2018-11-28T07:27:41.000+0000","IEEE":"21-22-13-14-15-16-17-18"}]}
+     * data : {"list":[{"id":100055,"productkey":"a1UEceRK3Pu","devicename":"deviceName_123","areaId":"10003","uuid":"029b440eb361304bb05626866d948bb8","deviceuid":"D4-1D","endpoint":"08","type":8,"name":"device_ASDF","date":"2018-12-12T07:37:13.000+0000","IEEE":"77-44-6F-02-00-4B-12-00"},{"id":100056,"productkey":"a1UEceRK3Pu","devicename":"deviceName_123","areaId":"10002","uuid":"419084cc8d7e34b4b98b3b5b472c5234","deviceuid":"68-BB","endpoint":"01","type":1,"name":"device_sC86","date":"2018-12-12T10:28:04.000+0000","IEEE":"E4-C3-B1-02-00-8D-15-00"}]}
      */
 
     private String result;
@@ -60,16 +60,17 @@ public class ControlLampApiBean {
 
         public static class ListBean {
             /**
-             * id : 10000
+             * id : 100055
              * productkey : a1UEceRK3Pu
              * devicename : deviceName_123
-             * areaId : 10001
-             * uuid : 2981813c6a063e8d82d9a9d4d45ce371
-             * deviceuid : 4E-C0
-             * endpoint : 01
-             * name : 我的名字
-             * date : 2018-11-28T07:27:41.000+0000
-             * IEEE : 21-22-13-14-15-16-17-18
+             * areaId : 10003
+             * uuid : 029b440eb361304bb05626866d948bb8
+             * deviceuid : D4-1D
+             * endpoint : 08
+             * type : 8
+             * name : device_ASDF
+             * date : 2018-12-12T07:37:13.000+0000
+             * IEEE : 77-44-6F-02-00-4B-12-00
              */
 
             private int id;
@@ -79,6 +80,7 @@ public class ControlLampApiBean {
             private String uuid;
             private String deviceuid;
             private String endpoint;
+            private int type;
             private String name;
             private String date;
             private String IEEE;
@@ -137,6 +139,14 @@ public class ControlLampApiBean {
 
             public void setEndpoint(String endpoint) {
                 this.endpoint = endpoint;
+            }
+
+            public int getType() {
+                return type;
+            }
+
+            public void setType(int type) {
+                this.type = type;
             }
 
             public String getName() {

@@ -60,6 +60,7 @@ public class AddDeviceActivity extends BaseActivity {
 
     @OnClick(R.id.add_device_hold_txt)
     public void onViewClicked() {
+        showLoading();
         addDeviceParameter.setName(addDeviceDevicenameEdt.getText().toString());
         hold();
     }
@@ -67,18 +68,20 @@ public class AddDeviceActivity extends BaseActivity {
         OkhttpUtil.okHttpPostJson(API.DEVICE_HOLD, GsonUtil.GsonString(addDeviceParameter), new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
-                toastShort("保存失败");
+                closeLoading();
+                toastShort("服务器连接失败");
             }
 
             @Override
             public void onResponse(String response) {
+                closeLoading();
                 try{
                     BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
                     if(baseRespone.getResult().equals("00")){
                         toastShort("保存成功");
                         openActivityAndCloseThis(AddZigBeeActivity.class);
                     }else {
-                        toastShort("保存失败");
+                        toastShort(baseRespone.getMessage());
                         finish();
                     }
                 }catch (Exception e){

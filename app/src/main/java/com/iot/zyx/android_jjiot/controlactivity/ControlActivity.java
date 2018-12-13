@@ -10,6 +10,7 @@ import com.iot.zyx.android_jjiot.API;
 import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.BaseParameter;
 import com.iot.zyx.android_jjiot.R;
+import com.iot.zyx.android_jjiot.device_managementactivity.AreaGetBean;
 import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
 import com.iot.zyx.android_jjiot.util.network.GsonUtil;
 import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
@@ -29,7 +30,8 @@ public class ControlActivity extends BaseActivity {
     @BindView(R.id.control_elist)
     ExpandableListView controlElist;
     ControlLampEListViewAdapter controlLampEListViewAdapter;
-    ControlLampApiBean controlLampApiBean;
+    ControlCurtainEListViewAdapter controlCurtainEListViewAdapter;
+    ControlApiBean controlApiBean;
 
     @Override
     protected int setLayout() {
@@ -43,7 +45,20 @@ public class ControlActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        getDevice();
+        String activity = getIntent().getExtras().getString("activity");
+        switch (activity){
+            case "lamp":
+                getLampDevice();
+                break;
+
+            case "curtanin":
+
+                getcurtainDevice();
+
+                break;
+        }
+        AreaGet();
+
     }
 
     @Override
@@ -60,8 +75,37 @@ public class ControlActivity extends BaseActivity {
         }
     }
 
-    public void getDevice() {
-        OkhttpUtil.okHttpPostJson(API.DEVICE_GET, GsonUtil.GsonString(new BaseParameter()), new CallBackUtil.CallBackString() {
+    public void AreaGet(){
+
+        OkhttpUtil.okHttpGet(API.GET_AREA, new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                toastShort("服务器连接失败！");
+            }
+
+            @Override
+            public void onResponse(String response) {
+
+                try{
+                    AreaGetBean areaGetBean = GsonUtil.GsonToBean(response,AreaGetBean.class);
+                    for (int i = 0; i < areaGetBean.getData().getList().size(); i++) {
+                        controlTab.addTab(controlTab.newTab().setText(areaGetBean.getData().getList().get(i).getName()));
+                    }
+
+                }catch (Exception e){
+                    toastShort(e.getMessage());
+                }
+
+            }
+        });
+
+    }
+
+    public void getLampDevice() {
+        BaseParameter baseParameter = new BaseParameter();
+        baseParameter.setType("1");
+
+        OkhttpUtil.okHttpPostJson(API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                     toastShort("服务器连接失败");
@@ -72,9 +116,37 @@ public class ControlActivity extends BaseActivity {
 
                 try {
 
-                    controlLampApiBean = GsonUtil.GsonToBean(response,ControlLampApiBean.class);
-                    controlLampEListViewAdapter = new ControlLampEListViewAdapter(ControlActivity.this,controlLampApiBean);
+                    controlApiBean = GsonUtil.GsonToBean(response,ControlApiBean.class);
+                    controlLampEListViewAdapter = new ControlLampEListViewAdapter(ControlActivity.this,controlApiBean);
                     controlElist.setAdapter(controlLampEListViewAdapter);
+
+
+                }catch (Exception e){
+
+                }
+
+
+            }
+        });
+    }
+
+    public void getcurtainDevice() {
+        BaseParameter baseParameter = new BaseParameter();
+        baseParameter.setType("8");
+
+        OkhttpUtil.okHttpPostJson(API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                toastShort("服务器连接失败");
+            }
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    controlApiBean = GsonUtil.GsonToBean(response,ControlApiBean.class);
+                    controlCurtainEListViewAdapter = new ControlCurtainEListViewAdapter(ControlActivity.this,controlApiBean);
+                    controlElist.setAdapter(controlCurtainEListViewAdapter);
 
 
                 }catch (Exception e){

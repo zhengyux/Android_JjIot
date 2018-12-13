@@ -10,6 +10,7 @@ package com.iot.zyx.android_jjiot.homeactivity;
  * 修改备注：
  */
 
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,6 +22,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.iot.zyx.android_jjiot.API;
@@ -96,11 +98,19 @@ public class HomeActivity extends BaseActivity
         homeContentAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (position == 2) {
+                if (position==0){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("activity","lamp");
+                    openActivity(ControlActivity.class,bundle);
+                } else if (position == 2) {
                     openActivity(TelevisionActivity.class);
                 } else if (position == 3) {
                     openActivity(AirConditioningActivity.class);
-                } else {
+                } else if(position==4){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("activity","curtanin");
+                    openActivity(ControlActivity.class,bundle);
+                }else {
                     openActivity(ControlActivity.class);
                 }
 
@@ -189,7 +199,7 @@ public class HomeActivity extends BaseActivity
         OkhttpUtil.okHttpPostJson(API.OPEN_NETWORK, Josnstr, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
-                toastShort("打开网络失败");
+                toastShort("服务器连接失败");
             }
 
             @Override
@@ -199,7 +209,7 @@ public class HomeActivity extends BaseActivity
                     if(baseRespone.getResult().equals("00")){
                         toastShort("打开网络成功");
                     }else {
-                        toastShort("打开网络失败");
+                        toastShort(baseRespone.getMessage());
                     }
                 }catch (Exception e){
 

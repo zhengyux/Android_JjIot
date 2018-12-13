@@ -63,7 +63,8 @@
         <activity android:name=".add_zigbeeactivity.AddZigBeeActivity" />
         <activity android:name=".televisionactivity.TelevisionActivity" />
         <activity android:name=".air_conditioningactivity.AirConditioningActivity" />
-        <activity android:name=".add_deviceactivity.AddDeviceActivity"></activity>
+        <activity android:name=".add_deviceactivity.AddDeviceActivity" />
+        <activity android:name=".area_activity.AreaActivity"></activity>
     </application>
 
 </manifest>

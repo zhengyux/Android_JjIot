@@ -19,10 +19,11 @@ public class API {
     public static String OPEN_NETWORK = IP + "/device/openNetwork";//打开网络
     public static String DEVICE_ACCESS = IP + "/device/disabled/get";//设备入网
     public static String DEVICE_HOLD=IP+"/device/disabled/change";//保存设备
-    public static String DEVICE_GET=IP+"/device/get";//获取设备列表
+    public static String DEVICE_GET=IP+"/device/manager/list";//获取设备列表
     public static String SET_DEVICE = IP + "/device/disabled/handle";//设置设备
     public static String DELETE_DEVICE = IP + "/device/delete";//删除设备
     public static String CONTROL_LAMP=IP+"/device/light/onoff";//控制灯开关
+    public static String CONTROL_CURTAIN = IP+"/device/curtain/control";//控制窗帘
     public static String LAMP_BRIGHTNESS=IP+"/device/light/brightness";//灯光亮度
     public static String GET_AREA=IP+"/device/area/get";//获取区域
     public static String ADD_AREA=IP+"/device/area/add";//添加区域

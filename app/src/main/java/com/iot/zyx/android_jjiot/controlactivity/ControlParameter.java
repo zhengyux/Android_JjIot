@@ -4,25 +4,42 @@ package com.iot.zyx.android_jjiot.controlactivity;
  * 项目名称：Android_JjIot
  * 类描述：
  * 创建人：xuan
- * 创建时间：2018/11/29 17:09
+ * 创建时间：2018/11/29 16:01
  * 修改人：xuan
- * 修改时间：2018/11/29 17:09
+ * 修改时间：2018/11/29 16:01
  * 修改备注：
  */
-public class ControlLampBrightnessparameter {
-
+public class ControlParameter {
 
     /**
      * productKey : a1UEceRK3Pu
      * deviceName : deviceName_123
      * uuid : Ad5646465sd
-     * value : 0
+     * onoff : 0
      */
 
     private String productkey;
     private String devicename;
     private String uuid;
+    private int onoff;
+    private int motorPosi;
     private int value;
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public int getMotorPosi() {
+        return motorPosi;
+    }
+
+    public void setMotorPosi(int motorPosi) {
+        this.motorPosi = motorPosi;
+    }
 
     public String getProductKey() {
         return productkey;
@@ -48,11 +65,11 @@ public class ControlLampBrightnessparameter {
         this.uuid = uuid;
     }
 
-    public int getValue() {
-        return value;
+    public int getOnoff() {
+        return onoff;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setOnoff(int onoff) {
+        this.onoff = onoff;
     }
 }

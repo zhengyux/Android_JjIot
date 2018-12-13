@@ -4,14 +4,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.iot.zyx.android_jjiot.API;
-import com.iot.zyx.android_jjiot.R;
 import com.iot.zyx.android_jjiot.BaseRespone;
+import com.iot.zyx.android_jjiot.R;
 import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
 import com.iot.zyx.android_jjiot.util.network.GsonUtil;
 import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
@@ -30,12 +29,12 @@ import okhttp3.Call;
  * 修改时间：2018/11/16 14:04
  * 修改备注：
  */
-public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
+public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
 
     private ControlActivity mcontext;
     private ControlApiBean controlLampApiBean;
 
-    public ControlLampEListViewAdapter(ControlActivity mcontext, ControlApiBean controlLampApiBean) {
+    public ControlCurtainEListViewAdapter(ControlActivity mcontext, ControlApiBean controlLampApiBean) {
         this.mcontext = mcontext;
         this.controlLampApiBean = controlLampApiBean;
     }
@@ -80,28 +79,47 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
 
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(mcontext).inflate(R.layout.control_elist_lamp_item_group, null);
+            convertView = LayoutInflater.from(mcontext).inflate(R.layout.control_elist_curtain_item_group, null);
             ScreenAdapterTools.getInstance().loadView(convertView);
         }
         ViewHolder viewHolder = new ViewHolder(convertView);
         viewHolder.controlElistItemGroupTxt.setText(controlLampApiBean.getData().getList().get(groupPosition).getName());
-        viewHolder.controlElistItemGroupSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        viewHolder.controlElistItemGroupOpenImg.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
                 ControlParameter controlParameter = new ControlParameter();
                 controlParameter.setDeviceName(controlLampApiBean.getData().getList().get(groupPosition).getDevicename());
                 controlParameter.setProductKey(controlLampApiBean.getData().getList().get(groupPosition).getProductkey());
                 controlParameter.setUuid(controlLampApiBean.getData().getList().get(groupPosition).getUuid());
-                if(isChecked){
-                    controlParameter.setOnoff(1);
-                }else {
-                    controlParameter.setOnoff(0);
-                }
+                controlParameter.setMotorPosi(100);
+                CurtainOnOff(GsonUtil.GsonString(controlParameter));
                 mcontext.showLoading();
-                LampOnOff(GsonUtil.GsonString(controlParameter));
+            }
+        });
+        viewHolder.controlElistItemGroupStopImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ControlParameter controlParameter = new ControlParameter();
+                controlParameter.setDeviceName(controlLampApiBean.getData().getList().get(groupPosition).getDevicename());
+                controlParameter.setProductKey(controlLampApiBean.getData().getList().get(groupPosition).getProductkey());
+                controlParameter.setUuid(controlLampApiBean.getData().getList().get(groupPosition).getUuid());
+                controlParameter.setMotorPosi(200);
+                CurtainOnOff(GsonUtil.GsonString(controlParameter));
+                mcontext.showLoading();
 
             }
-
+        });
+        viewHolder.controlElistItemGroupCloseImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ControlParameter controlParameter = new ControlParameter();
+                controlParameter.setDeviceName(controlLampApiBean.getData().getList().get(groupPosition).getDevicename());
+                controlParameter.setProductKey(controlLampApiBean.getData().getList().get(groupPosition).getProductkey());
+                controlParameter.setUuid(controlLampApiBean.getData().getList().get(groupPosition).getUuid());
+                controlParameter.setMotorPosi(0);
+                CurtainOnOff(GsonUtil.GsonString(controlParameter));
+                mcontext.showLoading();
+            }
         });
         viewHolder.controlElistItemGroupSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -117,12 +135,13 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                ControlParameter controlLampBrightnessparameter = new ControlParameter();
-                controlLampBrightnessparameter.setDeviceName(controlLampApiBean.getData().getList().get(groupPosition).getDevicename());
-                controlLampBrightnessparameter.setProductKey(controlLampApiBean.getData().getList().get(groupPosition).getProductkey());
-                controlLampBrightnessparameter.setUuid(controlLampApiBean.getData().getList().get(groupPosition).getUuid());
-                controlLampBrightnessparameter.setValue(seekBar.getProgress());
-                LampBrightness(GsonUtil.GsonString(controlLampBrightnessparameter));
+
+                ControlParameter controlParameter = new ControlParameter();
+                controlParameter.setDeviceName(controlLampApiBean.getData().getList().get(groupPosition).getDevicename());
+                controlParameter.setProductKey(controlLampApiBean.getData().getList().get(groupPosition).getProductkey());
+                controlParameter.setUuid(controlLampApiBean.getData().getList().get(groupPosition).getUuid());
+                controlParameter.setMotorPosi(seekBar.getProgress());
+                CurtainSchedule(GsonUtil.GsonString(controlParameter));
                 mcontext.showLoading();
             }
         });
@@ -130,23 +149,25 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    public void LampBrightness(String josnStr){
-        OkhttpUtil.okHttpPostJson(API.LAMP_BRIGHTNESS, josnStr, new CallBackUtil.CallBackString() {
+    public void CurtainSchedule(String josnStr) {
+        OkhttpUtil.okHttpPostJson(API.CONTROL_CURTAIN, josnStr, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 mcontext.toastShort("服务器连接失败");
+                mcontext.closeLoading();
             }
 
             @Override
             public void onResponse(String response) {
-                try{
+                try {
                     BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
-                    if(baseRespone.getResult().equals("00")){
+                    if (baseRespone.getResult().equals("00")) {
                         mcontext.toastShort("操作成功");
-                    }else {
+                    } else {
                         mcontext.toastShort(baseRespone.getMessage());
                     }
-                }catch (Exception e){
+                    mcontext.closeLoading();
+                } catch (Exception e) {
 
                 }
             }
@@ -154,27 +175,28 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
     }
 
 
-    public void LampOnOff(String josnStr){
-        OkhttpUtil.okHttpPostJson(API.CONTROL_LAMP, josnStr, new CallBackUtil.CallBackString() {
+    public void CurtainOnOff(String josnStr) {
+        OkhttpUtil.okHttpPostJson(API.CONTROL_CURTAIN, josnStr, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
-                    mcontext.toastShort("服务器连接失败");
-                mcontext.showLoading();
+                mcontext.toastShort("服务器连接失败");
+                mcontext.closeLoading();
             }
 
             @Override
             public void onResponse(String response) {
-                try{
+                try {
                     BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
-                    if(baseRespone.getResult().equals("00")){
+                    if (baseRespone.getResult().equals("00")) {
                         mcontext.toastShort("操作成功");
-                    }else {
+                    } else {
                         mcontext.toastShort(baseRespone.getMessage());
                     }
-                    mcontext.showLoading();
-                }catch (Exception e){
+                    mcontext.closeLoading();
+                } catch (Exception e) {
 
                 }
+
             }
         });
     }
@@ -189,13 +211,18 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+
     static class ViewHolder {
         @BindView(R.id.control_elist_item_group_txt)
         TextView controlElistItemGroupTxt;
+        @BindView(R.id.control_elist_item_group_open_img)
+        ImageView controlElistItemGroupOpenImg;
+        @BindView(R.id.control_elist_item_group_stop_img)
+        ImageView controlElistItemGroupStopImg;
+        @BindView(R.id.control_elist_item_group_close_img)
+        ImageView controlElistItemGroupCloseImg;
         @BindView(R.id.control_elist_item_group_seek)
         SeekBar controlElistItemGroupSeek;
-        @BindView(R.id.control_elist_item_group_switch)
-        Switch controlElistItemGroupSwitch;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

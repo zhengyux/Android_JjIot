@@ -18,6 +18,15 @@ public class BaseParameter {
 
     private String productkey="a1UEceRK3Pu";
     private String devicename="deviceName_123";
+    private String type ;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getProductkey() {
         return productkey;

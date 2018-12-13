@@ -149,6 +149,7 @@ public class AddZigBeeActivity extends BaseActivity {
 //                    rxListDialog.getRecyclerView().setAdapter(new AddZigBeeWSAdapter(R.layout.dialog_addzigbee_recycler_item,addZigBeeWSBean.getMsg()));
 //                    rxListDialog.show();
                     toastShort("发现新设备！");
+                    addZigBee();
                 }
 
             }catch (Exception e){

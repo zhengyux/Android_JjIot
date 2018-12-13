@@ -33,6 +33,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <!-- 区域管理 -->
+    <string name="area">区域</string>
     <!-- 设备管理 -->
     <string name="device_management">设备管理</string>
     <!-- 添加设备 -->
@@ -45,4 +47,5 @@
     <!-- 空调 -->
     <string name="air_conditioning">空调</string>
     <string name="shut_down">关机</string>
+
 </resources>
