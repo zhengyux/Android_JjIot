@@ -84,6 +84,15 @@ public class ControlApiBean {
             private String name;
             private String date;
             private String IEEE;
+            private int motorPosi;
+
+            public int getMotorPosi() {
+                return motorPosi;
+            }
+
+            public void setMotorPosi(int motorPosi) {
+                this.motorPosi = motorPosi;
+            }
 
             public int getId() {
                 return id;

@@ -16,8 +16,8 @@ public class BaseParameter {
      * devicename : deviceName_123
      */
 
-    private String productkey="a1UEceRK3Pu";
-    private String devicename="deviceName_123";
+    private String productkey= API.Device.productkey;
+    private String devicename= API.Device.devicename;
     private String type ;
 
     public String getType() {

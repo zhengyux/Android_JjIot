@@ -11,6 +11,7 @@ import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.R;
 import com.iot.zyx.android_jjiot.homeactivity.HomeActivity;
 import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostActivity;
+import com.iot.zyx.android_jjiot.util.AppUtil.SharedPreferencesUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +56,12 @@ public class LoginActivity extends BaseActivity {
                 openActivity(SwitchoverHostActivity.class);
                 break;
             case R.id.login_sign_in_img:
-                openActivityAndCloseThis(HomeActivity.class);
+                if("null".equals(SharedPreferencesUtils.getParam(this,"devicename","null"))){
+                    toastShort("请先选择主机");
+                }else {
+                    openActivityAndCloseThis(HomeActivity.class);
+                }
+
                 break;
         }
     }

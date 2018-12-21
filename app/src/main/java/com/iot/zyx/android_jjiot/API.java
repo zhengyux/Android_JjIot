@@ -1,5 +1,11 @@
 package com.iot.zyx.android_jjiot;
 
+import android.content.Context;
+
+import com.iot.zyx.android_jjiot.util.AppUtil.SharedPreferencesUtils;
+
+import java.net.ContentHandler;
+
 /**
  * 项目名称：Android_JjIot
  * 类描述：
@@ -10,13 +16,36 @@ package com.iot.zyx.android_jjiot;
  * 修改备注：
  */
 public class API {
+    static boolean isTest = true;
 
-    public static String productkey ="a1UEceRK3Pu";
-    public static String devicename ="deviceName_123";
 
-    public static String IP = "http://192.168.1.146:9090";//域名端口
-    public static String WSIP="ws://192.168.1.146:8055";//WS域名端口
-    public static String OPEN_NETWORK = IP + "/device/openNetwork";//打开网络
+
+    public static String ip(){
+        if(isTest){
+            return IP="http://192.168.1.29:9090";
+        }else {
+            return IP="http://192.168.1.146:9090";
+        }
+    }
+
+    public static String wsIp(){
+        if(isTest){
+            return WSIP="ws://192.168.1.29:9070";
+        }else {
+            return WSIP="ws://192.168.1.146:8055";
+        }
+    }
+
+
+
+    public static String IP = "http://192.168.1.29:9090";//测试域名端口
+
+    public static String WSIP="ws://192.168.1.29:9070";//测试WS域名端口
+
+    public static String GET_GATEWAY = IP+"/device/gateway/list";//获取主机
+ //   public static String IP = "http://192.168.1.146:9090";//域名端口
+ //   public static String WSIP="ws://192.168.1.146:8055";//WS域名端口
+    public static String OPEN_NETWORK = IP + "/device/gateway/openNetwork";//打开网络
     public static String DEVICE_ACCESS = IP + "/device/disabled/get";//设备入网
     public static String DEVICE_HOLD=IP+"/device/disabled/change";//保存设备
     public static String DEVICE_GET=IP+"/device/manager/list";//获取设备列表
@@ -29,4 +58,16 @@ public class API {
     public static String ADD_AREA=IP+"/device/area/add";//添加区域
     public static String DELETE_AREA=IP+"/device/area/delete";//删除区域
     public static String UPDATE_AREA=IP+"/device/area/update";//更新区域
+
+    public static class Device {
+        public static void setDeviceParamter(Context context){
+            devicename = (String) SharedPreferencesUtils.getParam(context,"devicename","null");
+            productkey = (String) SharedPreferencesUtils.getParam(context,"productkey","null");
+        }
+        public static String productkey ;
+        public static String devicename ;
+        public static String Lamp = "1";
+        public static String Curtain ="2";
+
+    }
 }

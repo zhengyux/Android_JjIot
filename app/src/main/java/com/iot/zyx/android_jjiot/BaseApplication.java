@@ -19,8 +19,13 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         ScreenAdapterTools.init(this);
         mContext = getApplicationContext();
+        API.ip();
+        API.wsIp();
+        API.Device.setDeviceParamter(mContext);
+
     }
 
     public static Context getContext(){

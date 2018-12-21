@@ -39,6 +39,11 @@ public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
         this.controlLampApiBean = controlLampApiBean;
     }
 
+    public void update(ControlApiBean controlLampApiBean){
+        this.controlLampApiBean = controlLampApiBean;
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public int getGroupCount() {
         return controlLampApiBean.getData().getList().size();
@@ -103,7 +108,7 @@ public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
                 controlParameter.setDeviceName(controlLampApiBean.getData().getList().get(groupPosition).getDevicename());
                 controlParameter.setProductKey(controlLampApiBean.getData().getList().get(groupPosition).getProductkey());
                 controlParameter.setUuid(controlLampApiBean.getData().getList().get(groupPosition).getUuid());
-                controlParameter.setMotorPosi(200);
+                controlParameter.setMotorPosi(-1);
                 CurtainOnOff(GsonUtil.GsonString(controlParameter));
                 mcontext.showLoading();
 
@@ -121,6 +126,10 @@ public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
                 mcontext.showLoading();
             }
         });
+
+        viewHolder.controlElistItemGroupSeek.setProgress(controlLampApiBean.getData().getList().get(groupPosition).getMotorPosi());
+
+
         viewHolder.controlElistItemGroupSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
