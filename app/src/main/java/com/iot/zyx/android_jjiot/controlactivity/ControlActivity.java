@@ -54,22 +54,32 @@ public class ControlActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        activity = getIntent().getExtras().getString("activity");
-        switch (activity){
-            case "lamp":
+        try {
+            activity = getIntent().getExtras().getString("activity");
+            if(!activity.isEmpty()){
+                switch (activity){
+                    case "lamp":
 
-                getLampDevice();
+                        getLampDevice();
 
-                break;
+                        break;
 
-            case "curtanin":
+                    case "curtanin":
 
-                getcurtainDevice();
+                        getcurtainDevice();
 
-                break;
+                        break;
+                }
+            }
+            AreaGet();
+            webSocket = OkhttpUtil.okHttpWebSocket(API.WSIP,mWebSocketListener);
+        }catch (Exception e){
+            toastShort("数据异常");
         }
-        AreaGet();
-        webSocket = OkhttpUtil.okHttpWebSocket(API.WSIP,mWebSocketListener);
+
+
+
+
     }
 
     @Override
@@ -134,18 +144,29 @@ public class ControlActivity extends BaseActivity {
             public void onResponse(String response) {
 
                 try {
-
-
                     controlApiBean = GsonUtil.GsonToBean(response,ControlApiBean.class);
-                    if(!controlApiBean.getData().getList().isEmpty()){
-                        controlLampEListViewAdapter = new ControlLampEListViewAdapter(ControlActivity.this,controlApiBean);
-                        controlElist.setAdapter(controlLampEListViewAdapter);
+
+
+
+                    if(controlApiBean.getResult().equals("00")){
+                        if(null!=controlApiBean.getData().getLight()){
+                            if(!controlApiBean.getData().getLight().isEmpty()){
+                                controlLampEListViewAdapter = new ControlLampEListViewAdapter(ControlActivity.this,controlApiBean);
+                                controlElist.setAdapter(controlLampEListViewAdapter);
+                            }
+                        }else {
+                            toastShort("暂无设备");
+                        }
+                    }else {
+                        toastShort(controlApiBean.getMessage());
                     }
 
 
 
-                }catch (Exception e){
 
+
+                }catch (Exception e){
+                    toastShort(e.getMessage());
                 }
 
 
@@ -168,15 +189,26 @@ public class ControlActivity extends BaseActivity {
 
                 try {
                     controlApiBean = GsonUtil.GsonToBean(response,ControlApiBean.class);
-                    if(!controlApiBean.getData().getList().isEmpty()){
-                        controlCurtainEListViewAdapter = new ControlCurtainEListViewAdapter(ControlActivity.this,controlApiBean);
-                        controlElist.setAdapter(controlCurtainEListViewAdapter);
+                    if(controlApiBean.getResult().equals("00")){
+                        if(null!=controlApiBean.getData().getCurtain()){
+                            if(!controlApiBean.getData().getCurtain().isEmpty()){
+                                controlCurtainEListViewAdapter = new ControlCurtainEListViewAdapter(ControlActivity.this,controlApiBean);
+                                controlElist.setAdapter(controlCurtainEListViewAdapter);
+                            }
+                        }else {
+                            toastShort("暂无设备");
+                        }
+                    }else {
+                            toastShort(controlApiBean.getMessage());
                     }
 
+
+
+
+
                 }catch (Exception e){
-
+                    toastShort(e.getMessage());
                 }
-
 
             }
         });
@@ -189,25 +221,42 @@ public class ControlActivity extends BaseActivity {
         public void run() {
             try {
 
-                switch (activity){
+                if(activity!=null){
+                    switch (activity){
 
-                    case "curtanin":
+                        case "curtanin":
 
-                        for (int i = 0; i < controlApiBean.getData().getList().size(); i++) {
-                            if(controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getList().get(i).getUuid())){
-                                controlApiBean.getData().getList().get(i).setMotorPosi(controlWSBean.getMsg().get(0).getMotorPosi());
-                                controlCurtainEListViewAdapter.update(controlApiBean);
+                            for (int i = 0; i < controlApiBean.getData().getCurtain().size(); i++) {
+                                if(controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getCurtain().get(i).getUuid())){
+                                    controlApiBean.getData().getCurtain().get(i).setMotorPosi(controlWSBean.getMsg().get(0).getMotorPosi());
+                                    controlCurtainEListViewAdapter.update(controlApiBean);
+                                }
                             }
-                        }
 
-                        break;
+                            break;
+
+                        case "lamp":
+
+                            for (int i = 0; i < controlApiBean.getData().getLight().size(); i++) {
+                                if(controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getLight().get(i).getUuid())){
+                                    if(null!=controlWSBean.getMsg().get(0).getValue()){
+                                        controlApiBean.getData().getLight().get(i).setValue(controlWSBean.getMsg().get(0).getValue().intValue());
+                                    }
+                                    if(null!=controlWSBean.getMsg().get(0).getOnoff()){
+                                        controlApiBean.getData().getLight().get(i).setOnoff(controlWSBean.getMsg().get(0).getOnoff().intValue());
+                                    }
+
+                                    controlLampEListViewAdapter.update(controlApiBean);
+                                }
+                            }
 
 
+                            break;
+                    }
                 }
 
-
             }catch (Exception e){
-
+                toastShort(e.getMessage());
             }
 
         }
@@ -228,15 +277,27 @@ public class ControlActivity extends BaseActivity {
         public void onMessage(WebSocket webSocket, String text) {
             Log.e("WebSocket", "onMessage: "+text );
 
-            switch (activity){
-                case "curtanin":
+            if(activity!=null) {
+                switch (activity) {
+                    case "curtanin":
 
-                    if(text.contains("1030")){
-                        controlWSBean = GsonUtil.GsonToBean(text,ControlWSBean.class);
-                        mHandler.post(runnable);
-                    }
+                        if (text.contains("1030")) {
+                            controlWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
+                            mHandler.post(runnable);
+                        }
 
-                    break;
+                        break;
+
+                    case "lamp":
+
+                        if(text.contains("设备灯控制")){
+                            controlWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
+                            mHandler.post(runnable);
+                        }
+
+
+                        break;
+                }
             }
 
         }

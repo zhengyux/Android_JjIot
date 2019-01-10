@@ -40,9 +40,15 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
         this.controlLampApiBean = controlLampApiBean;
     }
 
+
+    public void update(ControlApiBean controlLampApiBean){
+        this.controlLampApiBean = controlLampApiBean;
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public int getGroupCount() {
-        return controlLampApiBean.getData().getList().size();
+        return controlLampApiBean.getData().getLight().size();
     }
 
     @Override
@@ -52,7 +58,7 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        return controlLampApiBean.getData().getList().get(groupPosition);
+        return controlLampApiBean.getData().getLight().get(groupPosition);
     }
 
     @Override
@@ -84,14 +90,22 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
             ScreenAdapterTools.getInstance().loadView(convertView);
         }
         ViewHolder viewHolder = new ViewHolder(convertView);
-        viewHolder.controlElistItemGroupTxt.setText(controlLampApiBean.getData().getList().get(groupPosition).getName());
+        viewHolder.controlElistItemGroupTxt.setText(controlLampApiBean.getData().getLight().get(groupPosition).getName());
+
+
+        if(1==controlLampApiBean.getData().getLight().get(groupPosition).getOnoff()){
+            viewHolder.controlElistItemGroupSwitch.setChecked(true);
+        }else {
+            viewHolder.controlElistItemGroupSwitch.setChecked(false);
+        }
+
         viewHolder.controlElistItemGroupSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 ControlParameter controlParameter = new ControlParameter();
-                controlParameter.setDeviceName(controlLampApiBean.getData().getList().get(groupPosition).getDevicename());
-                controlParameter.setProductKey(controlLampApiBean.getData().getList().get(groupPosition).getProductkey());
-                controlParameter.setUuid(controlLampApiBean.getData().getList().get(groupPosition).getUuid());
+                controlParameter.setDeviceName(controlLampApiBean.getData().getLight().get(groupPosition).getDevicename());
+                controlParameter.setProductKey(controlLampApiBean.getData().getLight().get(groupPosition).getProductkey());
+                controlParameter.setUuid(controlLampApiBean.getData().getLight().get(groupPosition).getUuid());
                 if(isChecked){
                     controlParameter.setOnoff(1);
                 }else {
@@ -103,6 +117,8 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
             }
 
         });
+
+        viewHolder.controlElistItemGroupSeek.setProgress(controlLampApiBean.getData().getLight().get(groupPosition).getValue());
         viewHolder.controlElistItemGroupSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -118,9 +134,9 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 ControlParameter controlLampBrightnessparameter = new ControlParameter();
-                controlLampBrightnessparameter.setDeviceName(controlLampApiBean.getData().getList().get(groupPosition).getDevicename());
-                controlLampBrightnessparameter.setProductKey(controlLampApiBean.getData().getList().get(groupPosition).getProductkey());
-                controlLampBrightnessparameter.setUuid(controlLampApiBean.getData().getList().get(groupPosition).getUuid());
+                controlLampBrightnessparameter.setDeviceName(controlLampApiBean.getData().getLight().get(groupPosition).getDevicename());
+                controlLampBrightnessparameter.setProductKey(controlLampApiBean.getData().getLight().get(groupPosition).getProductkey());
+                controlLampBrightnessparameter.setUuid(controlLampApiBean.getData().getLight().get(groupPosition).getUuid());
                 controlLampBrightnessparameter.setValue(seekBar.getProgress());
                 LampBrightness(GsonUtil.GsonString(controlLampBrightnessparameter));
                 mcontext.showLoading();
@@ -146,6 +162,7 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
                     }else {
                         mcontext.toastShort(baseRespone.getMessage());
                     }
+                    mcontext.closeLoading();
                 }catch (Exception e){
 
                 }
@@ -159,7 +176,7 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
             @Override
             public void onFailure(Call call, Exception e) {
                     mcontext.toastShort("服务器连接失败");
-                mcontext.showLoading();
+                mcontext.closeLoading();
             }
 
             @Override
@@ -171,7 +188,7 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
                     }else {
                         mcontext.toastShort(baseRespone.getMessage());
                     }
-                    mcontext.showLoading();
+                    mcontext.closeLoading();
                 }catch (Exception e){
 
                 }

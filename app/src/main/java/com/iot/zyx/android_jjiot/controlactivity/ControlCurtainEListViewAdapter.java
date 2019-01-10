@@ -46,7 +46,7 @@ public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return controlLampApiBean.getData().getList().size();
+        return controlLampApiBean.getData().getCurtain().size();
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        return controlLampApiBean.getData().getList().get(groupPosition);
+        return controlLampApiBean.getData().getCurtain().get(groupPosition);
     }
 
     @Override
@@ -88,14 +88,14 @@ public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
             ScreenAdapterTools.getInstance().loadView(convertView);
         }
         ViewHolder viewHolder = new ViewHolder(convertView);
-        viewHolder.controlElistItemGroupTxt.setText(controlLampApiBean.getData().getList().get(groupPosition).getName());
+        viewHolder.controlElistItemGroupTxt.setText(controlLampApiBean.getData().getCurtain().get(groupPosition).getName());
         viewHolder.controlElistItemGroupOpenImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ControlParameter controlParameter = new ControlParameter();
-                controlParameter.setDeviceName(controlLampApiBean.getData().getList().get(groupPosition).getDevicename());
-                controlParameter.setProductKey(controlLampApiBean.getData().getList().get(groupPosition).getProductkey());
-                controlParameter.setUuid(controlLampApiBean.getData().getList().get(groupPosition).getUuid());
+                controlParameter.setDeviceName(controlLampApiBean.getData().getCurtain().get(groupPosition).getDevicename());
+                controlParameter.setProductKey(controlLampApiBean.getData().getCurtain().get(groupPosition).getProductkey());
+                controlParameter.setUuid(controlLampApiBean.getData().getCurtain().get(groupPosition).getUuid());
                 controlParameter.setMotorPosi(100);
                 CurtainOnOff(GsonUtil.GsonString(controlParameter));
                 mcontext.showLoading();
@@ -105,9 +105,9 @@ public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 ControlParameter controlParameter = new ControlParameter();
-                controlParameter.setDeviceName(controlLampApiBean.getData().getList().get(groupPosition).getDevicename());
-                controlParameter.setProductKey(controlLampApiBean.getData().getList().get(groupPosition).getProductkey());
-                controlParameter.setUuid(controlLampApiBean.getData().getList().get(groupPosition).getUuid());
+                controlParameter.setDeviceName(controlLampApiBean.getData().getCurtain().get(groupPosition).getDevicename());
+                controlParameter.setProductKey(controlLampApiBean.getData().getCurtain().get(groupPosition).getProductkey());
+                controlParameter.setUuid(controlLampApiBean.getData().getCurtain().get(groupPosition).getUuid());
                 controlParameter.setMotorPosi(-1);
                 CurtainOnOff(GsonUtil.GsonString(controlParameter));
                 mcontext.showLoading();
@@ -118,16 +118,16 @@ public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 ControlParameter controlParameter = new ControlParameter();
-                controlParameter.setDeviceName(controlLampApiBean.getData().getList().get(groupPosition).getDevicename());
-                controlParameter.setProductKey(controlLampApiBean.getData().getList().get(groupPosition).getProductkey());
-                controlParameter.setUuid(controlLampApiBean.getData().getList().get(groupPosition).getUuid());
+                controlParameter.setDeviceName(controlLampApiBean.getData().getCurtain().get(groupPosition).getDevicename());
+                controlParameter.setProductKey(controlLampApiBean.getData().getCurtain().get(groupPosition).getProductkey());
+                controlParameter.setUuid(controlLampApiBean.getData().getCurtain().get(groupPosition).getUuid());
                 controlParameter.setMotorPosi(0);
                 CurtainOnOff(GsonUtil.GsonString(controlParameter));
                 mcontext.showLoading();
             }
         });
 
-        viewHolder.controlElistItemGroupSeek.setProgress(controlLampApiBean.getData().getList().get(groupPosition).getMotorPosi());
+        viewHolder.controlElistItemGroupSeek.setProgress(controlLampApiBean.getData().getCurtain().get(groupPosition).getMotorPosi());
 
 
         viewHolder.controlElistItemGroupSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -146,9 +146,9 @@ public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
                 ControlParameter controlParameter = new ControlParameter();
-                controlParameter.setDeviceName(controlLampApiBean.getData().getList().get(groupPosition).getDevicename());
-                controlParameter.setProductKey(controlLampApiBean.getData().getList().get(groupPosition).getProductkey());
-                controlParameter.setUuid(controlLampApiBean.getData().getList().get(groupPosition).getUuid());
+                controlParameter.setDeviceName(controlLampApiBean.getData().getCurtain().get(groupPosition).getDevicename());
+                controlParameter.setProductKey(controlLampApiBean.getData().getCurtain().get(groupPosition).getProductkey());
+                controlParameter.setUuid(controlLampApiBean.getData().getCurtain().get(groupPosition).getUuid());
                 controlParameter.setMotorPosi(seekBar.getProgress());
                 CurtainSchedule(GsonUtil.GsonString(controlParameter));
                 mcontext.showLoading();

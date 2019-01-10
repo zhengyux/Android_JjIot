@@ -68,6 +68,9 @@ public class ControlWSBean {
         private int type;
         private String message;
         private int motorPosi;
+        private Integer onoff;
+        private Integer value;
+
 
         public String getProductkey() {
             return productkey;
@@ -131,6 +134,22 @@ public class ControlWSBean {
 
         public void setMotorPosi(int motorPosi) {
             this.motorPosi = motorPosi;
+        }
+
+        public Integer getOnoff() {
+            return onoff;
+        }
+
+        public void setOnoff(Integer onoff) {
+            this.onoff = onoff;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+
+        public void setValue(Integer value) {
+            this.value = value;
         }
     }
 }
