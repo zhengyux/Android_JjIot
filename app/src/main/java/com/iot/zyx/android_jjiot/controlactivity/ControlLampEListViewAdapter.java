@@ -102,6 +102,11 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
         viewHolder.controlElistItemGroupSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(!buttonView.isPressed()){
+                    return;
+                }
+
                 ControlParameter controlParameter = new ControlParameter();
                 controlParameter.setDeviceName(controlLampApiBean.getData().getLight().get(groupPosition).getDevicename());
                 controlParameter.setProductKey(controlLampApiBean.getData().getLight().get(groupPosition).getProductkey());
@@ -137,7 +142,11 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
                 controlLampBrightnessparameter.setDeviceName(controlLampApiBean.getData().getLight().get(groupPosition).getDevicename());
                 controlLampBrightnessparameter.setProductKey(controlLampApiBean.getData().getLight().get(groupPosition).getProductkey());
                 controlLampBrightnessparameter.setUuid(controlLampApiBean.getData().getLight().get(groupPosition).getUuid());
-                controlLampBrightnessparameter.setValue(seekBar.getProgress());
+                if(seekBar.getProgress()==0){
+                    controlLampBrightnessparameter.setValue(1);
+                }else {
+                    controlLampBrightnessparameter.setValue(seekBar.getProgress());
+                }
                 LampBrightness(GsonUtil.GsonString(controlLampBrightnessparameter));
                 mcontext.showLoading();
             }
@@ -151,6 +160,7 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
             @Override
             public void onFailure(Call call, Exception e) {
                 mcontext.toastShort("服务器连接失败");
+                mcontext.closeLoading();
             }
 
             @Override
@@ -164,7 +174,8 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
                     }
                     mcontext.closeLoading();
                 }catch (Exception e){
-
+                    mcontext.toastShort(e.getMessage());
+                    mcontext.closeLoading();
                 }
             }
         });
@@ -190,7 +201,8 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
                     }
                     mcontext.closeLoading();
                 }catch (Exception e){
-
+                    mcontext.toastShort(e.getMessage());
+                    mcontext.closeLoading();
                 }
             }
         });

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -26,7 +27,7 @@ import okhttp3.Call;
 public class DeviceManagementActivity extends BaseActivity {
 
     @BindView(R.id.device_management_back_img)
-    ImageView deviceManagementBackImg;
+    RelativeLayout deviceManagementBackImg;
     @BindView(R.id.device_management_recycler)
     RecyclerView deviceManagementRecycler;
     DeviceManagementAadapter deviceManagementAadapter;

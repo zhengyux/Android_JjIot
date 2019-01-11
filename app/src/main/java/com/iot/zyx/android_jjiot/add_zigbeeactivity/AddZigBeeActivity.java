@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.iot.zyx.android_jjiot.API;
@@ -28,7 +29,7 @@ public class AddZigBeeActivity extends BaseActivity {
 
 
     @BindView(R.id.add_zigbee_back_img)
-    ImageView addZigbeeBackImg;
+    RelativeLayout addZigbeeBackImg;
     @BindView(R.id.add_zigbee_time_txt)
     TextView addZigbeeTimeTxt;
     @BindView(R.id.add_zigbee_begin_img)

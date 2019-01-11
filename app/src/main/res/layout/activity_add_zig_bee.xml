@@ -24,13 +24,20 @@
             android:textColor="@color/white"
             android:textSize="18dp" />
 
-        <ImageView
+        <RelativeLayout
+            android:id="@+id/add_zigbee_back_img"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
-            android:id="@+id/add_zigbee_back_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/icon_top_back" />
+            android:layout_width="50dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_top_back" />
+        </RelativeLayout>
+
     </RelativeLayout>
 
    <TextView

@@ -177,7 +177,8 @@ public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
                     }
                     mcontext.closeLoading();
                 } catch (Exception e) {
-
+                    mcontext.toastShort(e.getMessage());
+                    mcontext.closeLoading();
                 }
             }
         });
@@ -203,7 +204,8 @@ public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
                     }
                     mcontext.closeLoading();
                 } catch (Exception e) {
-
+                    mcontext.toastShort(e.getMessage());
+                    mcontext.closeLoading();
                 }
 
             }

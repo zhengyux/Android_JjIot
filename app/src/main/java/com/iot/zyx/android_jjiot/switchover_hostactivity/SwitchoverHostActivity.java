@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.iot.zyx.android_jjiot.API;
@@ -24,7 +25,7 @@ public class SwitchoverHostActivity extends BaseActivity {
 
 
     @BindView(R.id.switchover_host_back_img)
-    ImageView switchoverHostBackImg;
+    RelativeLayout switchoverHostBackImg;
     @BindView(R.id.switchover_host_recycler)
     RecyclerView switchoverHostRecycler;
     @BindView(R.id.add_host_img)

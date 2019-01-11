@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.iot.zyx.android_jjiot.API;
@@ -29,7 +30,7 @@ public class ControlActivity extends BaseActivity {
     @BindView(R.id.control_title_txt)
     TextView controlTitleTxt;
     @BindView(R.id.control_back_img)
-    ImageView controlBackImg;
+    RelativeLayout controlBackImg;
     @BindView(R.id.control_tab)
     TabLayout controlTab;
     @BindView(R.id.control_elist)
