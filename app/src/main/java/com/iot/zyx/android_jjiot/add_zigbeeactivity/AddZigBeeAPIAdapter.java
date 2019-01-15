@@ -25,7 +25,7 @@ public class AddZigBeeAPIAdapter extends BaseQuickAdapter<AddZigBeeAPIBean.DataB
 
     public AddZigBeeAPIAdapter(int layoutResId, @Nullable List<AddZigBeeAPIBean.DataBean.ListBean> data) {
         super(layoutResId, data);
-        ScreenAdapterTools.getInstance().loadView(LayoutInflater.from(BaseApplication.getContext()).inflate(layoutResId,null));
+        ScreenAdapterTools.getInstance().loadView(mLayoutInflater.from(BaseApplication.getContext()).inflate(layoutResId,null));
     }
 
     @Override

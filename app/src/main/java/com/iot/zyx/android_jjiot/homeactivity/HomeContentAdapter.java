@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.iot.zyx.android_jjiot.BaseApplication;
+import com.iot.zyx.android_jjiot.R;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import java.util.List;
@@ -23,11 +24,33 @@ public class HomeContentAdapter extends BaseQuickAdapter<HomeContentBean.Employe
 
     public HomeContentAdapter(int layoutResId, @Nullable List<HomeContentBean.EmployeesBean> data) {
         super(layoutResId, data);
-        ScreenAdapterTools.getInstance().loadView(LayoutInflater.from(BaseApplication.getContext()).inflate(layoutResId,null));
+        ScreenAdapterTools.getInstance().loadView(mLayoutInflater.from(BaseApplication.getContext()).inflate(layoutResId,null));
     }
 
     @Override
     protected void convert(BaseViewHolder helper, HomeContentBean.EmployeesBean item) {
+
+        switch (helper.getLayoutPosition()){
+            case 0:
+                helper.setText(R.id.home_content_recycler_item_txt,"灯光");
+                helper.setImageResource(R.id.home_content_recycler_item_img,R.mipmap.icon_index_dg);
+                break;
+            case 1:
+                helper.setText(R.id.home_content_recycler_item_txt,"待定");
+                break;
+            case 2:
+                helper.setText(R.id.home_content_recycler_item_txt,"TV");
+                helper.setImageResource(R.id.home_content_recycler_item_img,R.mipmap.icon_index_tv);
+                break;
+            case 3:
+                helper.setText(R.id.home_content_recycler_item_txt,"空调");
+                helper.setImageResource(R.id.home_content_recycler_item_img,R.mipmap.icon_index_kt);
+                break;
+            case 4:
+                helper.setText(R.id.home_content_recycler_item_txt,"窗帘");
+                helper.setImageResource(R.id.home_content_recycler_item_img,R.mipmap.icon_index_cl);
+                break;
+        }
 
     }
 }
