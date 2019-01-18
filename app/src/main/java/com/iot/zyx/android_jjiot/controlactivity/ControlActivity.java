@@ -1,11 +1,11 @@
 package com.iot.zyx.android_jjiot.controlactivity;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -13,17 +13,18 @@ import com.iot.zyx.android_jjiot.API;
 import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.BaseParameter;
 import com.iot.zyx.android_jjiot.R;
-import com.iot.zyx.android_jjiot.add_zigbeeactivity.AddZigBeeWSBean;
 import com.iot.zyx.android_jjiot.device_managementactivity.AreaGetBean;
 import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
 import com.iot.zyx.android_jjiot.util.network.GsonUtil;
 import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Response;
 import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 
 public class ControlActivity extends BaseActivity {
 
@@ -42,6 +43,8 @@ public class ControlActivity extends BaseActivity {
     mWebSocketListener mWebSocketListener;
     WebSocket webSocket;
     ControlWSBean controlWSBean;
+    @BindView(R.id.control_signal_txt)
+    TextView controlSignalTxt;
 
     @Override
     protected int setLayout() {
@@ -57,28 +60,28 @@ public class ControlActivity extends BaseActivity {
     protected void initData() {
         try {
             activity = getIntent().getExtras().getString("activity");
-            if(!activity.isEmpty()){
-                switch (activity){
+            if (!activity.isEmpty()) {
+                switch (activity) {
                     case "lamp":
 
                         getLampDevice();
+                        controlTitleTxt.setText("灯控");
 
                         break;
 
                     case "curtanin":
 
                         getcurtainDevice();
+                        controlTitleTxt.setText("窗帘");
 
                         break;
                 }
             }
             AreaGet();
-            webSocket = OkhttpUtil.okHttpWebSocket(API.WSIP,mWebSocketListener);
-        }catch (Exception e){
+            webSocket = OkhttpUtil.okHttpWebSocket(API.WSIP, mWebSocketListener);
+        } catch (Exception e) {
             toastShort("数据异常");
         }
-
-
 
 
     }
@@ -91,7 +94,7 @@ public class ControlActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(webSocket!=null){
+        if (webSocket != null) {
             webSocket.cancel();
         }
     }
@@ -105,7 +108,7 @@ public class ControlActivity extends BaseActivity {
         }
     }
 
-    public void AreaGet(){
+    public void AreaGet() {
 
         OkhttpUtil.okHttpGet(API.GET_AREA, new CallBackUtil.CallBackString() {
             @Override
@@ -116,13 +119,13 @@ public class ControlActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
 
-                try{
-                    AreaGetBean areaGetBean = GsonUtil.GsonToBean(response,AreaGetBean.class);
+                try {
+                    AreaGetBean areaGetBean = GsonUtil.GsonToBean(response, AreaGetBean.class);
                     for (int i = 0; i < areaGetBean.getData().getList().size(); i++) {
                         controlTab.addTab(controlTab.newTab().setText(areaGetBean.getData().getList().get(i).getName()));
                     }
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     toastShort(e.getMessage());
                 }
 
@@ -138,35 +141,31 @@ public class ControlActivity extends BaseActivity {
         OkhttpUtil.okHttpPostJson(API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
-                    toastShort("服务器连接失败");
+                toastShort("服务器连接失败");
             }
 
             @Override
             public void onResponse(String response) {
 
                 try {
-                    controlApiBean = GsonUtil.GsonToBean(response,ControlApiBean.class);
+                    controlApiBean = GsonUtil.GsonToBean(response, ControlApiBean.class);
 
 
-
-                    if(controlApiBean.getResult().equals("00")){
-                        if(null!=controlApiBean.getData().getLight()){
-                            if(!controlApiBean.getData().getLight().isEmpty()){
-                                controlLampEListViewAdapter = new ControlLampEListViewAdapter(ControlActivity.this,controlApiBean);
+                    if (controlApiBean.getResult().equals("00")) {
+                        if (null != controlApiBean.getData().getLight()) {
+                            if (!controlApiBean.getData().getLight().isEmpty()) {
+                                controlLampEListViewAdapter = new ControlLampEListViewAdapter(ControlActivity.this, controlApiBean);
                                 controlElist.setAdapter(controlLampEListViewAdapter);
                             }
-                        }else {
+                        } else {
                             toastShort("暂无设备");
                         }
-                    }else {
+                    } else {
                         toastShort(controlApiBean.getMessage());
                     }
 
 
-
-
-
-                }catch (Exception e){
+                } catch (Exception e) {
                     toastShort(e.getMessage());
                 }
 
@@ -189,25 +188,22 @@ public class ControlActivity extends BaseActivity {
             public void onResponse(String response) {
 
                 try {
-                    controlApiBean = GsonUtil.GsonToBean(response,ControlApiBean.class);
-                    if(controlApiBean.getResult().equals("00")){
-                        if(null!=controlApiBean.getData().getCurtain()){
-                            if(!controlApiBean.getData().getCurtain().isEmpty()){
-                                controlCurtainEListViewAdapter = new ControlCurtainEListViewAdapter(ControlActivity.this,controlApiBean);
+                    controlApiBean = GsonUtil.GsonToBean(response, ControlApiBean.class);
+                    if (controlApiBean.getResult().equals("00")) {
+                        if (null != controlApiBean.getData().getCurtain()) {
+                            if (!controlApiBean.getData().getCurtain().isEmpty()) {
+                                controlCurtainEListViewAdapter = new ControlCurtainEListViewAdapter(ControlActivity.this, controlApiBean);
                                 controlElist.setAdapter(controlCurtainEListViewAdapter);
                             }
-                        }else {
+                        } else {
                             toastShort("暂无设备");
                         }
-                    }else {
-                            toastShort(controlApiBean.getMessage());
+                    } else {
+                        toastShort(controlApiBean.getMessage());
                     }
 
 
-
-
-
-                }catch (Exception e){
+                } catch (Exception e) {
                     toastShort(e.getMessage());
                 }
 
@@ -217,18 +213,23 @@ public class ControlActivity extends BaseActivity {
 
 
     Handler mHandler = new Handler();
-    Runnable runnable=new Runnable() {
+    Runnable runnable = new Runnable() {
         @Override
         public void run() {
             try {
 
-                if(activity!=null){
-                    switch (activity){
+                if (activity != null) {
+
+                    if(null !=controlWSBean.getMsg().get(0).getRSSI()){
+                        controlSignalTxt.setText("RSSI："+controlWSBean.getMsg().get(0).getRSSI().intValue()+" dBm");
+                    }
+
+                    switch (activity) {
 
                         case "curtanin":
 
                             for (int i = 0; i < controlApiBean.getData().getCurtain().size(); i++) {
-                                if(controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getCurtain().get(i).getUuid())){
+                                if (controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getCurtain().get(i).getUuid())) {
                                     controlApiBean.getData().getCurtain().get(i).setMotorPosi(controlWSBean.getMsg().get(0).getMotorPosi());
                                     controlCurtainEListViewAdapter.update(controlApiBean);
                                 }
@@ -239,16 +240,17 @@ public class ControlActivity extends BaseActivity {
                         case "lamp":
 
                             for (int i = 0; i < controlApiBean.getData().getLight().size(); i++) {
-                                if(controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getLight().get(i).getUuid())){
-                                    if(null!=controlWSBean.getMsg().get(0).getValue()){
+                                if (controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getLight().get(i).getUuid())) {
+                                    if (null != controlWSBean.getMsg().get(0).getValue()) {
                                         controlApiBean.getData().getLight().get(i).setValue(controlWSBean.getMsg().get(0).getValue().intValue());
                                     }
-                                    if(null!=controlWSBean.getMsg().get(0).getOnoff()){
+                                    if (null != controlWSBean.getMsg().get(0).getOnoff()) {
                                         controlApiBean.getData().getLight().get(i).setOnoff(controlWSBean.getMsg().get(0).getOnoff().intValue());
                                     }
 
                                     controlLampEListViewAdapter.update(controlApiBean);
                                 }
+
                             }
 
 
@@ -256,19 +258,26 @@ public class ControlActivity extends BaseActivity {
                     }
                 }
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 toastShort(e.getMessage());
             }
 
         }
     };
 
-    class mWebSocketListener extends okhttp3.WebSocketListener{
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    class mWebSocketListener extends WebSocketListener {
 
         //建立连接
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
-            Log.e("WebSocket", "onOpen: " );
+            Log.e("WebSocket", "onOpen: ");
             super.onOpen(webSocket, response);
 
         }
@@ -276,9 +285,9 @@ public class ControlActivity extends BaseActivity {
         //收到消息回调
         @Override
         public void onMessage(WebSocket webSocket, String text) {
-            Log.e("WebSocket", "onMessage: "+text );
+            Log.e("WebSocket", "onMessage: " + text);
 
-            if(activity!=null) {
+            if (activity != null) {
                 switch (activity) {
                     case "curtanin":
 
@@ -291,7 +300,7 @@ public class ControlActivity extends BaseActivity {
 
                     case "lamp":
 
-                        if(text.contains("设备灯控制")){
+                        if (text.contains("设备灯控制")) {
                             controlWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
                             mHandler.post(runnable);
                         }
@@ -306,14 +315,14 @@ public class ControlActivity extends BaseActivity {
         //准备关闭
         @Override
         public void onClosing(WebSocket webSocket, int code, String reason) {
-            Log.e("WebSocket", "onClosing: " );
+            Log.e("WebSocket", "onClosing: ");
             super.onClosing(webSocket, code, reason);
         }
 
         //已经关闭
         @Override
         public void onClosed(WebSocket webSocket, int code, String reason) {
-            Log.e("WebSocket", "onClosed: " );
+            Log.e("WebSocket", "onClosed: ");
             super.onClosed(webSocket, code, reason);
 
         }
@@ -321,7 +330,7 @@ public class ControlActivity extends BaseActivity {
         //连接失败发送失败
         @Override
         public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-            Log.e("WebSocket", "onFailure: " +t.getMessage());
+            Log.e("WebSocket", "onFailure: " + t.getMessage());
             super.onFailure(webSocket, t, response);
         }
     }

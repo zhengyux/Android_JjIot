@@ -70,7 +70,15 @@ public class ControlWSBean {
         private int motorPosi;
         private Integer onoff;
         private Integer value;
+        private Integer RSSI;
 
+        public Integer getRSSI() {
+            return RSSI;
+        }
+
+        public void setRSSI(Integer RSSI) {
+            this.RSSI = RSSI;
+        }
 
         public String getProductkey() {
             return productkey;

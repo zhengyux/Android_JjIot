@@ -12,30 +12,14 @@
 
 <TextView
     android:text="前排"
+    android:layout_weight="1"
     android:textSize="15dp"
     android:textColor="@color/white"
     android:id="@+id/control_elist_item_group_txt"
-    android:layout_width="90dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 
-    <ImageView
-        android:layout_marginLeft="20dp"
-        android:src="@mipmap/icon_dg2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <SeekBar
-        android:id="@+id/control_elist_item_group_seek"
-        android:layout_weight="1"
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
-        android:max="254"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-    <ImageView
-        android:src="@mipmap/icon_dg1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
     <Switch
         android:id="@+id/control_elist_item_group_switch"

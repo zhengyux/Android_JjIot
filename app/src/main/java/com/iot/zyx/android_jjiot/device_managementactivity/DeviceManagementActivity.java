@@ -79,7 +79,7 @@ public class DeviceManagementActivity extends BaseActivity {
                         toastShort("删除成功");
                         //DeviceGet();
                     } else {
-                        toastShort("删除失败");
+                        toastShort(baseRespone.getMessage());
                     }
                 }catch (Exception e){
                     toastShort("删除数据错误");
@@ -129,7 +129,7 @@ public class DeviceManagementActivity extends BaseActivity {
         deviceGetParameter.setAreaId(null);
         String jsonStr = GsonUtil.GsonString(deviceGetParameter);
 
-        OkhttpUtil.okHttpPostJson(API.DEVICE_GET, jsonStr, new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.DEVICE_GET+"?differe=false", jsonStr, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 toastShort("服务器连接失败！");
