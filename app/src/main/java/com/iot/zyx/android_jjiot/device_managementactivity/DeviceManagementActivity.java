@@ -77,10 +77,10 @@ public class DeviceManagementActivity extends BaseActivity {
                     BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
                     if (baseRespone.getResult().equals("00")) {
                         toastShort("删除成功");
-                        //DeviceGet();
                     } else {
                         toastShort(baseRespone.getMessage());
                     }
+                    DeviceGet();
                 }catch (Exception e){
                     toastShort("删除数据错误");
                 }

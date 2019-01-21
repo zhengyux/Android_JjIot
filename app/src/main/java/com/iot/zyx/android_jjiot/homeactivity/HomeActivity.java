@@ -16,6 +16,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -29,15 +30,21 @@ import com.iot.zyx.android_jjiot.API;
 import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.BaseParameter;
 import com.iot.zyx.android_jjiot.R;
+import com.iot.zyx.android_jjiot.add_zigbeeactivity.AddZigBeeAPIAdapter;
 import com.iot.zyx.android_jjiot.add_zigbeeactivity.AddZigBeeActivity;
 import com.iot.zyx.android_jjiot.air_conditioningactivity.AirConditioningActivity;
 import com.iot.zyx.android_jjiot.controlactivity.ControlActivity;
 import com.iot.zyx.android_jjiot.device_managementactivity.DeviceManagementActivity;
+import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostActivity;
+import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostBean;
+import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostContentAdapter;
 import com.iot.zyx.android_jjiot.televisionactivity.TelevisionActivity;
 import com.iot.zyx.android_jjiot.BaseRespone;
+import com.iot.zyx.android_jjiot.util.AppUtil.SharedPreferencesUtils;
 import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
 import com.iot.zyx.android_jjiot.util.network.GsonUtil;
 import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
+import com.iot.zyx.android_jjiot.util.widget.RxListDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +66,8 @@ public class HomeActivity extends BaseActivity
     HomeContentAdapter homeContentAdapter;
     //退出时的时间
     private long mExitTime;
+    SwitchoverHostBean switchoverHostBean;
+    SwitchoverHostContentAdapter switchoverHostContentAdapter;
 
     @Override
     protected int setLayout() {
@@ -102,7 +111,11 @@ public class HomeActivity extends BaseActivity
                     Bundle bundle = new Bundle();
                     bundle.putString("activity","lamp");
                     openActivity(ControlActivity.class,bundle);
-                } else if (position == 2) {
+                } else if (position == 1){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("activity","socket");
+                    openActivity(ControlActivity.class,bundle);
+                }else if (position == 2) {
                     openActivity(TelevisionActivity.class);
                 } else if (position == 3) {
                     openActivity(AirConditioningActivity.class);
@@ -145,6 +158,9 @@ public class HomeActivity extends BaseActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            SwitchoverHost();
+
             return true;
         }
 
@@ -192,6 +208,54 @@ public class HomeActivity extends BaseActivity
             System.exit(0);
         }
     }
+
+    public void SwitchoverHost(){
+        OkhttpUtil.okHttpGet(API.GET_GATEWAY, new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                toastShort("服务器连接失败");
+            }
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    switchoverHostBean = GsonUtil.GsonToBean(response,SwitchoverHostBean.class);
+                    if("00".equals(switchoverHostBean.getResult())){
+
+                        if(!switchoverHostBean.getData().getList().isEmpty()){
+                            final RxListDialog rxListDialog = new RxListDialog(HomeActivity.this);
+                            rxListDialog.getRecyclerView().setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+                            switchoverHostContentAdapter = new SwitchoverHostContentAdapter(R.layout.switchover_host_recycler_item,switchoverHostBean.getData().getList());
+                            rxListDialog.getRecyclerView().setAdapter(switchoverHostContentAdapter);
+                            rxListDialog.show();
+                            switchoverHostContentAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                    SharedPreferencesUtils.setParam(HomeActivity.this,"productkey",switchoverHostBean.getData().getList().get(position).getProductkey());
+                                    SharedPreferencesUtils.setParam(HomeActivity.this,"devicename",switchoverHostBean.getData().getList().get(position).getDevicename());
+                                    API.Device.productkey=switchoverHostBean.getData().getList().get(position).getProductkey();
+                                    API.Device.devicename=switchoverHostBean.getData().getList().get(position).getDevicename();
+                                    toastShort("切换成功");
+                                    rxListDialog.cancel();
+                                }
+                            });
+
+                        }
+
+                    }else {
+                        toastShort(switchoverHostBean.getMessage());
+                    }
+
+
+                }catch (Exception e){
+
+                }
+
+            }
+        });
+    }
+
 
     public void openNetwork() {
         BaseParameter baseParameter = new BaseParameter();

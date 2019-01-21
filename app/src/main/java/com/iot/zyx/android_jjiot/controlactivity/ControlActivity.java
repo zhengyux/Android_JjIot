@@ -75,6 +75,11 @@ public class ControlActivity extends BaseActivity {
                         controlTitleTxt.setText("窗帘");
 
                         break;
+
+                    case "socket":
+
+                        controlTitleTxt.setText("插座");
+                        break;
                 }
             }
             AreaGet();
