@@ -1,5 +1,7 @@
 package com.iot.zyx.android_jjiot.device_managementactivity;
 
+import com.iot.zyx.android_jjiot.API;
+
 /**
  * 项目名称：Android_JjIot
  * 类描述：
@@ -18,8 +20,8 @@ public class DeviceGetParameter {
      */
 
     private String areaId="10001";
-    private String productkey="a1UEceRK3Pu";
-    private String devicename="deviceName_123";
+    private String productkey= API.Device.productkey;
+    private String devicename=API.Device.devicename;
 
     public String getAreaId() {
         return areaId;

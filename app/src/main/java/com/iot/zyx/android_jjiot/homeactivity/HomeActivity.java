@@ -113,7 +113,7 @@ public class HomeActivity extends BaseActivity
                     openActivity(ControlActivity.class,bundle);
                 } else if (position == 1){
                     Bundle bundle = new Bundle();
-                    bundle.putString("activity","socket");
+                    bundle.putString("activity","switch");
                     openActivity(ControlActivity.class,bundle);
                 }else if (position == 2) {
                     openActivity(TelevisionActivity.class);

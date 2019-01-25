@@ -32,7 +32,7 @@ public class SwitchoverHostContentAdapter extends BaseQuickAdapter<SwitchoverHos
     @Override
     protected void convert(BaseViewHolder helper, SwitchoverHostBean.DataBean.ListBean item) {
 
-        helper.setText(R.id.switchover_host_recycler_item_txt,item.getDevicename());
+        helper.setText(R.id.switchover_host_recycler_item_txt,item.getName());
 
     }
 }

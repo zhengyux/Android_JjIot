@@ -139,23 +139,28 @@ public class DeviceManagementActivity extends BaseActivity {
             public void onResponse(String response) {
                 try {
                     deviceGetBean = GsonUtil.GsonToBean(response, DeviceGetBean.class);
-                    deviceManagementAadapter = new DeviceManagementAadapter(R.layout.device_management_recyler_item, deviceGetBean.getData().getList());
-                    deviceManagementRecycler.setAdapter(deviceManagementAadapter);
-                    deviceManagementAadapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
-                        @Override
-                        public boolean onItemLongClick(BaseQuickAdapter adapter, View view, final int position) {
+                    if("00".equals(deviceGetBean.getResult())){
+                        deviceManagementAadapter = new DeviceManagementAadapter(R.layout.device_management_recyler_item, deviceGetBean.getData().getList());
+                        deviceManagementRecycler.setAdapter(deviceManagementAadapter);
+                        deviceManagementAadapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+                            @Override
+                            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, final int position) {
 
-                            Snackbar.make(view, "确认删除" + deviceGetBean.getData().getList().get(position).getName() + "?", Snackbar.LENGTH_SHORT)
-                                    .setAction("确定", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            DeleteDevice(GsonUtil.GsonString(deviceGetBean.getData().getList().get(position)));
-                                        }
-                                    }).show();
+                                Snackbar.make(view, "确认删除" + deviceGetBean.getData().getList().get(position).getName() + "?", Snackbar.LENGTH_SHORT)
+                                        .setAction("确定", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                DeleteDevice(GsonUtil.GsonString(deviceGetBean.getData().getList().get(position)));
+                                            }
+                                        }).show();
 
-                            return true;
-                        }
-                    });
+                                return true;
+                            }
+                        });
+                    }else {
+                        toastShort(deviceGetBean.getMessage());
+                    }
+
                 }catch (Exception e){
                     toastShort(e.getMessage());
                 }

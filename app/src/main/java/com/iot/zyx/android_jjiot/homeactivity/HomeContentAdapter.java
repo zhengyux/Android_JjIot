@@ -36,8 +36,8 @@ public class HomeContentAdapter extends BaseQuickAdapter<HomeContentBean.Employe
                 helper.setImageResource(R.id.home_content_recycler_item_img,R.mipmap.icon_index_dg);
                 break;
             case 1:
-                helper.setText(R.id.home_content_recycler_item_txt,"插座");
-                helper.setImageResource(R.id.home_content_recycler_item_img,R.mipmap.icon_index_cz);
+                helper.setText(R.id.home_content_recycler_item_txt,"开关");
+                helper.setImageResource(R.id.home_content_recycler_item_img,R.mipmap.icon_znkg);
                 break;
             case 2:
                 helper.setText(R.id.home_content_recycler_item_txt,"TV");

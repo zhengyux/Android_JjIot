@@ -2,6 +2,7 @@ package com.iot.zyx.android_jjiot;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
@@ -22,8 +23,6 @@ public class BaseApplication extends Application {
 
         ScreenAdapterTools.init(this);
         mContext = getApplicationContext();
-        API.ip();
-        API.wsIp();
         API.Device.setDeviceParamter(mContext);
 
     }

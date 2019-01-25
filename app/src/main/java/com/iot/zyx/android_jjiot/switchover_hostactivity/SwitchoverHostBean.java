@@ -16,7 +16,7 @@ public class SwitchoverHostBean {
     /**
      * result : 00
      * message : success
-     * data : {"list":[{"productkey":"a1UEceRK3Pu","devicename":"deviceName_123","date":"2018-12-19T09:24:34.000+0000"}]}
+     * data : {"list":[{"productkey":"a1UEceRK3Pu","devicename":"deviceName_123","name":"hello","date":"2018-12-19"},{"productkey":"a1UEceRK3Pu","devicename":"device_555","name":"主机1","date":"2019-01-25"}]}
      */
 
     private String result;
@@ -62,11 +62,13 @@ public class SwitchoverHostBean {
             /**
              * productkey : a1UEceRK3Pu
              * devicename : deviceName_123
-             * date : 2018-12-19T09:24:34.000+0000
+             * name : hello
+             * date : 2018-12-19
              */
 
             private String productkey;
             private String devicename;
+            private String name;
             private String date;
 
             public String getProductkey() {
@@ -83,6 +85,14 @@ public class SwitchoverHostBean {
 
             public void setDevicename(String devicename) {
                 this.devicename = devicename;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
             }
 
             public String getDate() {

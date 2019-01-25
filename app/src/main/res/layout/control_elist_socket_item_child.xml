@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:gravity="center_vertical"
+    android:background="#2b2f4d"
     android:layout_height="50dp"
     android:paddingTop="13dp"
     android:paddingBottom="13dp"
@@ -14,9 +15,16 @@
     android:layout_weight="1"
     android:textSize="15dp"
     android:textColor="@color/white"
-    android:id="@+id/control_elist_switch_item_group_txt"
+    android:id="@+id/control_elist_item_child_txt"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 
+
+
+    <Switch
+        android:id="@+id/control_elist_item_child_switch"
+        android:layout_marginLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -38,6 +38,7 @@ public class ControlActivity extends BaseActivity {
     ExpandableListView controlElist;
     ControlLampEListViewAdapter controlLampEListViewAdapter;
     ControlCurtainEListViewAdapter controlCurtainEListViewAdapter;
+    ControlSwitchEListViewAdapter controlSwitchEListViewAdapter;
     ControlApiBean controlApiBean;
     String activity;
     mWebSocketListener mWebSocketListener;
@@ -70,15 +71,14 @@ public class ControlActivity extends BaseActivity {
                         break;
 
                     case "curtanin":
-
                         getcurtainDevice();
                         controlTitleTxt.setText("窗帘");
 
                         break;
 
-                    case "socket":
-
-                        controlTitleTxt.setText("插座");
+                    case "switch":
+                        getSwitchDevice();
+                        controlTitleTxt.setText("开关");
                         break;
                 }
             }
@@ -216,6 +216,46 @@ public class ControlActivity extends BaseActivity {
         });
     }
 
+    public void getSwitchDevice() {
+        BaseParameter baseParameter = new BaseParameter();
+        baseParameter.setType(API.Device.Switch);
+
+        OkhttpUtil.okHttpPostJson(API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                toastShort("服务器连接失败");
+            }
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    controlApiBean = GsonUtil.GsonToBean(response, ControlApiBean.class);
+
+                    if (controlApiBean.getResult().equals("00")) {
+                        if (null != controlApiBean.getData().getOnoffSwitch()) {
+                            if (!controlApiBean.getData().getOnoffSwitch().isEmpty()) {
+                                controlSwitchEListViewAdapter = new ControlSwitchEListViewAdapter(ControlActivity.this, controlApiBean);
+                                controlElist.setAdapter(controlSwitchEListViewAdapter);
+                                int count = controlElist.getCount();
+                                for (int i = 0; i <count ; i++) {
+                                    controlElist.expandGroup(i);
+                                }
+                            }
+                        } else {
+                            toastShort("暂无设备");
+                        }
+                    } else {
+                        toastShort(controlApiBean.getMessage());
+                    }
+                } catch (Exception e) {
+                    toastShort(e.getMessage());
+                }
+
+
+            }
+        });
+    }
 
     Handler mHandler = new Handler();
     Runnable runnable = new Runnable() {
@@ -252,12 +292,26 @@ public class ControlActivity extends BaseActivity {
                                     if (null != controlWSBean.getMsg().get(0).getOnoff()) {
                                         controlApiBean.getData().getLight().get(i).setOnoff(controlWSBean.getMsg().get(0).getOnoff().intValue());
                                     }
-
                                     controlLampEListViewAdapter.update(controlApiBean);
+                                }
+                            }
+
+                            break;
+
+                        case "switch":
+
+                            for (int i = 0; i < controlApiBean.getData().getOnoffSwitch().size(); i++) {
+                                for (int j = 0; j <controlApiBean.getData().getOnoffSwitch().get(i).getNode().size() ; j++) {
+                                    if (controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getOnoffSwitch().get(i).getNode().get(j).getUuid())) {
+
+                                        if (null != controlWSBean.getMsg().get(0).getOnoff()) {
+                                            controlApiBean.getData().getOnoffSwitch().get(i).getNode().get(j).setOnoff(controlWSBean.getMsg().get(0).getOnoff().intValue());
+                                        }
+                                        controlSwitchEListViewAdapter.update(controlApiBean);
+                                    }
                                 }
 
                             }
-
 
                             break;
                     }
@@ -265,6 +319,7 @@ public class ControlActivity extends BaseActivity {
 
             } catch (Exception e) {
                 toastShort(e.getMessage());
+                Log.e(TAG, "run: "+e.getMessage() );
             }
 
         }
@@ -310,6 +365,13 @@ public class ControlActivity extends BaseActivity {
                             mHandler.post(runnable);
                         }
 
+                        break;
+                    case "switch":
+
+                        if (text.contains("智能开关")) {
+                            controlWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
+                            mHandler.post(runnable);
+                        }
 
                         break;
                 }
