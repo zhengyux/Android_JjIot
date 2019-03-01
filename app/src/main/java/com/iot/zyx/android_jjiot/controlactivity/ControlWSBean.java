@@ -71,6 +71,42 @@ public class ControlWSBean {
         private Integer onoff;
         private Integer value;
         private Integer RSSI;
+        private Integer humidity;
+        private Integer celsius;
+        private Integer fahrenheit;
+        private Integer light;
+
+        public Integer getHumidity() {
+            return humidity;
+        }
+
+        public void setHumidity(Integer humidity) {
+            this.humidity = humidity;
+        }
+
+        public Integer getCelsius() {
+            return celsius;
+        }
+
+        public void setCelsius(Integer celsius) {
+            this.celsius = celsius;
+        }
+
+        public Integer getFahrenheit() {
+            return fahrenheit;
+        }
+
+        public void setFahrenheit(Integer fahrenheit) {
+            this.fahrenheit = fahrenheit;
+        }
+
+        public Integer getLight() {
+            return light;
+        }
+
+        public void setLight(Integer light) {
+            this.light = light;
+        }
 
         public Integer getRSSI() {
             return RSSI;

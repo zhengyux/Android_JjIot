@@ -23,23 +23,20 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.iot.zyx.android_jjiot.API;
 import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.BaseParameter;
+import com.iot.zyx.android_jjiot.BaseRespone;
 import com.iot.zyx.android_jjiot.R;
-import com.iot.zyx.android_jjiot.add_zigbeeactivity.AddZigBeeAPIAdapter;
 import com.iot.zyx.android_jjiot.add_zigbeeactivity.AddZigBeeActivity;
 import com.iot.zyx.android_jjiot.air_conditioningactivity.AirConditioningActivity;
 import com.iot.zyx.android_jjiot.controlactivity.ControlActivity;
 import com.iot.zyx.android_jjiot.device_managementactivity.DeviceManagementActivity;
-import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostActivity;
 import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostBean;
 import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostContentAdapter;
 import com.iot.zyx.android_jjiot.televisionactivity.TelevisionActivity;
-import com.iot.zyx.android_jjiot.BaseRespone;
 import com.iot.zyx.android_jjiot.util.AppUtil.SharedPreferencesUtils;
 import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
 import com.iot.zyx.android_jjiot.util.network.GsonUtil;
@@ -50,6 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.Call;
 
 public class HomeActivity extends BaseActivity
@@ -64,6 +62,9 @@ public class HomeActivity extends BaseActivity
     @BindView(R.id.home_drawer_layout)
     DrawerLayout homeDrawerLayout;
     HomeContentAdapter homeContentAdapter;
+    @BindView(R.id.home_content_cz_recycler)
+    RecyclerView homeContentCzRecycler;
+    HomeContentCzAdapter homeContentCzAdapter;
     //退出时的时间
     private long mExitTime;
     SwitchoverHostBean switchoverHostBean;
@@ -90,10 +91,16 @@ public class HomeActivity extends BaseActivity
         ls.add(new HomeContentBean.EmployeesBean());
         ls.add(new HomeContentBean.EmployeesBean());
         ls.add(new HomeContentBean.EmployeesBean());
+        ls.add(new HomeContentBean.EmployeesBean());
         homeContentBean.setEmployees(ls);
-
         homeContentAdapter = new HomeContentAdapter(R.layout.home_content_recycler_item, homeContentBean.getEmployees());
         homeContentRecycler.setAdapter(homeContentAdapter);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        homeContentCzRecycler.setLayoutManager(linearLayoutManager);
+        homeContentCzAdapter = new HomeContentCzAdapter(R.layout.home_content_cz_recycler_item,homeContentBean.getEmployees());
+        homeContentCzRecycler.setAdapter(homeContentCzAdapter);
     }
 
     @Override
@@ -107,23 +114,27 @@ public class HomeActivity extends BaseActivity
         homeContentAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (position==0){
+                if (position == 0) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("activity","lamp");
-                    openActivity(ControlActivity.class,bundle);
-                } else if (position == 1){
+                    bundle.putString("activity", "lamp");
+                    openActivity(ControlActivity.class, bundle);
+                } else if (position == 1) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("activity","switch");
-                    openActivity(ControlActivity.class,bundle);
-                }else if (position == 2) {
+                    bundle.putString("activity", "switch");
+                    openActivity(ControlActivity.class, bundle);
+                } else if (position == 2) {
                     openActivity(TelevisionActivity.class);
                 } else if (position == 3) {
                     openActivity(AirConditioningActivity.class);
-                } else if(position==4){
+                } else if (position == 4) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("activity","curtanin");
-                    openActivity(ControlActivity.class,bundle);
-                }else {
+                    bundle.putString("activity", "curtanin");
+                    openActivity(ControlActivity.class, bundle);
+                } else if (position == 5) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("activity", "environment");
+                    openActivity(ControlActivity.class, bundle);
+                } else {
                     openActivity(ControlActivity.class);
                 }
 
@@ -209,8 +220,8 @@ public class HomeActivity extends BaseActivity
         }
     }
 
-    public void SwitchoverHost(){
-        OkhttpUtil.okHttpGet(API.GET_GATEWAY, new CallBackUtil.CallBackString() {
+    public void SwitchoverHost() {
+        OkhttpUtil.okHttpGet(API.IP + API.GET_GATEWAY, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 toastShort("服务器连接失败");
@@ -220,22 +231,22 @@ public class HomeActivity extends BaseActivity
             public void onResponse(String response) {
 
                 try {
-                    switchoverHostBean = GsonUtil.GsonToBean(response,SwitchoverHostBean.class);
-                    if("00".equals(switchoverHostBean.getResult())){
+                    switchoverHostBean = GsonUtil.GsonToBean(response, SwitchoverHostBean.class);
+                    if ("00".equals(switchoverHostBean.getResult())) {
 
-                        if(!switchoverHostBean.getData().getList().isEmpty()){
+                        if (!switchoverHostBean.getData().getList().isEmpty()) {
                             final RxListDialog rxListDialog = new RxListDialog(HomeActivity.this);
                             rxListDialog.getRecyclerView().setLayoutManager(new LinearLayoutManager(HomeActivity.this));
-                            switchoverHostContentAdapter = new SwitchoverHostContentAdapter(R.layout.switchover_host_recycler_item,switchoverHostBean.getData().getList());
+                            switchoverHostContentAdapter = new SwitchoverHostContentAdapter(R.layout.switchover_host_recycler_item, switchoverHostBean.getData().getList());
                             rxListDialog.getRecyclerView().setAdapter(switchoverHostContentAdapter);
                             rxListDialog.show();
                             switchoverHostContentAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                                    SharedPreferencesUtils.setParam(HomeActivity.this,"productkey",switchoverHostBean.getData().getList().get(position).getProductkey());
-                                    SharedPreferencesUtils.setParam(HomeActivity.this,"devicename",switchoverHostBean.getData().getList().get(position).getDevicename());
-                                    API.Device.productkey=switchoverHostBean.getData().getList().get(position).getProductkey();
-                                    API.Device.devicename=switchoverHostBean.getData().getList().get(position).getDevicename();
+                                    SharedPreferencesUtils.setParam(HomeActivity.this, "productkey", switchoverHostBean.getData().getList().get(position).getProductkey());
+                                    SharedPreferencesUtils.setParam(HomeActivity.this, "devicename", switchoverHostBean.getData().getList().get(position).getDevicename());
+                                    API.Device.productkey = switchoverHostBean.getData().getList().get(position).getProductkey();
+                                    API.Device.devicename = switchoverHostBean.getData().getList().get(position).getDevicename();
                                     toastShort("切换成功");
                                     rxListDialog.cancel();
                                 }
@@ -243,12 +254,12 @@ public class HomeActivity extends BaseActivity
 
                         }
 
-                    }else {
+                    } else {
                         toastShort(switchoverHostBean.getMessage());
                     }
 
 
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
@@ -260,7 +271,7 @@ public class HomeActivity extends BaseActivity
     public void openNetwork() {
         BaseParameter baseParameter = new BaseParameter();
         String Josnstr = GsonUtil.GsonString(baseParameter);
-        OkhttpUtil.okHttpPostJson(API.OPEN_NETWORK, Josnstr, new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP + API.OPEN_NETWORK, Josnstr, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 toastShort("服务器连接失败");
@@ -268,17 +279,16 @@ public class HomeActivity extends BaseActivity
 
             @Override
             public void onResponse(String response) {
-                try{
+                try {
                     BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
-                    if(baseRespone.getResult().equals("00")){
+                    if (baseRespone.getResult().equals("00")) {
                         toastShort("打开网络成功");
-                    }else {
+                    } else {
                         toastShort(baseRespone.getMessage());
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
-
 
 
             }
@@ -286,4 +296,10 @@ public class HomeActivity extends BaseActivity
     }
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

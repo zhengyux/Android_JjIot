@@ -97,7 +97,7 @@ public class ControlSwitchEListViewAdapter extends BaseExpandableListAdapter {
 
 
     public void SwitchOnOff(String josnStr) {
-        OkhttpUtil.okHttpPostJson(API.CONTROL_SWITCH, josnStr, new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP+API.CONTROL_SWITCH, josnStr, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 mcontext.toastShort("服务器连接失败");

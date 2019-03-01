@@ -159,7 +159,7 @@ public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
     }
 
     public void CurtainSchedule(String josnStr) {
-        OkhttpUtil.okHttpPostJson(API.CONTROL_CURTAIN, josnStr, new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP+API.CONTROL_CURTAIN, josnStr, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 mcontext.toastShort("服务器连接失败");
@@ -186,7 +186,7 @@ public class ControlCurtainEListViewAdapter extends BaseExpandableListAdapter {
 
 
     public void CurtainOnOff(String josnStr) {
-        OkhttpUtil.okHttpPostJson(API.CONTROL_CURTAIN, josnStr, new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP+API.CONTROL_CURTAIN, josnStr, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 mcontext.toastShort("服务器连接失败");

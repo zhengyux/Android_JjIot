@@ -79,7 +79,7 @@ public class AddDeviceActivity extends BaseActivity {
     }
 
     public void hold() {
-        OkhttpUtil.okHttpPostJson(API.DEVICE_HOLD, GsonUtil.GsonString(bean), new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP+API.DEVICE_HOLD, GsonUtil.GsonString(bean), new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 closeLoading();

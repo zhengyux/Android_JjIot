@@ -52,6 +52,7 @@ public class ControlApiBean {
         private List<LightBean> light;
         private List<CurtainBean> curtain;
         private List<OnoffSwitchBean> onoffSwitch;
+        private List<MultNodeSensorBean> multNodeSensor;
 
         public List<LightBean> getLight() {
             return light;
@@ -76,6 +77,8 @@ public class ControlApiBean {
         public void setOnoffSwitch(List<OnoffSwitchBean> onoffSwitch) {
             this.onoffSwitch = onoffSwitch;
         }
+
+
 
         public static class LightBean {
             /**
@@ -559,6 +562,10 @@ public class ControlApiBean {
                     this.IEEE = IEEE;
                 }
             }
+        }
+
+        public static class MultNodeSensorBean{
+
         }
 
     }

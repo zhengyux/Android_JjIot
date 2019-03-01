@@ -156,7 +156,7 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
     }
 
     public void LampBrightness(String josnStr){
-        OkhttpUtil.okHttpPostJson(API.LAMP_BRIGHTNESS, josnStr, new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP+API.LAMP_BRIGHTNESS, josnStr, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 mcontext.toastShort("服务器连接失败");
@@ -183,7 +183,7 @@ public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
 
 
     public void LampOnOff(String josnStr){
-        OkhttpUtil.okHttpPostJson(API.CONTROL_LAMP, josnStr, new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP+API.CONTROL_LAMP, josnStr, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                     mcontext.toastShort("服务器连接失败");

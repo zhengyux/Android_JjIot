@@ -51,6 +51,10 @@ public class HomeContentAdapter extends BaseQuickAdapter<HomeContentBean.Employe
                 helper.setText(R.id.home_content_recycler_item_txt,"窗帘");
                 helper.setImageResource(R.id.home_content_recycler_item_img,R.mipmap.icon_index_cl);
                 break;
+            case 5:
+                helper.setText(R.id.home_content_recycler_item_txt,"室内环境");
+                helper.setImageResource(R.id.home_content_recycler_item_img,R.mipmap.icon_index_snhj);
+                break;
         }
 
     }

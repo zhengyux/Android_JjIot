@@ -65,7 +65,7 @@ public class DeviceManagementActivity extends BaseActivity {
     }
 
     public void DeleteDevice(String str) {
-        OkhttpUtil.okHttpPostJson(API.DELETE_DEVICE, str, new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP+API.DELETE_DEVICE, str, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 toastShort("服务器连接失败！");
@@ -91,7 +91,7 @@ public class DeviceManagementActivity extends BaseActivity {
 
     public void AreaGet(){
 
-        OkhttpUtil.okHttpGet(API.GET_AREA, new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpGet(API.IP+API.GET_AREA, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 toastShort("服务器连接失败！");
@@ -129,7 +129,7 @@ public class DeviceManagementActivity extends BaseActivity {
         deviceGetParameter.setAreaId(null);
         String jsonStr = GsonUtil.GsonString(deviceGetParameter);
 
-        OkhttpUtil.okHttpPostJson(API.DEVICE_GET+"?differe=false", jsonStr, new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP+API.DEVICE_GET+"?differe=false", jsonStr, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 toastShort("服务器连接失败！");

@@ -129,7 +129,7 @@ public class ControlSocketEListViewAdapter extends BaseExpandableListAdapter {
 
 
     public void SocketOnOff(String josnStr){
-        OkhttpUtil.okHttpPostJson(API.CONTROL_LAMP, josnStr, new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP+API.CONTROL_LAMP, josnStr, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                     mcontext.toastShort("服务器连接失败");

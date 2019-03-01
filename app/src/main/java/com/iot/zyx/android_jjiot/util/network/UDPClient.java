@@ -1,5 +1,12 @@
 package com.iot.zyx.android_jjiot.util.network;
 
+import android.util.Log;
+
+import com.iot.zyx.android_jjiot.API;
+import com.iot.zyx.android_jjiot.BaseApplication;
+import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostActivity;
+import com.iot.zyx.android_jjiot.util.AppUtil.SharedPreferencesUtils;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -33,10 +40,11 @@ public class UDPClient {
                 DatagramPacket recePacket = new DatagramPacket(receBuf, receBuf.length);
                 datagramSocket.receive(recePacket);
                 String receStr = new String(recePacket.getData(), 0, recePacket.getLength());
-                System.out.println("HEAD_URL = " + receStr);
+                API.Lanip = "http://"+receStr;
+                Log.e("ip", "Lanip: "+API.Lanip );
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Log.e("ip", "Exception: "+e.getMessage() );
         } finally {
             // 关闭socket
             if (datagramSocket != null) {

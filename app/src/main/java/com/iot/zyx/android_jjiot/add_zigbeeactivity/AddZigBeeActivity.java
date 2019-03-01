@@ -98,7 +98,7 @@ public class AddZigBeeActivity extends BaseActivity {
     public void addZigBee(){
         BaseParameter baseParameter = new BaseParameter();
 
-        OkhttpUtil.okHttpPostJson(API.DEVICE_ACCESS, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP+API.DEVICE_ACCESS, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
 

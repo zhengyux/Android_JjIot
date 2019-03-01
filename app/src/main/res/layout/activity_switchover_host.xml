@@ -40,6 +40,28 @@
 
     </RelativeLayout>
 
+
+    <android.support.design.widget.TabLayout
+        android:background="#2b2f4d"
+        android:id="@+id/switchHost_tab"
+        app:tabTextColor="@color/white"
+        app:tabSelectedTextColor="@color/red"
+        app:tabMode="fixed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TabItem
+            android:text="外网主机"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.TabItem
+            android:text="内网主机"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </android.support.design.widget.TabLayout>
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

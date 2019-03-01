@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -46,6 +47,14 @@ public class ControlActivity extends BaseActivity {
     ControlWSBean controlWSBean;
     @BindView(R.id.control_signal_txt)
     TextView controlSignalTxt;
+    @BindView(R.id.control_celsius_txt)
+    TextView controlCelsiusTxt;
+    @BindView(R.id.control_humidity_txt)
+    TextView controlHumidityTxt;
+    @BindView(R.id.control_light_txt)
+    TextView controlLightTxt;
+    @BindView(R.id.container_environment)
+    LinearLayout containerEnvironment;
 
     @Override
     protected int setLayout() {
@@ -79,6 +88,12 @@ public class ControlActivity extends BaseActivity {
                     case "switch":
                         getSwitchDevice();
                         controlTitleTxt.setText("开关");
+                        break;
+
+                    case "environment":
+                        controlElist.setVisibility(View.GONE);
+                        containerEnvironment.setVisibility(View.VISIBLE);
+                        controlTitleTxt.setText("室内环境");
                         break;
                 }
             }
@@ -115,7 +130,7 @@ public class ControlActivity extends BaseActivity {
 
     public void AreaGet() {
 
-        OkhttpUtil.okHttpGet(API.GET_AREA, new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpGet(API.IP + API.GET_AREA, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 toastShort("服务器连接失败！");
@@ -143,7 +158,7 @@ public class ControlActivity extends BaseActivity {
         BaseParameter baseParameter = new BaseParameter();
         baseParameter.setType(API.Device.Lamp);
 
-        OkhttpUtil.okHttpPostJson(API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP + API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 toastShort("服务器连接失败");
@@ -183,7 +198,7 @@ public class ControlActivity extends BaseActivity {
         BaseParameter baseParameter = new BaseParameter();
         baseParameter.setType(API.Device.Curtain);
 
-        OkhttpUtil.okHttpPostJson(API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP + API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 toastShort("服务器连接失败");
@@ -220,7 +235,7 @@ public class ControlActivity extends BaseActivity {
         BaseParameter baseParameter = new BaseParameter();
         baseParameter.setType(API.Device.Switch);
 
-        OkhttpUtil.okHttpPostJson(API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP + API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 toastShort("服务器连接失败");
@@ -238,7 +253,7 @@ public class ControlActivity extends BaseActivity {
                                 controlSwitchEListViewAdapter = new ControlSwitchEListViewAdapter(ControlActivity.this, controlApiBean);
                                 controlElist.setAdapter(controlSwitchEListViewAdapter);
                                 int count = controlElist.getCount();
-                                for (int i = 0; i <count ; i++) {
+                                for (int i = 0; i < count; i++) {
                                     controlElist.expandGroup(i);
                                 }
                             }
@@ -265,8 +280,8 @@ public class ControlActivity extends BaseActivity {
 
                 if (activity != null) {
 
-                    if(null !=controlWSBean.getMsg().get(0).getRSSI()){
-                        controlSignalTxt.setText("RSSI："+controlWSBean.getMsg().get(0).getRSSI().intValue()+" dBm");
+                    if (null != controlWSBean.getMsg().get(0).getRSSI()) {
+                        controlSignalTxt.setText("RSSI：" + controlWSBean.getMsg().get(0).getRSSI().intValue() + " dBm");
                     }
 
                     switch (activity) {
@@ -301,7 +316,7 @@ public class ControlActivity extends BaseActivity {
                         case "switch":
 
                             for (int i = 0; i < controlApiBean.getData().getOnoffSwitch().size(); i++) {
-                                for (int j = 0; j <controlApiBean.getData().getOnoffSwitch().get(i).getNode().size() ; j++) {
+                                for (int j = 0; j < controlApiBean.getData().getOnoffSwitch().get(i).getNode().size(); j++) {
                                     if (controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getOnoffSwitch().get(i).getNode().get(j).getUuid())) {
 
                                         if (null != controlWSBean.getMsg().get(0).getOnoff()) {
@@ -314,12 +329,20 @@ public class ControlActivity extends BaseActivity {
                             }
 
                             break;
+
+                        case "environment":
+
+                            controlCelsiusTxt.setText(controlWSBean.getMsg().get(0).getCelsius().toString());
+                            controlHumidityTxt.setText(controlWSBean.getMsg().get(0).getHumidity().toString());
+                            controlLightTxt.setText(controlWSBean.getMsg().get(0).getLight().toString());
+
+                            break;
                     }
                 }
 
             } catch (Exception e) {
                 toastShort(e.getMessage());
-                Log.e(TAG, "run: "+e.getMessage() );
+                Log.e(TAG, "run: " + e.getMessage());
             }
 
         }
@@ -369,6 +392,15 @@ public class ControlActivity extends BaseActivity {
                     case "switch":
 
                         if (text.contains("智能开关")) {
+                            controlWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
+                            mHandler.post(runnable);
+                        }
+
+                        break;
+
+                    case "environment":
+
+                        if (text.contains("多功能传感器")) {
                             controlWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
                             mHandler.post(runnable);
                         }
