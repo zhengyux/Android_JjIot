@@ -17,7 +17,7 @@ import java.net.ContentHandler;
  * 修改备注：
  */
 public class API {
-    static boolean isTest = false;
+    static boolean isTest = true;
 
 
     public static String IP = setip();//测试域名端口
@@ -69,6 +69,7 @@ public class API {
     public static String OPEN_NETWORK = "/device/gateway/openNetwork";//打开网络
     public static String DEVICE_ACCESS = "/device/disabled/get";//设备入网
     public static String DEVICE_HOLD="/device/disabled/change";//保存设备
+    public static String DEVICE_UPDATE="/device/update";//更新设备
     public static String DEVICE_GET="/device/manager/list";//获取设备列表
     public static String SET_DEVICE ="/device/disabled/handle";//设置设备
     public static String DELETE_DEVICE ="/device/delete";//删除设备

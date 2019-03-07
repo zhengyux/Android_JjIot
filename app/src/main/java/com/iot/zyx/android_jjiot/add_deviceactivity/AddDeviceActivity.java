@@ -35,6 +35,7 @@ public class AddDeviceActivity extends BaseActivity {
     @BindView(R.id.add_device_circuit_recycler)
     RecyclerView addDeviceCircuitRecycler;
     AddDeviceAdapter addDeviceAdapter;
+    int from;
 
     @Override
     protected int setLayout() {
@@ -53,6 +54,7 @@ public class AddDeviceActivity extends BaseActivity {
     protected void initData() {
 
         Intent intent = getIntent();
+        from = intent.getIntExtra("from",0);
         bean = GsonUtil.GsonToBean(intent.getExtras().getString("Device"), AddZigBeeAPIBean.DataBean.ListBean.class);
         addDeviceDevicenameEdt.setText(bean.getName());
         bean.setAreaId("10002");
@@ -75,7 +77,41 @@ public class AddDeviceActivity extends BaseActivity {
     public void onViewClicked() {
         showLoading();
         bean.setName(addDeviceDevicenameEdt.getText().toString());
-        hold();
+        if (from==1){
+            update();
+        }else {
+            hold();
+        }
+
+    }
+
+
+    public void update() {
+        OkhttpUtil.okHttpPostJson(API.IP+API.DEVICE_UPDATE, GsonUtil.GsonString(bean), new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                closeLoading();
+                toastShort("服务器连接失败");
+            }
+
+            @Override
+            public void onResponse(String response) {
+                closeLoading();
+                try {
+                    BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
+                    if (baseRespone.getResult().equals("00")) {
+                        toastShort("修改成功");
+                        finish();
+                    } else {
+                        toastShort(baseRespone.getMessage());
+                        finish();
+                    }
+                } catch (Exception e) {
+
+                }
+
+            }
+        });
     }
 
     public void hold() {

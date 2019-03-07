@@ -1,5 +1,6 @@
 package com.iot.zyx.android_jjiot.device_managementactivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,8 @@ import com.iot.zyx.android_jjiot.API;
 import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.BaseRespone;
 import com.iot.zyx.android_jjiot.R;
+import com.iot.zyx.android_jjiot.add_deviceactivity.AddDeviceActivity;
+import com.iot.zyx.android_jjiot.add_zigbeeactivity.AddZigBeeAPIBean;
 import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
 import com.iot.zyx.android_jjiot.util.network.GsonUtil;
 import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
@@ -31,7 +34,7 @@ public class DeviceManagementActivity extends BaseActivity {
     @BindView(R.id.device_management_recycler)
     RecyclerView deviceManagementRecycler;
     DeviceManagementAadapter deviceManagementAadapter;
-    DeviceGetBean deviceGetBean;
+    AddZigBeeAPIBean addZigBeeAPIBean;
     @BindView(R.id.device_management_left_spn)
     Spinner deviceManagementLeftSpn;
     @BindView(R.id.device_management_right_spn)
@@ -62,6 +65,13 @@ public class DeviceManagementActivity extends BaseActivity {
     @OnClick(R.id.device_management_back_img)
     public void onViewClicked() {
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AreaGet();
+        DeviceGet();
     }
 
     public void DeleteDevice(String str) {
@@ -138,19 +148,32 @@ public class DeviceManagementActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
                 try {
-                    deviceGetBean = GsonUtil.GsonToBean(response, DeviceGetBean.class);
-                    if("00".equals(deviceGetBean.getResult())){
-                        deviceManagementAadapter = new DeviceManagementAadapter(R.layout.device_management_recyler_item, deviceGetBean.getData().getList());
+                    addZigBeeAPIBean = GsonUtil.GsonToBean(response, AddZigBeeAPIBean.class);
+                    if("00".equals(addZigBeeAPIBean.getResult())){
+                        deviceManagementAadapter = new DeviceManagementAadapter(R.layout.device_management_recyler_item, addZigBeeAPIBean.getData().getList());
                         deviceManagementRecycler.setAdapter(deviceManagementAadapter);
+
+                        deviceManagementAadapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("Device",GsonUtil.GsonString(addZigBeeAPIBean.getData().getList().get(position)));
+                                Intent intent = new Intent(DeviceManagementActivity.this,AddDeviceActivity.class);
+                                intent.putExtras(bundle);
+                                intent.putExtra("from",1);
+                                startActivity(intent);
+                            }
+                        });
+
                         deviceManagementAadapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
                             @Override
                             public boolean onItemLongClick(BaseQuickAdapter adapter, View view, final int position) {
 
-                                Snackbar.make(view, "确认删除" + deviceGetBean.getData().getList().get(position).getName() + "?", Snackbar.LENGTH_SHORT)
+                                Snackbar.make(view, "确认删除" + addZigBeeAPIBean.getData().getList().get(position).getName() + "?", Snackbar.LENGTH_SHORT)
                                         .setAction("确定", new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                DeleteDevice(GsonUtil.GsonString(deviceGetBean.getData().getList().get(position)));
+                                                DeleteDevice(GsonUtil.GsonString(addZigBeeAPIBean.getData().getList().get(position)));
                                             }
                                         }).show();
 
@@ -158,7 +181,7 @@ public class DeviceManagementActivity extends BaseActivity {
                             }
                         });
                     }else {
-                        toastShort(deviceGetBean.getMessage());
+                        toastShort(addZigBeeAPIBean.getMessage());
                     }
 
                 }catch (Exception e){
