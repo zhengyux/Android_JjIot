@@ -55,6 +55,7 @@ public class ControlActivity extends BaseActivity {
     TextView controlLightTxt;
     @BindView(R.id.container_environment)
     LinearLayout containerEnvironment;
+    BaseParameter baseParameter ;
 
     @Override
     protected int setLayout() {
@@ -69,6 +70,7 @@ public class ControlActivity extends BaseActivity {
     @Override
     protected void initData() {
         try {
+            baseParameter = new BaseParameter();
             activity = getIntent().getExtras().getString("activity");
             if (!activity.isEmpty()) {
                 switch (activity) {
@@ -140,10 +142,57 @@ public class ControlActivity extends BaseActivity {
             public void onResponse(String response) {
 
                 try {
-                    AreaGetBean areaGetBean = GsonUtil.GsonToBean(response, AreaGetBean.class);
+                    final AreaGetBean areaGetBean = GsonUtil.GsonToBean(response, AreaGetBean.class);
                     for (int i = 0; i < areaGetBean.getData().getList().size(); i++) {
                         controlTab.addTab(controlTab.newTab().setText(areaGetBean.getData().getList().get(i).getName()));
                     }
+
+                    controlTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                        @Override
+                        public void onTabSelected(TabLayout.Tab tab) {
+
+                            baseParameter.setAreaId(String.valueOf(areaGetBean.getData().getList().get(tab.getPosition()).getId()));
+
+                            switch (activity) {
+                                case "lamp":
+
+
+                                    getLampDevice();
+
+
+                                    break;
+
+                                case "curtanin":
+
+                                    getcurtainDevice();
+
+
+                                    break;
+
+                                case "switch":
+                                    getSwitchDevice();
+
+                                    break;
+
+                                case "environment":
+
+                                    controlElist.setVisibility(View.GONE);
+                                    containerEnvironment.setVisibility(View.VISIBLE);
+
+                                    break;
+                            }
+                        }
+
+                        @Override
+                        public void onTabUnselected(TabLayout.Tab tab) {
+
+                        }
+
+                        @Override
+                        public void onTabReselected(TabLayout.Tab tab) {
+
+                        }
+                    });
 
                 } catch (Exception e) {
                     toastShort(e.getMessage());
@@ -155,7 +204,7 @@ public class ControlActivity extends BaseActivity {
     }
 
     public void getLampDevice() {
-        BaseParameter baseParameter = new BaseParameter();
+
         baseParameter.setType(API.Device.Lamp);
 
         OkhttpUtil.okHttpPostJson(API.IP + API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
@@ -176,9 +225,11 @@ public class ControlActivity extends BaseActivity {
                             if (!controlApiBean.getData().getLight().isEmpty()) {
                                 controlLampEListViewAdapter = new ControlLampEListViewAdapter(ControlActivity.this, controlApiBean);
                                 controlElist.setAdapter(controlLampEListViewAdapter);
+                                controlElist.setVisibility(View.VISIBLE);
                             }
                         } else {
                             toastShort("暂无设备");
+                            controlElist.setVisibility(View.INVISIBLE);
                         }
                     } else {
                         toastShort(controlApiBean.getMessage());
@@ -195,7 +246,6 @@ public class ControlActivity extends BaseActivity {
     }
 
     public void getcurtainDevice() {
-        BaseParameter baseParameter = new BaseParameter();
         baseParameter.setType(API.Device.Curtain);
 
         OkhttpUtil.okHttpPostJson(API.IP + API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
@@ -214,9 +264,11 @@ public class ControlActivity extends BaseActivity {
                             if (!controlApiBean.getData().getCurtain().isEmpty()) {
                                 controlCurtainEListViewAdapter = new ControlCurtainEListViewAdapter(ControlActivity.this, controlApiBean);
                                 controlElist.setAdapter(controlCurtainEListViewAdapter);
+                                controlElist.setVisibility(View.VISIBLE);
                             }
                         } else {
                             toastShort("暂无设备");
+                            controlElist.setVisibility(View.INVISIBLE);
                         }
                     } else {
                         toastShort(controlApiBean.getMessage());
@@ -232,7 +284,7 @@ public class ControlActivity extends BaseActivity {
     }
 
     public void getSwitchDevice() {
-        BaseParameter baseParameter = new BaseParameter();
+
         baseParameter.setType(API.Device.Switch);
 
         OkhttpUtil.okHttpPostJson(API.IP + API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
@@ -256,9 +308,11 @@ public class ControlActivity extends BaseActivity {
                                 for (int i = 0; i < count; i++) {
                                     controlElist.expandGroup(i);
                                 }
+                                controlElist.setVisibility(View.VISIBLE);
                             }
                         } else {
                             toastShort("暂无设备");
+                            controlElist.setVisibility(View.INVISIBLE);
                         }
                     } else {
                         toastShort(controlApiBean.getMessage());
@@ -348,12 +402,6 @@ public class ControlActivity extends BaseActivity {
         }
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     class mWebSocketListener extends WebSocketListener {
 

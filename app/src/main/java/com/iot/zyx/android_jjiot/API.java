@@ -71,8 +71,10 @@ public class API {
     public static String DEVICE_HOLD="/device/disabled/change";//保存设备
     public static String DEVICE_UPDATE="/device/update";//更新设备
     public static String DEVICE_GET="/device/manager/list";//获取设备列表
+    public static String AIR_GET="/device/air_conditioner/brand"; //获取空调品牌列表
     public static String SET_DEVICE ="/device/disabled/handle";//设置设备
     public static String DELETE_DEVICE ="/device/delete";//删除设备
+    public static String CONTROL_AIR="/device/air_conditioner/control";//控制空调
     public static String CONTROL_LAMP="/device/light/onoff";//控制灯开关
     public static String CONTROL_CURTAIN ="/device/curtain/control";//控制窗帘
     public static String CONTROL_SWITCH ="/device/switch/control";//开关控制
@@ -94,6 +96,7 @@ public class API {
         public static String Curtain ="2";
         public static String Switch ="3";
         public static String Environment = "4";
+        public static String RemoteControlDevice ="5";
 
     }
 }

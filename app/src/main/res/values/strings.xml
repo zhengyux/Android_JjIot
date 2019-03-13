@@ -45,6 +45,8 @@
     <!-- TV/AV -->
     <string name="television">TV/AV</string>
     <!-- 空调 -->
+    <string name="add_telecontroller">添加虚拟遥控器</string>
+    <string name="add_air_telecontroller">添加空调遥控器</string>
     <string name="air_conditioning">空调</string>
     <string name="shut_down">关机</string>
 

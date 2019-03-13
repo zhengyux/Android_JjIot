@@ -56,4 +56,5 @@ dependencies {
     implementation 'com.yanzhenjie:permission:1.0.5'
     implementation 'me.yatoooon:screenadaptation:1.1.1'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    implementation 'com.contrarywind:Android-PickerView:4.1.7'
 }
