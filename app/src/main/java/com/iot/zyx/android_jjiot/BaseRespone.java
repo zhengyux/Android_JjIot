@@ -18,6 +18,15 @@ public class BaseRespone {
 
     private String result;
     private String message;
+    private String designation;
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
 
     public String getResult() {
         return result;

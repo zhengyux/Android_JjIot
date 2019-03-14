@@ -1,6 +1,5 @@
 package com.iot.zyx.android_jjiot.add_air_telecontrolleractivity;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -15,11 +14,9 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.iot.zyx.android_jjiot.API;
 import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.BaseParameter;
+import com.iot.zyx.android_jjiot.BaseRespone;
 import com.iot.zyx.android_jjiot.R;
-import com.iot.zyx.android_jjiot.add_deviceactivity.AddDeviceActivity;
-import com.iot.zyx.android_jjiot.controlactivity.ControlActivity;
 import com.iot.zyx.android_jjiot.controlactivity.ControlApiBean;
-import com.iot.zyx.android_jjiot.controlactivity.ControlLampEListViewAdapter;
 import com.iot.zyx.android_jjiot.device_managementactivity.AreaGetBean;
 import com.iot.zyx.android_jjiot.device_managementactivity.AreaSpnAdapter;
 import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
@@ -27,10 +24,10 @@ import com.iot.zyx.android_jjiot.util.network.GsonUtil;
 import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
@@ -58,6 +55,7 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
     AirBean airBean;
     private List<AirBean.DataBean.ListBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
+    TelecontrollerBean telecontrollerBean;
     @Override
     protected int setLayout() {
         return R.layout.activity_add_air_telecontroller;
@@ -70,6 +68,7 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        telecontrollerBean = new TelecontrollerBean();
         AreaGet();
         getDevice();
         getAir();
@@ -89,6 +88,13 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.add_air_ok_txt:
+
+                telecontrollerBean.setName(addAirDevicenameEdt.getText().toString());
+                telecontrollerBean.setAreaId(addAirAreaTxt.getText().toString());
+                telecontrollerBean.setDate(new Date(System.currentTimeMillis()).toString());
+                ok(telecontrollerBean);
+                showLoading();
+
                 break;
             case R.id.add_air_ln:
                 showOptionsPickerView();
@@ -96,6 +102,35 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
         }
     }
 
+    public void ok(TelecontrollerBean telecontrollerBean){
+
+
+        OkhttpUtil.okHttpPostJson(API.IP + API.ADD_REMOTE, GsonUtil.GsonString(telecontrollerBean), new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                closeLoading();
+                toastShort("服务器连接失败");
+            }
+
+            @Override
+            public void onResponse(String response) {
+                closeLoading();
+                try {
+                    BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
+                    if (baseRespone.getResult().equals("00")) {
+                        toastShort("保存成功");
+                        finish();
+                    } else {
+                        toastShort(baseRespone.getMessage());
+                        finish();
+                    }
+                } catch (Exception e) {
+                    toastShort(e.getMessage());
+                }
+
+            }
+        });
+    }
 
     public void AreaGet() {
 
@@ -141,7 +176,6 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
 
     }
 
-
     public void getDevice() {
 
         BaseParameter baseParameter = new BaseParameter();
@@ -156,29 +190,36 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
 
-//                try {
-//                    controlApiBean = GsonUtil.GsonToBean(response, ControlApiBean.class);
-//
-//                    if (controlApiBean.getResult().equals("00")) {
-//                        if (null != controlApiBean.getData().getLight()) {
-//                            if (!controlApiBean.getData().getLight().isEmpty()) {
-//                                controlLampEListViewAdapter = new ControlLampEListViewAdapter(ControlActivity.this, controlApiBean);
-//                                controlElist.setAdapter(controlLampEListViewAdapter);
-//                                controlElist.setVisibility(View.VISIBLE);
-//                            }
-//                        } else {
-//                            toastShort("暂无设备");
-//                            controlElist.setVisibility(View.INVISIBLE);
-//                        }
-//                    } else {
-//                        toastShort(controlApiBean.getMessage());
-//                    }
-//
-//
-//                } catch (Exception e) {
-//                    toastShort(e.getMessage());
-//                }
-//
+                try {
+                    final ControlApiBean controlApiBean = GsonUtil.GsonToBean(response, ControlApiBean.class);
+                    if ("00".equals(controlApiBean.getResult())) {
+                        if (null != controlApiBean.getData().getRemoteControl()) {
+                            addAirRemotecontrolSpn.setAdapter(new RemoteAdapter(AddAirTelecontrollerActivity.this, controlApiBean));
+                            addAirRemotecontrolSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    addAirRemotecontrolTxt.setText(String.valueOf(controlApiBean.getData().getRemoteControl().get(position).getName()));
+                                    telecontrollerBean.setDeviceUuid(controlApiBean.getData().getRemoteControl().get(position).getUuid());
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+                        } else {
+                            toastLong("暂无设备请添加设备");
+                        }
+
+                    } else {
+                        toastShort(controlApiBean.getMessage());
+                    }
+
+                } catch (Exception e) {
+                    toastShort(e.getMessage());
+                }
+
+
             }
         });
     }
@@ -194,15 +235,19 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
 
-                airBean = GsonUtil.GsonToBean(response,AirBean.class);
-                if("00".equals(airBean.getResult())){
+                try {
+                    airBean = GsonUtil.GsonToBean(response,AirBean.class);
+                    if("00".equals(airBean.getResult())){
 
-                    setPickerData(airBean);
+                        setPickerData(airBean);
 
-
-                }else {
-                    toastShort(airBean.getMessage());
+                    }else {
+                        toastShort(airBean.getMessage());
+                    }
+                }catch (Exception e){
+                    toastShort(e.getMessage());
                 }
+
 
             }
         });
@@ -220,9 +265,7 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
                 cityList.add(cityName);
 
             }
-
             options2Items.add(cityList);
-
         }
 
 
@@ -236,10 +279,10 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
             @Override
             public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                 //返回的分别是三个级别的选中位置
-//                String tx = options1Items.get(options1).getPickerViewText()
-//                        + options2Items.get(options1).get(option2)
-//                        + options3Items.get(options1).get(option2).get(options3).getPickerViewText();
-//                tvOptions.setText(tx);
+                String tx = options1Items.get(options1).getPickerViewText()
+                        + options2Items.get(options1).get(option2);
+                addAirTxt.setText(tx);
+                telecontrollerBean.setType(options2Items.get(options1).get(option2));
             }
         }).build();
         pvOptions.setPicker(options1Items,options2Items);

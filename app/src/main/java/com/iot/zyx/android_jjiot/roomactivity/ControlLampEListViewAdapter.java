@@ -1,4 +1,4 @@
-package com.iot.zyx.android_jjiot.controlactivity;
+package com.iot.zyx.android_jjiot.roomactivity;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,9 +11,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.iot.zyx.android_jjiot.API;
-import com.iot.zyx.android_jjiot.R;
 import com.iot.zyx.android_jjiot.BaseRespone;
-import com.iot.zyx.android_jjiot.roomactivity.RoomActivity;
+import com.iot.zyx.android_jjiot.R;
+import com.iot.zyx.android_jjiot.controlactivity.ControlActivity;
+import com.iot.zyx.android_jjiot.controlactivity.ControlApiBean;
+import com.iot.zyx.android_jjiot.controlactivity.ControlParameter;
 import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
 import com.iot.zyx.android_jjiot.util.network.GsonUtil;
 import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
@@ -34,16 +36,11 @@ import okhttp3.Call;
  */
 public class ControlLampEListViewAdapter extends BaseExpandableListAdapter {
 
-    private ControlActivity mcontext;
+    private RoomActivity mcontext;
     private ControlApiBean controlLampApiBean;
 
-    public ControlLampEListViewAdapter(ControlActivity mcontext, ControlApiBean controlLampApiBean) {
+    public ControlLampEListViewAdapter(RoomActivity mcontext, ControlApiBean controlLampApiBean) {
         this.mcontext = mcontext;
-        this.controlLampApiBean = controlLampApiBean;
-    }
-
-    public ControlLampEListViewAdapter(Context mcontext, ControlApiBean controlLampApiBean) {
-        this.mcontext = (ControlActivity)mcontext;
         this.controlLampApiBean = controlLampApiBean;
     }
 

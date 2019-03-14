@@ -41,10 +41,10 @@ public class ControlActivity extends BaseActivity {
     ControlCurtainEListViewAdapter controlCurtainEListViewAdapter;
     ControlSwitchEListViewAdapter controlSwitchEListViewAdapter;
     ControlApiBean controlApiBean;
+    ControlWSBean controlWSBean;
     String activity;
     mWebSocketListener mWebSocketListener;
     WebSocket webSocket;
-    ControlWSBean controlWSBean;
     @BindView(R.id.control_signal_txt)
     TextView controlSignalTxt;
     @BindView(R.id.control_celsius_txt)

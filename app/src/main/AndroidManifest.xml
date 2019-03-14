@@ -66,7 +66,8 @@
         <activity android:name=".add_deviceactivity.AddDeviceActivity" />
         <activity android:name=".area_activity.AreaActivity" />
         <activity android:name=".add_telecontrolleractivity.AddTelecontrollerActivity" />
-        <activity android:name=".add_air_telecontrolleractivity.AddAirTelecontrollerActivity"></activity>
+        <activity android:name=".add_air_telecontrolleractivity.AddAirTelecontrollerActivity" />
+        <activity android:name=".roomactivity.RoomActivity"></activity>
     </application>
 
 </manifest>

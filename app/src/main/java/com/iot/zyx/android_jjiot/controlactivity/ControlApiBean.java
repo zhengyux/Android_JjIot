@@ -53,6 +53,23 @@ public class ControlApiBean {
         private List<CurtainBean> curtain;
         private List<OnoffSwitchBean> onoffSwitch;
         private List<MultNodeSensorBean> multNodeSensor;
+        private List<RemoteControlBean> remoteControl;
+
+        public List<MultNodeSensorBean> getMultNodeSensor() {
+            return multNodeSensor;
+        }
+
+        public void setMultNodeSensor(List<MultNodeSensorBean> multNodeSensor) {
+            this.multNodeSensor = multNodeSensor;
+        }
+
+        public List<RemoteControlBean> getRemoteControl() {
+            return remoteControl;
+        }
+
+        public void setRemoteControl(List<RemoteControlBean> remoteControl) {
+            this.remoteControl = remoteControl;
+        }
 
         public List<LightBean> getLight() {
             return light;
@@ -566,6 +583,109 @@ public class ControlApiBean {
 
         public static class MultNodeSensorBean{
 
+        }
+
+        public static class RemoteControlBean{
+
+            private String productkey;
+            private String devicename;
+            private String name;
+            private String date;
+            private String uuid;
+            private String deviceuid;
+            private String networkuid;
+            private String endpoint;
+            private String type;
+            private String areaId;
+            private String IEEE;
+
+            public String getProductkey() {
+                return productkey;
+            }
+
+            public void setProductkey(String productkey) {
+                this.productkey = productkey;
+            }
+
+            public String getDevicename() {
+                return devicename;
+            }
+
+            public void setDevicename(String devicename) {
+                this.devicename = devicename;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getDate() {
+                return date;
+            }
+
+            public void setDate(String date) {
+                this.date = date;
+            }
+
+            public String getUuid() {
+                return uuid;
+            }
+
+            public void setUuid(String uuid) {
+                this.uuid = uuid;
+            }
+
+            public String getDeviceuid() {
+                return deviceuid;
+            }
+
+            public void setDeviceuid(String deviceuid) {
+                this.deviceuid = deviceuid;
+            }
+
+            public String getNetworkuid() {
+                return networkuid;
+            }
+
+            public void setNetworkuid(String networkuid) {
+                this.networkuid = networkuid;
+            }
+
+            public String getEndpoint() {
+                return endpoint;
+            }
+
+            public void setEndpoint(String endpoint) {
+                this.endpoint = endpoint;
+            }
+
+            public String getType() {
+                return type;
+            }
+
+            public void setType(String type) {
+                this.type = type;
+            }
+
+            public String getAreaId() {
+                return areaId;
+            }
+
+            public void setAreaId(String areaId) {
+                this.areaId = areaId;
+            }
+
+            public String getIEEE() {
+                return IEEE;
+            }
+
+            public void setIEEE(String IEEE) {
+                this.IEEE = IEEE;
+            }
         }
 
     }

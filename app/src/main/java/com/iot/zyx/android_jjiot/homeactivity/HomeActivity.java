@@ -35,6 +35,7 @@ import com.iot.zyx.android_jjiot.add_zigbeeactivity.AddZigBeeActivity;
 import com.iot.zyx.android_jjiot.air_conditioningactivity.AirConditioningActivity;
 import com.iot.zyx.android_jjiot.controlactivity.ControlActivity;
 import com.iot.zyx.android_jjiot.device_managementactivity.DeviceManagementActivity;
+import com.iot.zyx.android_jjiot.roomactivity.RoomActivity;
 import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostBean;
 import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostContentAdapter;
 import com.iot.zyx.android_jjiot.televisionactivity.TelevisionActivity;
@@ -93,6 +94,7 @@ public class HomeActivity extends BaseActivity
         ls.add(new HomeContentBean.EmployeesBean());
         ls.add(new HomeContentBean.EmployeesBean());
         ls.add(new HomeContentBean.EmployeesBean());
+        ls.add(new HomeContentBean.EmployeesBean());
         homeContentBean.setEmployees(ls);
         homeContentAdapter = new HomeContentAdapter(R.layout.home_content_recycler_item, homeContentBean.getEmployees());
         homeContentRecycler.setAdapter(homeContentAdapter);
@@ -135,6 +137,8 @@ public class HomeActivity extends BaseActivity
                     Bundle bundle = new Bundle();
                     bundle.putString("activity", "environment");
                     openActivity(ControlActivity.class, bundle);
+                } else if (position == 6) {
+                    openActivity(RoomActivity.class);
                 } else {
                     openActivity(ControlActivity.class);
                 }
@@ -296,11 +300,4 @@ public class HomeActivity extends BaseActivity
         });
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }
