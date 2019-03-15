@@ -1,5 +1,6 @@
 package com.iot.zyx.android_jjiot.roomactivity;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.util.Log;
@@ -47,10 +48,14 @@ public class RoomActivity extends BaseActivity {
     ExpandableListView roomCurtainElist;
     @BindView(R.id.room_switch_elist)
     ExpandableListView roomSwitchElist;
+    @BindView(R.id.room_sk_txt)
+    TextView roomSkTxt;
+    @BindView(R.id.room_xk_txt)
+    TextView roomXkTxt;
 
     mWebSocketListener mWebSocketListener;
     WebSocket webSocket;
-    BaseParameter baseParameter ;
+    BaseParameter baseParameter;
     ControlLampEListViewAdapter controlLampEListViewAdapter;
     ControlCurtainEListViewAdapter controlCurtainEListViewAdapter;
     ControlSwitchEListViewAdapter controlSwitchEListViewAdapter;
@@ -62,6 +67,7 @@ public class RoomActivity extends BaseActivity {
     ControlWSBean controlSwitchWSBean;
     ControlWSBean controlEnvironmentWSBean;
     String type;
+
 
     @Override
     protected int setLayout() {
@@ -96,14 +102,21 @@ public class RoomActivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.room_back_img)
+    @OnClick({R.id.room_back_img,R.id.room_sk_txt, R.id.room_xk_txt})
     public void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.room_back_img:
                 finish();
                 break;
+            case R.id.room_sk_txt:
+                setSk();
+                break;
+            case R.id.room_xk_txt:
+                setXk();
+                break;
         }
     }
+
 
 
     public void AreaGet() {
@@ -129,11 +142,11 @@ public class RoomActivity extends BaseActivity {
 
                             baseParameter.setAreaId(String.valueOf(areaGetBean.getData().getList().get(tab.getPosition()).getId()));
 
-                                    getLampDevice();
+                            getLampDevice();
 
-                                    getcurtainDevice();
+                            getcurtainDevice();
 
-                                    getSwitchDevice();
+                            getSwitchDevice();
 
 
                         }
@@ -278,6 +291,38 @@ public class RoomActivity extends BaseActivity {
         });
     }
 
+    public void setSk(){
+        OkhttpUtil.okHttpPost(API.IP + API.SET_SK, new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                toastShort("网络连接失败");
+            }
+
+            @Override
+            public void onResponse(String response) {
+                    try {
+
+                    }catch (Exception e){
+
+                    }
+            }
+        });
+    }
+
+    public void setXk(){
+        OkhttpUtil.okHttpPost(API.IP + API.SET_XK, new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                toastShort("网络连接失败");
+            }
+
+            @Override
+            public void onResponse(String response) {
+
+            }
+        });
+    }
+
 
     Handler mHandler = new Handler();
     Runnable runnable = new Runnable() {
@@ -300,7 +345,7 @@ public class RoomActivity extends BaseActivity {
 
                             break;
 
-                        case "lamp":
+                        case "设备灯控制":
 
                             for (int i = 0; i < controlLampApiBean.getData().getLight().size(); i++) {
                                 if (controlLampWSBean.getMsg().get(0).getUuid().equals(controlLampApiBean.getData().getLight().get(i).getUuid())) {
@@ -316,7 +361,7 @@ public class RoomActivity extends BaseActivity {
 
                             break;
 
-                        case "switch":
+                        case "智能开关":
 
                             for (int i = 0; i < controlSwitchApiBean.getData().getOnoffSwitch().size(); i++) {
                                 for (int j = 0; j < controlSwitchApiBean.getData().getOnoffSwitch().get(i).getNode().size(); j++) {
@@ -333,11 +378,19 @@ public class RoomActivity extends BaseActivity {
 
                             break;
 
-                        case "environment":
+                        case "多功能传感器":
 
-                            roomCelsiusTxt.setText(controlEnvironmentWSBean.getMsg().get(0).getCelsius().toString());
-                            roomHumidityTxt.setText(controlEnvironmentWSBean.getMsg().get(0).getHumidity().toString());
-                            roomLightTxt.setText(controlEnvironmentWSBean.getMsg().get(0).getLight().toString());
+
+                            if (null != controlEnvironmentWSBean.getMsg().get(0).getCelsius()) {
+                                roomCelsiusTxt.setText(controlEnvironmentWSBean.getMsg().get(0).getCelsius().toString() + "°C");
+                            }
+                            if (null != controlEnvironmentWSBean.getMsg().get(0).getHumidity()) {
+                                roomHumidityTxt.setText(controlEnvironmentWSBean.getMsg().get(0).getHumidity().toString() + "%");
+                            }
+                            if (null != controlEnvironmentWSBean.getMsg().get(0).getLight()) {
+                                roomLightTxt.setText(controlEnvironmentWSBean.getMsg().get(0).getLight().toString() + "Lux");
+                            }
+
 
                             break;
                     }
@@ -350,6 +403,9 @@ public class RoomActivity extends BaseActivity {
 
         }
     };
+
+
+
 
 
     class mWebSocketListener extends WebSocketListener {
@@ -367,36 +423,38 @@ public class RoomActivity extends BaseActivity {
         public void onMessage(WebSocket webSocket, String text) {
             Log.e("WebSocket", "onMessage: " + text);
 
-
-            BaseRespone baseRespone = new BaseRespone();
-            if("设备窗帘控制".equals(baseRespone.getDesignation())){
+            BaseRespone baseRespone = GsonUtil.GsonToBean(text, BaseRespone.class);
+            if ("设备窗帘控制".equals(baseRespone.getDesignation())) {
                 controlCurtainWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
-                type="1030";
+                type = "设备窗帘控制";
                 mHandler.post(runnable);
             }
 
-                        if ("设备灯控制".equals(baseRespone.getDesignation())) {
-                            controlLampWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
-                            type="设备灯控制";
-                            mHandler.post(runnable);
-                        }
+            if ("设备灯控制".equals(baseRespone.getDesignation())) {
+                controlLampWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
+                type = "设备灯控制";
+                mHandler.post(runnable);
+            }
 
 
-                        if ("智能开关".equals(baseRespone.getDesignation())) {
-                            controlSwitchWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
-                            type="智能开关";
-                            mHandler.post(runnable);
-                        }
+            if ("智能开关".equals(baseRespone.getDesignation())) {
+                controlSwitchWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
+                type = "智能开关";
+                mHandler.post(runnable);
+            }
 
+            if ("多功能传感器".equals(baseRespone.getDesignation())) {
+                controlEnvironmentWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
+                type = "多功能传感器";
+                mHandler.post(runnable);
+            }
+            if ("光照传感器".equals(baseRespone.getDesignation())) {
+                controlEnvironmentWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
+                type = "多功能传感器";
+                mHandler.post(runnable);
+            }
 
-
-                        if ("多功能传感器".equals(baseRespone.getDesignation())) {
-                            controlEnvironmentWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
-                            type="多功能传感器";
-                            mHandler.post(runnable);
-                        }
-
-                }
+        }
 
 
         //准备关闭

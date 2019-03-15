@@ -24,6 +24,15 @@ public class TelecontrollerBean {
     private String date;
     private String deviceUuid;
     private String type;
+    private String brandType;
+
+    public String getBrandType() {
+        return brandType;
+    }
+
+    public void setBrandType(String brandType) {
+        this.brandType = brandType;
+    }
 
     public String getAreaId() {
         return areaId;

@@ -64,7 +64,8 @@ public class API {
         return WSIP;
     }
 
-
+    public static String SET_XK ="scene/control/0";//下课
+    public static String SET_SK ="scene/control/1";//上课
     public static String GET_GATEWAY = "/device/gateway/list";//获取主机
     public static String OPEN_NETWORK = "/device/gateway/openNetwork";//打开网络
     public static String DEVICE_ACCESS = "/device/disabled/get";//设备入网

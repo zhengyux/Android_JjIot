@@ -23,6 +23,7 @@ import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
 import com.iot.zyx.android_jjiot.util.network.GsonUtil;
 import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,6 +57,7 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
     private List<AirBean.DataBean.ListBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     TelecontrollerBean telecontrollerBean;
+    AirControlBean airControlBean;
     @Override
     protected int setLayout() {
         return R.layout.activity_add_air_telecontroller;
@@ -68,6 +70,7 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        airControlBean = new AirControlBean();
         telecontrollerBean = new TelecontrollerBean();
         AreaGet();
         getDevice();
@@ -91,12 +94,14 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
 
                 telecontrollerBean.setName(addAirDevicenameEdt.getText().toString());
                 telecontrollerBean.setAreaId(addAirAreaTxt.getText().toString());
-                telecontrollerBean.setDate(new Date(System.currentTimeMillis()).toString());
+                telecontrollerBean.setDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis())));
+                telecontrollerBean.setType("0500");
                 ok(telecontrollerBean);
                 showLoading();
 
                 break;
             case R.id.add_air_ln:
+
                 showOptionsPickerView();
                 break;
         }
@@ -122,7 +127,6 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
                         finish();
                     } else {
                         toastShort(baseRespone.getMessage());
-                        finish();
                     }
                 } catch (Exception e) {
                     toastShort(e.getMessage());
@@ -200,6 +204,7 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     addAirRemotecontrolTxt.setText(String.valueOf(controlApiBean.getData().getRemoteControl().get(position).getName()));
                                     telecontrollerBean.setDeviceUuid(controlApiBean.getData().getRemoteControl().get(position).getUuid());
+                                    airControlBean.setUuid(controlApiBean.getData().getRemoteControl().get(position).getUuid());
                                 }
 
                                 @Override
@@ -271,6 +276,31 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
 
     }
 
+    public void setAir(AirControlBean airControlBean){
+        OkhttpUtil.okHttpPostJson(API.IP + API.CONTROL_AIR, GsonUtil.GsonString(airControlBean), new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                closeLoading();
+                toastShort("网络连接失败");
+            }
+
+            @Override
+            public void onResponse(String response) {
+                closeLoading();
+                try {
+                    BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
+                    if (baseRespone.getResult().equals("00")) {
+                        toastShort("滴的一声表示匹配成功");
+                    } else {
+                        toastShort(baseRespone.getMessage());
+                    }
+                } catch (Exception e) {
+                    toastShort(e.getMessage());
+                }
+            }
+        });
+    }
+
     public void showOptionsPickerView(){
 
 
@@ -282,7 +312,13 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
                 String tx = options1Items.get(options1).getPickerViewText()
                         + options2Items.get(options1).get(option2);
                 addAirTxt.setText(tx);
-                telecontrollerBean.setType(options2Items.get(options1).get(option2));
+                telecontrollerBean.setBrandType(options2Items.get(options1).get(option2));
+                airControlBean.setAirType(options2Items.get(options1).get(option2));
+                airControlBean.setControl("050000");
+                setAir(airControlBean);
+                showLoading();
+
+
             }
         }).build();
         pvOptions.setPicker(options1Items,options2Items);

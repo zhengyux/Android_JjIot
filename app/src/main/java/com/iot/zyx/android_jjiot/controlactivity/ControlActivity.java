@@ -386,9 +386,16 @@ public class ControlActivity extends BaseActivity {
 
                         case "environment":
 
-                            controlCelsiusTxt.setText(controlWSBean.getMsg().get(0).getCelsius().toString());
-                            controlHumidityTxt.setText(controlWSBean.getMsg().get(0).getHumidity().toString());
-                            controlLightTxt.setText(controlWSBean.getMsg().get(0).getLight().toString());
+                            if(null!=controlWSBean.getMsg().get(0).getCelsius()){
+                                controlCelsiusTxt.setText(controlWSBean.getMsg().get(0).getCelsius().toString()+"°C");
+                            }
+                            if(null!=controlWSBean.getMsg().get(0).getHumidity()){
+                                controlHumidityTxt.setText(controlWSBean.getMsg().get(0).getHumidity().toString()+"%");
+                            }
+                            if(null!=controlWSBean.getMsg().get(0).getLight()){
+                                controlLightTxt.setText(controlWSBean.getMsg().get(0).getLight().toString()+"Lux");
+                            }
+
 
                             break;
                     }
@@ -449,6 +456,10 @@ public class ControlActivity extends BaseActivity {
                     case "environment":
 
                         if (text.contains("多功能传感器")) {
+                            controlWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
+                            mHandler.post(runnable);
+                        }
+                        if (text.contains("光照传感器")) {
                             controlWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
                             mHandler.post(runnable);
                         }
