@@ -167,6 +167,34 @@
                 android:layout_height="wrap_content" />
 
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:background="#2b2f4d"
+            android:layout_height="50dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="PM感应器"
+                android:textSize="15dp"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="等待获取"
+                android:id="@+id/control_pm_txt"
+                android:textColor="@color/gray"
+                android:textSize="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

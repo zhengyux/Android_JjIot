@@ -105,15 +105,15 @@
 
                     <TextView
                         android:text="温度"
-                        android:textSize="15dp"
+                        android:textSize="13dp"
                         android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:text="等待获取"
+                        android:text="待获取"
                         android:textColor="@color/gray"
-                        android:textSize="15dp"
+                        android:textSize="13dp"
                         android:layout_alignParentRight="true"
                         android:id="@+id/room_celsius_txt"
                         android:layout_width="wrap_content"
@@ -135,16 +135,16 @@
 
                     <TextView
                         android:text="湿度"
-                        android:textSize="15dp"
+                        android:textSize="13dp"
                         android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:text="等待获取"
+                        android:text="待获取"
                         android:id="@+id/room_humidity_txt"
                         android:textColor="@color/gray"
-                        android:textSize="15dp"
+                        android:textSize="13dp"
                         android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -164,16 +164,45 @@
 
                     <TextView
                         android:text="光度"
-                        android:textSize="15dp"
+                        android:textSize="13dp"
                         android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:text="等待获取"
+                        android:text="待获取"
                         android:id="@+id/room_light_txt"
                         android:textColor="@color/gray"
-                        android:textSize="15dp"
+                        android:textSize="13dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:background="#2b2f4d"
+                    android:layout_height="50dp"
+                    android:paddingTop="13dp"
+                    android:paddingBottom="13dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:text="PM"
+                        android:textSize="13dp"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:text="待获取"
+                        android:id="@+id/room_pm_txt"
+                        android:textColor="@color/gray"
+                        android:textSize="13dp"
                         android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -204,6 +233,13 @@
                 <ExpandableListView
                     android:layout_marginTop="5dp"
                     android:id="@+id/room_lamp_elist"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </ExpandableListView>
+
+                <ExpandableListView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/room_remote_elist"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 </ExpandableListView>

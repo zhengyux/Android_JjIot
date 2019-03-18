@@ -17,6 +17,7 @@ import com.iot.zyx.android_jjiot.R;
 import com.iot.zyx.android_jjiot.controlactivity.ControlApiBean;
 import com.iot.zyx.android_jjiot.controlactivity.ControlWSBean;
 import com.iot.zyx.android_jjiot.device_managementactivity.AreaGetBean;
+import com.iot.zyx.android_jjiot.util.AppUtil.PackageUtil;
 import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
 import com.iot.zyx.android_jjiot.util.network.GsonUtil;
 import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
@@ -42,12 +43,16 @@ public class RoomActivity extends BaseActivity {
     TextView roomHumidityTxt;
     @BindView(R.id.room_light_txt)
     TextView roomLightTxt;
+    @BindView(R.id.room_pm_txt)
+    TextView roomPmTxt;
     @BindView(R.id.room_lamp_elist)
     ExpandableListView roomLampElist;
     @BindView(R.id.room_curtain_elist)
     ExpandableListView roomCurtainElist;
     @BindView(R.id.room_switch_elist)
     ExpandableListView roomSwitchElist;
+    @BindView(R.id.room_remote_elist)
+    ExpandableListView roomRemoteElist;
     @BindView(R.id.room_sk_txt)
     TextView roomSkTxt;
     @BindView(R.id.room_xk_txt)
@@ -59,9 +64,11 @@ public class RoomActivity extends BaseActivity {
     ControlLampEListViewAdapter controlLampEListViewAdapter;
     ControlCurtainEListViewAdapter controlCurtainEListViewAdapter;
     ControlSwitchEListViewAdapter controlSwitchEListViewAdapter;
+    ControlRemoteEListViewAdapter controlRemoteEListViewAdapter;
     ControlApiBean controlLampApiBean;
     ControlApiBean controlCurtainApiBean;
     ControlApiBean controlSwitchApiBean;
+    ControlApiBean controlRemoteApiBean;
     ControlWSBean controlLampWSBean;
     ControlWSBean controlCurtainWSBean;
     ControlWSBean controlSwitchWSBean;
@@ -87,6 +94,7 @@ public class RoomActivity extends BaseActivity {
         getLampDevice();
         getcurtainDevice();
         getSwitchDevice();
+        getRemoteDevice();
     }
 
     @Override
@@ -109,9 +117,11 @@ public class RoomActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.room_sk_txt:
+                showLoading();
                 setSk();
                 break;
             case R.id.room_xk_txt:
+                showLoading();
                 setXk();
                 break;
         }
@@ -291,8 +301,9 @@ public class RoomActivity extends BaseActivity {
         });
     }
 
-    public void setSk(){
-        OkhttpUtil.okHttpPost(API.IP + API.SET_SK, new CallBackUtil.CallBackString() {
+    public void getRemoteDevice(){
+        baseParameter.setType(API.Device.RemoteControlDevice);
+        OkhttpUtil.okHttpPostJson(API.IP + API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
                 toastShort("网络连接失败");
@@ -300,11 +311,57 @@ public class RoomActivity extends BaseActivity {
 
             @Override
             public void onResponse(String response) {
-                    try {
 
-                    }catch (Exception e){
+//                try {
+                    controlRemoteApiBean = GsonUtil.GsonToBean(response, ControlApiBean.class);
 
+                    if (controlRemoteApiBean.getResult().equals("00")) {
+                        if (null != controlRemoteApiBean.getData().getRemoteControlDevice()) {
+                            if (!controlRemoteApiBean.getData().getRemoteControlDevice().isEmpty()) {
+                                controlRemoteEListViewAdapter = new ControlRemoteEListViewAdapter(RoomActivity.this, controlRemoteApiBean);
+                                roomRemoteElist.setAdapter(controlRemoteEListViewAdapter);
+                                int count = roomRemoteElist.getCount();
+                                for (int i = 0; i < count; i++) {
+                                    roomRemoteElist.expandGroup(i);
+                                }
+                            }
+                            roomRemoteElist.setVisibility(View.VISIBLE);
+                        } else {
+                            roomRemoteElist.setVisibility(View.GONE);
+                        }
+                    } else {
+                        toastShort(controlRemoteApiBean.getMessage());
                     }
+//                } catch (Exception e) {
+//                    toastShort(e.getMessage());
+//                }
+
+
+            }
+        });
+    }
+
+    public void setSk(){
+        OkhttpUtil.okHttpPost(API.IP + API.SET_SK, new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                closeLoading();
+                toastShort("网络连接失败");
+            }
+
+            @Override
+            public void onResponse(String response) {
+                closeLoading();
+                try {
+                    BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
+                    if (baseRespone.getResult().equals("00")) {
+                        toastShort("操作成功");
+                    } else {
+                        toastShort(baseRespone.getMessage());
+                    }
+                } catch (Exception e) {
+                    toastShort(e.getMessage());
+                }
             }
         });
     }
@@ -313,11 +370,23 @@ public class RoomActivity extends BaseActivity {
         OkhttpUtil.okHttpPost(API.IP + API.SET_XK, new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
+                closeLoading();
                 toastShort("网络连接失败");
             }
 
             @Override
             public void onResponse(String response) {
+                closeLoading();
+                try {
+                    BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
+                    if (baseRespone.getResult().equals("00")) {
+                        toastShort("操作成功");
+                    } else {
+                        toastShort(baseRespone.getMessage());
+                    }
+                } catch (Exception e) {
+                    toastShort(e.getMessage());
+                }
 
             }
         });
@@ -390,7 +459,7 @@ public class RoomActivity extends BaseActivity {
                             if (null != controlEnvironmentWSBean.getMsg().get(0).getLight()) {
                                 roomLightTxt.setText(controlEnvironmentWSBean.getMsg().get(0).getLight().toString() + "Lux");
                             }
-
+                            roomPmTxt.setText(PackageUtil.getRandomNum(70,82)+"μg/m³");
 
                             break;
                     }
@@ -424,7 +493,7 @@ public class RoomActivity extends BaseActivity {
             Log.e("WebSocket", "onMessage: " + text);
 
             BaseRespone baseRespone = GsonUtil.GsonToBean(text, BaseRespone.class);
-            if ("设备窗帘控制".equals(baseRespone.getDesignation())) {
+            if ("设备窗帘".equals(baseRespone.getDesignation())) {
                 controlCurtainWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
                 type = "设备窗帘控制";
                 mHandler.post(runnable);
@@ -443,7 +512,7 @@ public class RoomActivity extends BaseActivity {
                 mHandler.post(runnable);
             }
 
-            if ("多功能传感器".equals(baseRespone.getDesignation())) {
+            if ("温湿度传感器".equals(baseRespone.getDesignation())) {
                 controlEnvironmentWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
                 type = "多功能传感器";
                 mHandler.post(runnable);

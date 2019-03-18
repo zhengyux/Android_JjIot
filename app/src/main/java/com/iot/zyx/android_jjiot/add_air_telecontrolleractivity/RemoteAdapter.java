@@ -37,12 +37,12 @@ public class RemoteAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return controlApiBean.getData().getRemoteControl().size();
+        return controlApiBean.getData().getRemoteControlDevice().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return controlApiBean.getData().getRemoteControl().get(position);
+        return controlApiBean.getData().getRemoteControlDevice().get(position);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class RemoteAdapter extends BaseAdapter {
             viewHolder = (RemoteAdapter.ViewHolder) convertView.getTag();
         }
 
-        viewHolder.deviceManagementSpnText.setText(controlApiBean.getData().getRemoteControl().get(position).getName());
+        viewHolder.deviceManagementSpnText.setText(controlApiBean.getData().getRemoteControlDevice().get(position).getName());
 
         return convertView;
     }

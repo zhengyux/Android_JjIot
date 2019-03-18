@@ -58,6 +58,7 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     TelecontrollerBean telecontrollerBean;
     AirControlBean airControlBean;
+    String type;
     @Override
     protected int setLayout() {
         return R.layout.activity_add_air_telecontroller;
@@ -72,6 +73,19 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
     protected void initData() {
         airControlBean = new AirControlBean();
         telecontrollerBean = new TelecontrollerBean();
+        type = getIntent().getExtras().getString("activity");
+        switch (type){
+            case "Air":
+                telecontrollerBean.setType("0500");
+                break;
+
+            case "AllIn":
+                telecontrollerBean.setType("0501");
+                addAirLn.setVisibility(View.GONE);
+                break;
+        }
+
+
         AreaGet();
         getDevice();
         getAir();
@@ -95,7 +109,6 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
                 telecontrollerBean.setName(addAirDevicenameEdt.getText().toString());
                 telecontrollerBean.setAreaId(addAirAreaTxt.getText().toString());
                 telecontrollerBean.setDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis())));
-                telecontrollerBean.setType("0500");
                 ok(telecontrollerBean);
                 showLoading();
 
@@ -197,14 +210,14 @@ public class AddAirTelecontrollerActivity extends BaseActivity {
                 try {
                     final ControlApiBean controlApiBean = GsonUtil.GsonToBean(response, ControlApiBean.class);
                     if ("00".equals(controlApiBean.getResult())) {
-                        if (null != controlApiBean.getData().getRemoteControl()) {
+                        if (null != controlApiBean.getData().getRemoteControlDevice()) {
                             addAirRemotecontrolSpn.setAdapter(new RemoteAdapter(AddAirTelecontrollerActivity.this, controlApiBean));
                             addAirRemotecontrolSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    addAirRemotecontrolTxt.setText(String.valueOf(controlApiBean.getData().getRemoteControl().get(position).getName()));
-                                    telecontrollerBean.setDeviceUuid(controlApiBean.getData().getRemoteControl().get(position).getUuid());
-                                    airControlBean.setUuid(controlApiBean.getData().getRemoteControl().get(position).getUuid());
+                                    addAirRemotecontrolTxt.setText(String.valueOf(controlApiBean.getData().getRemoteControlDevice().get(position).getName()));
+                                    telecontrollerBean.setDeviceUuid(controlApiBean.getData().getRemoteControlDevice().get(position).getUuid());
+                                    airControlBean.setUuid(controlApiBean.getData().getRemoteControlDevice().get(position).getUuid());
                                 }
 
                                 @Override

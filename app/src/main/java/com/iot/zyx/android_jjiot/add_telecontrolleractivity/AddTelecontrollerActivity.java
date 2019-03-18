@@ -46,14 +46,19 @@ public class AddTelecontrollerActivity extends BaseActivity {
 
     @OnClick({R.id.telecontroller_back_img, R.id.add_telecontroller_air_rl, R.id.add_telecontroller_pc_rl})
     public void onViewClicked(View view) {
+                 Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.telecontroller_back_img:
                 finish();
                 break;
             case R.id.add_telecontroller_air_rl:
-                openActivity(AddAirTelecontrollerActivity.class);
+
+                bundle.putString("activity", "Air");
+                openActivity(AddAirTelecontrollerActivity.class,bundle);
                 break;
             case R.id.add_telecontroller_pc_rl:
+                bundle.putString("activity", "AllIn");
+                openActivity(AddAirTelecontrollerActivity.class,bundle);
                 break;
         }
     }

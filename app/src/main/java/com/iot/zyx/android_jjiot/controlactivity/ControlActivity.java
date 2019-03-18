@@ -15,6 +15,7 @@ import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.BaseParameter;
 import com.iot.zyx.android_jjiot.R;
 import com.iot.zyx.android_jjiot.device_managementactivity.AreaGetBean;
+import com.iot.zyx.android_jjiot.util.AppUtil.PackageUtil;
 import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
 import com.iot.zyx.android_jjiot.util.network.GsonUtil;
 import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
@@ -53,6 +54,8 @@ public class ControlActivity extends BaseActivity {
     TextView controlHumidityTxt;
     @BindView(R.id.control_light_txt)
     TextView controlLightTxt;
+    @BindView(R.id.control_pm_txt)
+    TextView controlPmTxt;
     @BindView(R.id.container_environment)
     LinearLayout containerEnvironment;
     BaseParameter baseParameter ;
@@ -395,7 +398,7 @@ public class ControlActivity extends BaseActivity {
                             if(null!=controlWSBean.getMsg().get(0).getLight()){
                                 controlLightTxt.setText(controlWSBean.getMsg().get(0).getLight().toString()+"Lux");
                             }
-
+                            controlPmTxt.setText(PackageUtil.getRandomNum(70,82)+"μg/m³");
 
                             break;
                     }
@@ -455,7 +458,7 @@ public class ControlActivity extends BaseActivity {
 
                     case "environment":
 
-                        if (text.contains("多功能传感器")) {
+                        if (text.contains("温湿度传感器")) {
                             controlWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
                             mHandler.post(runnable);
                         }

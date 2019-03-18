@@ -33,6 +33,8 @@ import com.iot.zyx.android_jjiot.R;
 import com.iot.zyx.android_jjiot.add_telecontrolleractivity.AddTelecontrollerActivity;
 import com.iot.zyx.android_jjiot.add_zigbeeactivity.AddZigBeeActivity;
 import com.iot.zyx.android_jjiot.air_conditioningactivity.AirConditioningActivity;
+import com.iot.zyx.android_jjiot.area_activity.AddAreaBean;
+import com.iot.zyx.android_jjiot.area_activity.AreaActivity;
 import com.iot.zyx.android_jjiot.controlactivity.ControlActivity;
 import com.iot.zyx.android_jjiot.device_managementactivity.DeviceManagementActivity;
 import com.iot.zyx.android_jjiot.roomactivity.RoomActivity;
@@ -193,8 +195,8 @@ public class HomeActivity extends BaseActivity
             openActivity(AddZigBeeActivity.class);
         } else if (id == R.id.home_drawer_add_telecontroller) {
             openActivity(AddTelecontrollerActivity.class);
-        } else if (id == R.id.nav_slideshow) {
-
+        } else if (id == R.id.home_drawer_add_area) {
+            openActivity(AreaActivity.class);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.home_drawer_device_management) {

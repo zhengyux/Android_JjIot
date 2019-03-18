@@ -1,5 +1,7 @@
 package com.iot.zyx.android_jjiot.add_air_telecontrolleractivity;
 
+import java.util.List;
+
 /**
  * 项目名称：Android_JjIot
  * 类描述：
@@ -10,8 +12,6 @@ package com.iot.zyx.android_jjiot.add_air_telecontrolleractivity;
  * 修改备注：
  */
 public class RemoteControlBean {
-
-
 
 
 }

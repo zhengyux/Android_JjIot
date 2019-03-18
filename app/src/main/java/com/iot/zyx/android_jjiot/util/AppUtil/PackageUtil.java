@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import java.util.Random;
+
 /**
  * 项目名称：Android_JjIot
  * 类描述：
@@ -27,4 +29,13 @@ public class PackageUtil {
         }
         return 0;
     }
+
+    public static int getRandomNum(int startNum,int endNum){
+        if(endNum > startNum){
+            Random random = new Random();
+            return random.nextInt(endNum - startNum) + startNum;
+        }
+        return 0;
+    }
+
 }

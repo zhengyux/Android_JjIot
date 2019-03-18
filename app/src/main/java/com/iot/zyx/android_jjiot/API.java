@@ -64,8 +64,8 @@ public class API {
         return WSIP;
     }
 
-    public static String SET_XK ="scene/control/0";//下课
-    public static String SET_SK ="scene/control/1";//上课
+    public static String SET_XK ="/scene/control/0";//下课
+    public static String SET_SK ="/scene/control/1";//上课
     public static String GET_GATEWAY = "/device/gateway/list";//获取主机
     public static String OPEN_NETWORK = "/device/gateway/openNetwork";//打开网络
     public static String DEVICE_ACCESS = "/device/disabled/get";//设备入网
@@ -80,6 +80,7 @@ public class API {
     public static String CONTROL_AIR="/device/air_conditioner/control";//控制空调
     public static String CONTROL_LAMP="/device/light/onoff";//控制灯开关
     public static String CONTROL_CURTAIN ="/device/curtain/control";//控制窗帘
+    public static String CONTROL_ALLIN = "/device/all_in_one/control";//控制一体机
     public static String CONTROL_SWITCH ="/device/switch/control";//开关控制
     public static String LAMP_BRIGHTNESS="/device/light/brightness";//灯光亮度
     public static String GET_AREA="/device/area/get";//获取区域

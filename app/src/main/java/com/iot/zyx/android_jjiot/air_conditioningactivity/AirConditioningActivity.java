@@ -91,6 +91,7 @@ public class AirConditioningActivity extends BaseActivity {
         showLoading();
         switch (view.getId()) {
             case R.id.air_conditioning_back_img:
+                finish();
                 break;
             case R.id.air_conditioning_shut_down_txt:
 
@@ -167,6 +168,7 @@ public class AirConditioningActivity extends BaseActivity {
 
                 break;
             case R.id.air_ds_img:
+                closeLoading();
                 break;
             case R.id.air_wdjia_img:
 
