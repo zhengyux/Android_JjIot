@@ -99,7 +99,7 @@ public class API {
         public static String Lamp = "1";
         public static String Curtain ="2";
         public static String Switch ="3";
-        public static String Environment = "4";
+        public static String MultSensor = "4";
         public static String RemoteControlDevice ="5";
 
     }

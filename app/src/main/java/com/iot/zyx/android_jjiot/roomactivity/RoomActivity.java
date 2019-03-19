@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.iot.zyx.android_jjiot.API;
@@ -21,6 +22,7 @@ import com.iot.zyx.android_jjiot.util.AppUtil.PackageUtil;
 import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
 import com.iot.zyx.android_jjiot.util.network.GsonUtil;
 import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
+import com.iot.zyx.android_jjiot.util.widget.ScrExpandableListView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +35,8 @@ import okhttp3.WebSocketListener;
 public class RoomActivity extends BaseActivity {
 
 
+    @BindView(R.id.room_sc)
+    ScrollView scrollView;
     @BindView(R.id.room_back_img)
     RelativeLayout roomBackImg;
     @BindView(R.id.room_tab)
@@ -46,13 +50,13 @@ public class RoomActivity extends BaseActivity {
     @BindView(R.id.room_pm_txt)
     TextView roomPmTxt;
     @BindView(R.id.room_lamp_elist)
-    ExpandableListView roomLampElist;
+    ScrExpandableListView roomLampElist;
     @BindView(R.id.room_curtain_elist)
-    ExpandableListView roomCurtainElist;
+    ScrExpandableListView roomCurtainElist;
     @BindView(R.id.room_switch_elist)
-    ExpandableListView roomSwitchElist;
+    ScrExpandableListView roomSwitchElist;
     @BindView(R.id.room_remote_elist)
-    ExpandableListView roomRemoteElist;
+    ScrExpandableListView roomRemoteElist;
     @BindView(R.id.room_sk_txt)
     TextView roomSkTxt;
     @BindView(R.id.room_xk_txt)
@@ -84,6 +88,7 @@ public class RoomActivity extends BaseActivity {
     @Override
     protected void initView() {
         mWebSocketListener = new mWebSocketListener();
+        scrollView.smoothScrollTo(0,0);
     }
 
     @Override
@@ -158,6 +163,7 @@ public class RoomActivity extends BaseActivity {
 
                             getSwitchDevice();
 
+                            getRemoteDevice();
 
                         }
 
@@ -312,7 +318,7 @@ public class RoomActivity extends BaseActivity {
             @Override
             public void onResponse(String response) {
 
-//                try {
+                try {
                     controlRemoteApiBean = GsonUtil.GsonToBean(response, ControlApiBean.class);
 
                     if (controlRemoteApiBean.getResult().equals("00")) {
@@ -332,9 +338,9 @@ public class RoomActivity extends BaseActivity {
                     } else {
                         toastShort(controlRemoteApiBean.getMessage());
                     }
-//                } catch (Exception e) {
-//                    toastShort(e.getMessage());
-//                }
+                } catch (Exception e) {
+                    toastShort(e.getMessage());
+                }
 
 
             }

@@ -51,7 +51,7 @@
     </android.support.design.widget.TabLayout>
 
     <ScrollView
-        android:fillViewport="true"
+        android:id="@+id/room_sc"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -87,127 +87,134 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <RelativeLayout
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:gravity="center_vertical"
-                    android:background="#2b2f4d"
-                    android:layout_height="50dp"
-                    android:paddingTop="13dp"
-                    android:paddingBottom="13dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:orientation="horizontal">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:text="温度"
-                        android:textSize="13dp"
-                        android:textColor="@color/white"
+                    <RelativeLayout
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:gravity="center_vertical"
+                        android:background="#2b2f4d"
+                        android:layout_height="40dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:text="待获取"
-                        android:textColor="@color/gray"
-                        android:textSize="13dp"
-                        android:layout_alignParentRight="true"
-                        android:id="@+id/room_celsius_txt"
+                        <TextView
+                            android:text="室温"
+                            android:textSize="13dp"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="待获取"
+                            android:textColor="@color/gray"
+                            android:textSize="13dp"
+                            android:layout_alignParentRight="true"
+                            android:id="@+id/room_celsius_txt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:gravity="center_vertical"
+                        android:background="#2b2f4d"
+                        android:layout_height="40dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:orientation="horizontal">
 
-                </RelativeLayout>
+                        <TextView
+                            android:text="湿度"
+                            android:textSize="13dp"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
-                <RelativeLayout
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:gravity="center_vertical"
-                    android:background="#2b2f4d"
-                    android:layout_height="50dp"
-                    android:paddingTop="13dp"
-                    android:paddingBottom="13dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:orientation="horizontal">
+                        <TextView
+                            android:text="待获取"
+                            android:id="@+id/room_humidity_txt"
+                            android:textColor="@color/gray"
+                            android:textSize="13dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:text="湿度"
-                        android:textSize="13dp"
-                        android:textColor="@color/white"
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:gravity="center_vertical"
+                        android:background="#2b2f4d"
+                        android:layout_height="40dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:text="待获取"
-                        android:id="@+id/room_humidity_txt"
-                        android:textColor="@color/gray"
-                        android:textSize="13dp"
-                        android:layout_alignParentRight="true"
+                        <TextView
+                            android:text="亮度"
+                            android:textSize="13dp"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="待获取"
+                            android:id="@+id/room_light_txt"
+                            android:textColor="@color/gray"
+                            android:textSize="13dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_weight="1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:gravity="center_vertical"
+                        android:background="#2b2f4d"
+                        android:layout_height="40dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:orientation="horizontal">
 
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:gravity="center_vertical"
-                    android:background="#2b2f4d"
-                    android:layout_height="50dp"
-                    android:paddingTop="13dp"
-                    android:paddingBottom="13dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:orientation="horizontal">
+                        <TextView
+                            android:text="PM2.5"
+                            android:textSize="13dp"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:text="光度"
-                        android:textSize="13dp"
-                        android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:text="待获取"
+                            android:id="@+id/room_pm_txt"
+                            android:textColor="@color/gray"
+                            android:textSize="13dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:text="待获取"
-                        android:id="@+id/room_light_txt"
-                        android:textColor="@color/gray"
-                        android:textSize="13dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                </LinearLayout>
 
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:gravity="center_vertical"
-                    android:background="#2b2f4d"
-                    android:layout_height="50dp"
-                    android:paddingTop="13dp"
-                    android:paddingBottom="13dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:orientation="horizontal">
 
-                    <TextView
-                        android:text="PM"
-                        android:textSize="13dp"
-                        android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:text="待获取"
-                        android:id="@+id/room_pm_txt"
-                        android:textColor="@color/gray"
-                        android:textSize="13dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </RelativeLayout>
 
             </LinearLayout>
 
@@ -217,32 +224,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ExpandableListView
+                <com.iot.zyx.android_jjiot.util.widget.ScrExpandableListView
                     android:id="@+id/room_switch_elist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                </ExpandableListView>
+                </com.iot.zyx.android_jjiot.util.widget.ScrExpandableListView>
 
-                <ExpandableListView
+                <com.iot.zyx.android_jjiot.util.widget.ScrExpandableListView
                     android:layout_marginTop="5dp"
                     android:id="@+id/room_curtain_elist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                </ExpandableListView>
+                </com.iot.zyx.android_jjiot.util.widget.ScrExpandableListView>
 
-                <ExpandableListView
+                <com.iot.zyx.android_jjiot.util.widget.ScrExpandableListView
                     android:layout_marginTop="5dp"
                     android:id="@+id/room_lamp_elist"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                </ExpandableListView>
+                </com.iot.zyx.android_jjiot.util.widget.ScrExpandableListView>
 
-                <ExpandableListView
+                <com.iot.zyx.android_jjiot.util.widget.ScrExpandableListView
                     android:layout_marginTop="5dp"
                     android:id="@+id/room_remote_elist"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                </ExpandableListView>
+                </com.iot.zyx.android_jjiot.util.widget.ScrExpandableListView>
 
             </LinearLayout>
 

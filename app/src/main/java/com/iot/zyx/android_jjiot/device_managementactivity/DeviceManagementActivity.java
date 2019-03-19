@@ -39,6 +39,8 @@ public class DeviceManagementActivity extends BaseActivity {
     Spinner deviceManagementLeftSpn;
     @BindView(R.id.device_management_right_spn)
     Spinner deviceManagementRightSpn;
+    DeviceGetParameter deviceGetParameter;
+    boolean isSpinnerFirst = true ;
 
     @Override
     protected int setLayout() {
@@ -53,6 +55,8 @@ public class DeviceManagementActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        deviceGetParameter = new DeviceGetParameter();
+        deviceGetParameter.setAreaId(null);
         AreaGet();
         DeviceGet();
     }
@@ -112,11 +116,19 @@ public class DeviceManagementActivity extends BaseActivity {
 
                 try{
 
-                    AreaGetBean areaGetBean = GsonUtil.GsonToBean(response,AreaGetBean.class);
+                    final AreaGetBean areaGetBean = GsonUtil.GsonToBean(response,AreaGetBean.class);
                     deviceManagementLeftSpn.setAdapter(new AreaSpnAdapter(DeviceManagementActivity.this,areaGetBean));
                     deviceManagementLeftSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                            if(isSpinnerFirst){
+                                isSpinnerFirst = false;
+                            }else {
+                                deviceGetParameter.setAreaId(String.valueOf(areaGetBean.getData().getList().get(position).getId()));
+                                DeviceGet();
+                            }
+
 
                         }
 
@@ -135,8 +147,7 @@ public class DeviceManagementActivity extends BaseActivity {
     }
 
     public void DeviceGet() {
-        DeviceGetParameter deviceGetParameter = new DeviceGetParameter();
-        deviceGetParameter.setAreaId(null);
+
         String jsonStr = GsonUtil.GsonString(deviceGetParameter);
 
         OkhttpUtil.okHttpPostJson(API.IP+API.DEVICE_GET+"?differe=false", jsonStr, new CallBackUtil.CallBackString() {
