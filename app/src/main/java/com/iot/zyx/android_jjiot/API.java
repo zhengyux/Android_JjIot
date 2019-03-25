@@ -74,6 +74,7 @@ public class API {
     public static String DEVICE_GET="/device/manager/list";//获取设备列表
     public static String ADD_REMOTE = "/remote_control/add";//保存遥控器
     public static String REMOTE_GET ="/remote_control/list";//获取遥控器列表
+    public static String DELETE_REMOTE = "/remote_control/delete";//遥控器删除
     public static String AIR_GET="/device/air_conditioner/brand"; //获取空调品牌列表
     public static String SET_DEVICE ="/device/disabled/handle";//设置设备
     public static String DELETE_DEVICE ="/device/delete";//删除设备

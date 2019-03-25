@@ -52,7 +52,7 @@ public class ControlApiBean {
         private List<LightBean> light;
         private List<CurtainBean> curtain;
         private List<OnoffSwitchBean> onoffSwitch;
-        private List<MultNodeSensorBean> multNodeSensor;
+        private List<MultNodeSensorBean> multSensor;
         private List<RemoteControlDeviceBean> remoteControlDevice;
 
         public List<RemoteControlDeviceBean> getRemoteControlDevice() {
@@ -64,11 +64,11 @@ public class ControlApiBean {
         }
 
         public List<MultNodeSensorBean> getMultNodeSensor() {
-            return multNodeSensor;
+            return multSensor;
         }
 
-        public void setMultNodeSensor(List<MultNodeSensorBean> multNodeSensor) {
-            this.multNodeSensor = multNodeSensor;
+        public void setMultNodeSensor(List<MultNodeSensorBean> multSensor) {
+            this.multSensor = multSensor;
         }
 
         public List<LightBean> getLight() {

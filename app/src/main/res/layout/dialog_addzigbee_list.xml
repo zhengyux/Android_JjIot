@@ -4,12 +4,13 @@
     android:layout_height="170dp"
     android:background="@drawable/shape_round_white"
     android:padding="10dp"
+    android:gravity="center"
     android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/dialog_addzigbee_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="270dp"
+        android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
 

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:background="#2b2f4d"
+    android:layout_height="wrap_content"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/control_elist_item_child_celsius_rl"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:background="#2b2f4d"
+            android:layout_height="50dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="温度感应器"
+                android:textSize="15dp"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="等待获取"
+                android:textColor="@color/gray"
+                android:textSize="15dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/control_elist_item_child_celsius_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/control_elist_item_child_humidity_rl"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:background="#2b2f4d"
+            android:layout_height="50dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="湿度感应器"
+                android:textSize="15dp"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="等待获取"
+                android:id="@+id/control_elist_item_child_humidity_txt"
+                android:textColor="@color/gray"
+                android:textSize="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/control_elist_item_child_light_rl"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:background="#2b2f4d"
+            android:layout_height="50dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="光度感应器"
+                android:textSize="15dp"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="等待获取"
+                android:id="@+id/control_elist_item_child_light_txt"
+                android:textColor="@color/gray"
+                android:textSize="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/control_elist_item_child_pm_rl"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:background="#2b2f4d"
+            android:layout_height="50dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="PM2.5感应器"
+                android:textSize="15dp"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="等待获取"
+                android:id="@+id/control_elist_item_child_pm_txt"
+                android:textColor="@color/gray"
+                android:textSize="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

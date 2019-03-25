@@ -41,14 +41,8 @@ public class RoomActivity extends BaseActivity {
     RelativeLayout roomBackImg;
     @BindView(R.id.room_tab)
     TabLayout roomTab;
-    @BindView(R.id.room_celsius_txt)
-    TextView roomCelsiusTxt;
-    @BindView(R.id.room_humidity_txt)
-    TextView roomHumidityTxt;
-    @BindView(R.id.room_light_txt)
-    TextView roomLightTxt;
-    @BindView(R.id.room_pm_txt)
-    TextView roomPmTxt;
+    @BindView(R.id.room_multsensor_elist)
+    ScrExpandableListView roomMultsensorElist;
     @BindView(R.id.room_lamp_elist)
     ScrExpandableListView roomLampElist;
     @BindView(R.id.room_curtain_elist)
@@ -69,14 +63,16 @@ public class RoomActivity extends BaseActivity {
     ControlCurtainEListViewAdapter controlCurtainEListViewAdapter;
     ControlSwitchEListViewAdapter controlSwitchEListViewAdapter;
     ControlRemoteEListViewAdapter controlRemoteEListViewAdapter;
+    ControlMultSensorEListViewAdapter controlMultSensorEListViewAdapter;
     ControlApiBean controlLampApiBean;
     ControlApiBean controlCurtainApiBean;
     ControlApiBean controlSwitchApiBean;
     ControlApiBean controlRemoteApiBean;
+    ControlApiBean controlMultSensorApiBean;
     ControlWSBean controlLampWSBean;
     ControlWSBean controlCurtainWSBean;
     ControlWSBean controlSwitchWSBean;
-    ControlWSBean controlEnvironmentWSBean;
+    ControlWSBean controlMultSensorWSBean;
     String type;
 
 
@@ -100,6 +96,7 @@ public class RoomActivity extends BaseActivity {
         getcurtainDevice();
         getSwitchDevice();
         getRemoteDevice();
+        getMultNodeSensorDevice();
     }
 
     @Override
@@ -164,6 +161,8 @@ public class RoomActivity extends BaseActivity {
                             getSwitchDevice();
 
                             getRemoteDevice();
+
+                            getMultNodeSensorDevice();
 
                         }
 
@@ -347,6 +346,49 @@ public class RoomActivity extends BaseActivity {
         });
     }
 
+    public void getMultNodeSensorDevice() {
+
+        baseParameter.setType(API.Device.MultSensor);
+
+        OkhttpUtil.okHttpPostJson(API.IP + API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                toastShort("服务器连接失败");
+            }
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    controlMultSensorApiBean = GsonUtil.GsonToBean(response, ControlApiBean.class);
+
+                    if (controlMultSensorApiBean.getResult().equals("00")) {
+                        if (null != controlMultSensorApiBean.getData().getMultNodeSensor()) {
+                            if (!controlMultSensorApiBean.getData().getMultNodeSensor().isEmpty()) {
+                                controlMultSensorEListViewAdapter = new ControlMultSensorEListViewAdapter(RoomActivity.this, controlMultSensorApiBean);
+                                roomMultsensorElist.setAdapter(controlMultSensorEListViewAdapter);
+                                int count = roomMultsensorElist.getCount();
+                                for (int i = 0; i < count; i++) {
+                                    roomMultsensorElist.expandGroup(i);
+                                }
+                                roomMultsensorElist.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            roomMultsensorElist.setVisibility(View.INVISIBLE);
+                        }
+                    } else {
+                        toastShort(controlMultSensorApiBean.getMessage());
+                    }
+                } catch (Exception e) {
+                    toastShort(e.getMessage());
+                }
+
+
+            }
+        });
+    }
+
+
     public void setSk(){
         OkhttpUtil.okHttpPost(API.IP + API.SET_SK, new CallBackUtil.CallBackString() {
             @Override
@@ -456,16 +498,25 @@ public class RoomActivity extends BaseActivity {
                         case "多功能传感器":
 
 
-                            if (null != controlEnvironmentWSBean.getMsg().get(0).getCelsius()) {
-                                roomCelsiusTxt.setText(controlEnvironmentWSBean.getMsg().get(0).getCelsius().toString() + "°C");
+                            for (int i = 0; i < controlMultSensorApiBean.getData().getMultNodeSensor().size(); i++) {
+                                for (int j = 0; j < controlMultSensorApiBean.getData().getMultNodeSensor().get(i).getNode().size(); j++) {
+                                    if(controlMultSensorWSBean.getMsg().get(0).getUuid().equals(controlMultSensorApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).getUuid())){
+
+
+                                        if(null!=controlMultSensorWSBean.getMsg().get(0).getCelsius()){
+                                            controlMultSensorApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).setCelsius(controlMultSensorWSBean.getMsg().get(0).getCelsius().intValue());
+                                        }
+                                        if(null!=controlMultSensorWSBean.getMsg().get(0).getHumidity()){
+                                            controlMultSensorApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).setHumidity(controlMultSensorWSBean.getMsg().get(0).getHumidity().intValue());
+                                        }
+                                        if(null!=controlMultSensorWSBean.getMsg().get(0).getLight()){
+                                            controlMultSensorApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).setLight(controlMultSensorWSBean.getMsg().get(0).getLight().intValue());
+                                        }
+                                        controlMultSensorEListViewAdapter.update(controlMultSensorApiBean);
+
+                                    }
+                                }
                             }
-                            if (null != controlEnvironmentWSBean.getMsg().get(0).getHumidity()) {
-                                roomHumidityTxt.setText(controlEnvironmentWSBean.getMsg().get(0).getHumidity().toString() + "%");
-                            }
-                            if (null != controlEnvironmentWSBean.getMsg().get(0).getLight()) {
-                                roomLightTxt.setText(controlEnvironmentWSBean.getMsg().get(0).getLight().toString() + "Lux");
-                            }
-                            roomPmTxt.setText(PackageUtil.getRandomNum(70,82)+"μg/m³");
 
                             break;
                     }
@@ -519,12 +570,12 @@ public class RoomActivity extends BaseActivity {
             }
 
             if ("温湿度传感器".equals(baseRespone.getDesignation())) {
-                controlEnvironmentWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
+                controlMultSensorWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
                 type = "多功能传感器";
                 mHandler.post(runnable);
             }
             if ("光照传感器".equals(baseRespone.getDesignation())) {
-                controlEnvironmentWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
+                controlMultSensorWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
                 type = "多功能传感器";
                 mHandler.post(runnable);
             }

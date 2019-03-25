@@ -37,6 +37,7 @@ import com.iot.zyx.android_jjiot.area_activity.AddAreaBean;
 import com.iot.zyx.android_jjiot.area_activity.AreaActivity;
 import com.iot.zyx.android_jjiot.controlactivity.ControlActivity;
 import com.iot.zyx.android_jjiot.device_managementactivity.DeviceManagementActivity;
+import com.iot.zyx.android_jjiot.loginactivity.LoginActivity;
 import com.iot.zyx.android_jjiot.roomactivity.RoomActivity;
 import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostBean;
 import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostContentAdapter;
@@ -178,6 +179,13 @@ public class HomeActivity extends BaseActivity
         if (id == R.id.action_settings) {
 
             SwitchoverHost();
+
+            return true;
+        }
+        if(id == R.id.action_login_out){
+
+            finish();
+            openActivity(LoginActivity.class);
 
             return true;
         }

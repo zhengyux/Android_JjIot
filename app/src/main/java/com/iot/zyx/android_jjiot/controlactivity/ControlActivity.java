@@ -41,6 +41,7 @@ public class ControlActivity extends BaseActivity {
     ControlLampEListViewAdapter controlLampEListViewAdapter;
     ControlCurtainEListViewAdapter controlCurtainEListViewAdapter;
     ControlSwitchEListViewAdapter controlSwitchEListViewAdapter;
+    ControlMultSensorEListViewAdapter controlMultSensorEListViewAdapter;
     ControlApiBean controlApiBean;
     ControlWSBean controlWSBean;
     String activity;
@@ -96,8 +97,8 @@ public class ControlActivity extends BaseActivity {
                         break;
 
                     case "environment":
-                        controlElist.setVisibility(View.GONE);
-                        containerEnvironment.setVisibility(View.VISIBLE);
+                        getMultNodeSensorDevice();
+                        containerEnvironment.setVisibility(View.GONE);
                         controlTitleTxt.setText("室内环境");
                         break;
                 }
@@ -179,8 +180,7 @@ public class ControlActivity extends BaseActivity {
 
                                 case "environment":
 
-                                    controlElist.setVisibility(View.GONE);
-                                    containerEnvironment.setVisibility(View.VISIBLE);
+                                    getMultNodeSensorDevice();
 
                                     break;
                             }
@@ -329,6 +329,49 @@ public class ControlActivity extends BaseActivity {
         });
     }
 
+    public void getMultNodeSensorDevice() {
+
+        baseParameter.setType(API.Device.MultSensor);
+
+        OkhttpUtil.okHttpPostJson(API.IP + API.DEVICE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                toastShort("服务器连接失败");
+            }
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    controlApiBean = GsonUtil.GsonToBean(response, ControlApiBean.class);
+
+                    if (controlApiBean.getResult().equals("00")) {
+                        if (null != controlApiBean.getData().getMultNodeSensor()) {
+                            if (!controlApiBean.getData().getMultNodeSensor().isEmpty()) {
+                                controlMultSensorEListViewAdapter = new ControlMultSensorEListViewAdapter(ControlActivity.this, controlApiBean);
+                                controlElist.setAdapter(controlMultSensorEListViewAdapter);
+                                int count = controlElist.getCount();
+                                for (int i = 0; i < count; i++) {
+                                    controlElist.expandGroup(i);
+                                }
+                                controlElist.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            toastShort("暂无设备");
+                            controlElist.setVisibility(View.INVISIBLE);
+                        }
+                    } else {
+                        toastShort(controlApiBean.getMessage());
+                    }
+                } catch (Exception e) {
+                    toastShort(e.getMessage());
+                }
+
+
+            }
+        });
+    }
+
     Handler mHandler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
@@ -389,16 +432,25 @@ public class ControlActivity extends BaseActivity {
 
                         case "environment":
 
-                            if(null!=controlWSBean.getMsg().get(0).getCelsius()){
-                                controlCelsiusTxt.setText(controlWSBean.getMsg().get(0).getCelsius().toString()+"°C");
+                            for (int i = 0; i < controlApiBean.getData().getMultNodeSensor().size(); i++) {
+                                for (int j = 0; j < controlApiBean.getData().getMultNodeSensor().get(i).getNode().size(); j++) {
+                                    if(controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).getUuid())){
+
+
+                                        if(null!=controlWSBean.getMsg().get(0).getCelsius()){
+                                            controlApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).setCelsius(controlWSBean.getMsg().get(0).getCelsius().intValue());
+                                        }
+                                        if(null!=controlWSBean.getMsg().get(0).getHumidity()){
+                                            controlApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).setHumidity(controlWSBean.getMsg().get(0).getHumidity().intValue());
+                                        }
+                                        if(null!=controlWSBean.getMsg().get(0).getLight()){
+                                            controlApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).setLight(controlWSBean.getMsg().get(0).getLight().intValue());
+                                        }
+                                        controlMultSensorEListViewAdapter.update(controlApiBean);
+
+                                    }
+                                }
                             }
-                            if(null!=controlWSBean.getMsg().get(0).getHumidity()){
-                                controlHumidityTxt.setText(controlWSBean.getMsg().get(0).getHumidity().toString()+"%");
-                            }
-                            if(null!=controlWSBean.getMsg().get(0).getLight()){
-                                controlLightTxt.setText(controlWSBean.getMsg().get(0).getLight().toString()+"Lux");
-                            }
-                            controlPmTxt.setText(PackageUtil.getRandomNum(70,82)+"μg/m³");
 
                             break;
                     }
