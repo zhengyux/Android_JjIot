@@ -22,7 +22,6 @@ public class API {
 
     public static String IP = setip();//测试域名端口
     public static String WSIP=setwsip();//测试WS域名端口
-    public static String Lanip;
 
     public static String setip (){
         if(isTest){
@@ -34,6 +33,7 @@ public class API {
         }
         if(!"null".equals((String) SharedPreferencesUtils.getParam(BaseApplication.getContext(),"lan","null"))){
             IP = (String) SharedPreferencesUtils.getParam(BaseApplication.getContext(),"lan","null");
+            WSIP = (String) SharedPreferencesUtils.getParam(BaseApplication.getContext(),"lanws","null");
         }
         Log.e("ip", "ip: "+IP );
         return IP;

@@ -5,11 +5,14 @@ import android.util.Log;
 import com.iot.zyx.android_jjiot.API;
 import com.iot.zyx.android_jjiot.BaseApplication;
 import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostActivity;
+import com.iot.zyx.android_jjiot.switchover_hostactivity.SwitchoverHostBean;
 import com.iot.zyx.android_jjiot.util.AppUtil.SharedPreferencesUtils;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 项目名称：Android_JjIot
@@ -27,8 +30,10 @@ public class UDPClient {
     private final int PORT_NUM = 12580;
     private DatagramSocket datagramSocket;
     private DatagramPacket datagramPacket;
+    public static List<SwitchoverHostBean> lanlist = new ArrayList<>();
     public UDPClient() {
         try {
+            lanlist.clear();
             datagramSocket = new DatagramSocket();
             byte[] buf = sendStr.getBytes();
             InetAddress address = InetAddress.getByName(netAddress);
@@ -40,8 +45,9 @@ public class UDPClient {
                 DatagramPacket recePacket = new DatagramPacket(receBuf, receBuf.length);
                 datagramSocket.receive(recePacket);
                 String receStr = new String(recePacket.getData(), 0, recePacket.getLength());
-                API.Lanip = "http://"+receStr;
-                Log.e("ip", "Lanip: "+API.Lanip );
+                SwitchoverHostBean switchoverHostBean = GsonUtil.GsonToBean(receStr, SwitchoverHostBean.class);
+                lanlist.add(switchoverHostBean);
+                Log.e("ip", "Lanip: "+receStr );
             }
         } catch (Exception e) {
             Log.e("ip", "Exception: "+e.getMessage() );

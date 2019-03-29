@@ -40,6 +40,7 @@ public class SwitchoverHostActivity extends BaseActivity {
     ImageView addHostImg;
     SwitchoverHostBean switchoverHostBean;
     SwitchoverHostContentAdapter switchoverHostContentAdapter;
+    LanHostAdapter lanHostAdapter;
     @BindView(R.id.switchHost_tab)
     TabLayout switchHostTab;
     String lanIp;
@@ -81,7 +82,7 @@ public class SwitchoverHostActivity extends BaseActivity {
                         break;
                     case "内网主机":
 
-                        if(null!=API.Lanip){
+                        if(!UDPClient.lanlist.isEmpty()){
                             getLanHost();
                         }else {
                             toastShort("没有内网主机");
@@ -106,32 +107,24 @@ public class SwitchoverHostActivity extends BaseActivity {
 
     void getLanHost() {
 
-  //      try {
-            switchoverHostBean = new SwitchoverHostBean();
-            SwitchoverHostBean.DataBean dataBean = new SwitchoverHostBean.DataBean();
-            List<SwitchoverHostBean.DataBean.ListBean> listBeans = new ArrayList<>();
-            SwitchoverHostBean.DataBean.ListBean listBean = new SwitchoverHostBean.DataBean.ListBean();
-            listBean.setName(API.Lanip);
-            listBeans.add(listBean);
-            dataBean.setList(listBeans);
-            switchoverHostBean.setData(dataBean);
-
-            switchoverHostContentAdapter = new SwitchoverHostContentAdapter(R.layout.switchover_host_recycler_item, switchoverHostBean.getData().getList());
-            switchoverHostRecycler.setAdapter(switchoverHostContentAdapter);
-            switchoverHostContentAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        try {
+            lanHostAdapter = new LanHostAdapter(R.layout.switchover_host_recycler_item, UDPClient.lanlist);
+            switchoverHostRecycler.setAdapter(lanHostAdapter);
+            lanHostAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                            API.IP = API.Lanip;
-                            SharedPreferencesUtils.setParam(BaseApplication.getContext(),"lan",API.Lanip);
+                            API.IP = "http://"+UDPClient.lanlist.get(position).getIp()+":"+UDPClient.lanlist.get(position).getPort();
+                            API.WSIP = "ws://"+UDPClient.lanlist.get(position).getIp()+":"+UDPClient.lanlist.get(position).getPort();
+                            SharedPreferencesUtils.setParam(BaseApplication.getContext(),"lan",API.IP);
+                            SharedPreferencesUtils.setParam(BaseApplication.getContext(),"lanws",API.WSIP);
                             toastShort("切换成功");
                             finish();
                         }
                     });
 
-
-  //      } catch (Exception e) {
-  //          Log.e(TAG, "getLanHost: "+e.getMessage() );
-  //      }
+        } catch (Exception e) {
+            Log.e(TAG, "getLanHost: "+e.getMessage() );
+        }
     }
 
     void getHost() {
