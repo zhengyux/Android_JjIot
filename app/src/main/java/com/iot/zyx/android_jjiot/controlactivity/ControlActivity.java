@@ -78,25 +78,25 @@ public class ControlActivity extends BaseActivity {
             activity = getIntent().getExtras().getString("activity");
             if (!activity.isEmpty()) {
                 switch (activity) {
-                    case "lamp":
+                    case "1":
 
                         getLampDevice();
                         controlTitleTxt.setText("灯控");
 
                         break;
 
-                    case "curtanin":
+                    case "2":
                         getcurtainDevice();
                         controlTitleTxt.setText("窗帘");
 
                         break;
 
-                    case "switch":
+                    case "3":
                         getSwitchDevice();
                         controlTitleTxt.setText("开关");
                         break;
 
-                    case "environment":
+                    case "4":
                         getMultNodeSensorDevice();
                         containerEnvironment.setVisibility(View.GONE);
                         controlTitleTxt.setText("室内环境");
@@ -158,7 +158,7 @@ public class ControlActivity extends BaseActivity {
                             baseParameter.setAreaId(String.valueOf(areaGetBean.getData().getList().get(tab.getPosition()).getId()));
 
                             switch (activity) {
-                                case "lamp":
+                                case "1":
 
 
                                     getLampDevice();
@@ -166,19 +166,19 @@ public class ControlActivity extends BaseActivity {
 
                                     break;
 
-                                case "curtanin":
+                                case "2":
 
                                     getcurtainDevice();
 
 
                                     break;
 
-                                case "switch":
+                                case "3":
                                     getSwitchDevice();
 
                                     break;
 
-                                case "environment":
+                                case "4":
 
                                     getMultNodeSensorDevice();
 
@@ -386,7 +386,7 @@ public class ControlActivity extends BaseActivity {
 
                     switch (activity) {
 
-                        case "curtanin":
+                        case "2":
 
                             for (int i = 0; i < controlApiBean.getData().getCurtain().size(); i++) {
                                 if (controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getCurtain().get(i).getUuid())) {
@@ -397,7 +397,7 @@ public class ControlActivity extends BaseActivity {
 
                             break;
 
-                        case "lamp":
+                        case "1":
 
                             for (int i = 0; i < controlApiBean.getData().getLight().size(); i++) {
                                 if (controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getLight().get(i).getUuid())) {
@@ -413,7 +413,7 @@ public class ControlActivity extends BaseActivity {
 
                             break;
 
-                        case "switch":
+                        case "3":
 
                             for (int i = 0; i < controlApiBean.getData().getOnoffSwitch().size(); i++) {
                                 for (int j = 0; j < controlApiBean.getData().getOnoffSwitch().get(i).getNode().size(); j++) {
@@ -430,7 +430,7 @@ public class ControlActivity extends BaseActivity {
 
                             break;
 
-                        case "environment":
+                        case "4":
 
                             for (int i = 0; i < controlApiBean.getData().getMultNodeSensor().size(); i++) {
                                 for (int j = 0; j < controlApiBean.getData().getMultNodeSensor().get(i).getNode().size(); j++) {
@@ -482,7 +482,7 @@ public class ControlActivity extends BaseActivity {
 
             if (activity != null) {
                 switch (activity) {
-                    case "curtanin":
+                    case "2":
 
                         if (text.contains("1030")) {
                             controlWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
@@ -491,7 +491,7 @@ public class ControlActivity extends BaseActivity {
 
                         break;
 
-                    case "lamp":
+                    case "1":
 
                         if (text.contains("设备灯控制")) {
                             controlWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
@@ -499,7 +499,7 @@ public class ControlActivity extends BaseActivity {
                         }
 
                         break;
-                    case "switch":
+                    case "3":
 
                         if (text.contains("智能开关")) {
                             controlWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);
@@ -508,7 +508,7 @@ public class ControlActivity extends BaseActivity {
 
                         break;
 
-                    case "environment":
+                    case "4":
 
                         if (text.contains("温湿度传感器")) {
                             controlWSBean = GsonUtil.GsonToBean(text, ControlWSBean.class);

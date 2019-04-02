@@ -122,11 +122,11 @@ public class HomeActivity extends BaseActivity
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (position == 0) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("activity", "lamp");
+                    bundle.putString("activity", API.Device.Lamp);
                     openActivity(ControlActivity.class, bundle);
                 } else if (position == 1) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("activity", "switch");
+                    bundle.putString("activity", API.Device.Switch);
                     openActivity(ControlActivity.class, bundle);
                 } else if (position == 2) {
                     openActivity(TelevisionActivity.class);
@@ -134,11 +134,11 @@ public class HomeActivity extends BaseActivity
                     openActivity(AirConditioningActivity.class);
                 } else if (position == 4) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("activity", "curtanin");
+                    bundle.putString("activity", API.Device.Curtain);
                     openActivity(ControlActivity.class, bundle);
                 } else if (position == 5) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("activity", "environment");
+                    bundle.putString("activity", API.Device.MultSensor);
                     openActivity(ControlActivity.class, bundle);
                 } else if (position == 6) {
                     openActivity(RoomActivity.class);
