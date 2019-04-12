@@ -388,69 +388,81 @@ public class ControlActivity extends BaseActivity {
 
                         case "2":
 
-                            for (int i = 0; i < controlApiBean.getData().getCurtain().size(); i++) {
-                                if (controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getCurtain().get(i).getUuid())) {
-                                    controlApiBean.getData().getCurtain().get(i).setMotorPosi(controlWSBean.getMsg().get(0).getMotorPosi());
-                                    controlCurtainEListViewAdapter.update(controlApiBean);
+                            if(controlApiBean.getData().getCurtain()!=null){
+                                for (int i = 0; i < controlApiBean.getData().getCurtain().size(); i++) {
+                                    if (controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getCurtain().get(i).getUuid())) {
+                                        controlApiBean.getData().getCurtain().get(i).setMotorPosi(controlWSBean.getMsg().get(0).getMotorPosi());
+                                        controlCurtainEListViewAdapter.update(controlApiBean);
+                                    }
                                 }
                             }
+
 
                             break;
 
                         case "1":
 
-                            for (int i = 0; i < controlApiBean.getData().getLight().size(); i++) {
-                                if (controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getLight().get(i).getUuid())) {
-                                    if (null != controlWSBean.getMsg().get(0).getValue()) {
-                                        controlApiBean.getData().getLight().get(i).setValue(controlWSBean.getMsg().get(0).getValue().intValue());
+                            if(controlApiBean.getData().getLight()!=null){
+                                for (int i = 0; i < controlApiBean.getData().getLight().size(); i++) {
+                                    if (controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getLight().get(i).getUuid())) {
+                                        if (null != controlWSBean.getMsg().get(0).getValue()) {
+                                            controlApiBean.getData().getLight().get(i).setValue(controlWSBean.getMsg().get(0).getValue().intValue());
+                                        }
+                                        if (null != controlWSBean.getMsg().get(0).getOnoff()) {
+                                            controlApiBean.getData().getLight().get(i).setOnoff(controlWSBean.getMsg().get(0).getOnoff().intValue());
+                                        }
+                                        controlLampEListViewAdapter.update(controlApiBean);
                                     }
-                                    if (null != controlWSBean.getMsg().get(0).getOnoff()) {
-                                        controlApiBean.getData().getLight().get(i).setOnoff(controlWSBean.getMsg().get(0).getOnoff().intValue());
-                                    }
-                                    controlLampEListViewAdapter.update(controlApiBean);
                                 }
                             }
+
 
                             break;
 
                         case "3":
 
-                            for (int i = 0; i < controlApiBean.getData().getOnoffSwitch().size(); i++) {
-                                for (int j = 0; j < controlApiBean.getData().getOnoffSwitch().get(i).getNode().size(); j++) {
-                                    if (controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getOnoffSwitch().get(i).getNode().get(j).getUuid())) {
+                            if(controlApiBean.getData().getOnoffSwitch()!=null){
+                                for (int i = 0; i < controlApiBean.getData().getOnoffSwitch().size(); i++) {
+                                    for (int j = 0; j < controlApiBean.getData().getOnoffSwitch().get(i).getNode().size(); j++) {
+                                        if (controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getOnoffSwitch().get(i).getNode().get(j).getUuid())) {
 
-                                        if (null != controlWSBean.getMsg().get(0).getOnoff()) {
-                                            controlApiBean.getData().getOnoffSwitch().get(i).getNode().get(j).setOnoff(controlWSBean.getMsg().get(0).getOnoff().intValue());
+                                            if (null != controlWSBean.getMsg().get(0).getOnoff()) {
+                                                controlApiBean.getData().getOnoffSwitch().get(i).getNode().get(j).setOnoff(controlWSBean.getMsg().get(0).getOnoff().intValue());
+                                            }
+                                            controlSwitchEListViewAdapter.update(controlApiBean);
                                         }
-                                        controlSwitchEListViewAdapter.update(controlApiBean);
                                     }
-                                }
 
+                                }
                             }
+
 
                             break;
 
                         case "4":
 
-                            for (int i = 0; i < controlApiBean.getData().getMultNodeSensor().size(); i++) {
-                                for (int j = 0; j < controlApiBean.getData().getMultNodeSensor().get(i).getNode().size(); j++) {
-                                    if(controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).getUuid())){
+                            if(controlApiBean.getData().getMultNodeSensor()!=null){
+                                for (int i = 0; i < controlApiBean.getData().getMultNodeSensor().size(); i++) {
+                                    for (int j = 0; j < controlApiBean.getData().getMultNodeSensor().get(i).getNode().size(); j++) {
+                                        if(controlWSBean.getMsg().get(0).getUuid().equals(controlApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).getUuid())){
 
 
-                                        if(null!=controlWSBean.getMsg().get(0).getCelsius()){
-                                            controlApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).setCelsius(controlWSBean.getMsg().get(0).getCelsius().intValue());
-                                        }
-                                        if(null!=controlWSBean.getMsg().get(0).getHumidity()){
-                                            controlApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).setHumidity(controlWSBean.getMsg().get(0).getHumidity().intValue());
-                                        }
-                                        if(null!=controlWSBean.getMsg().get(0).getLight()){
-                                            controlApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).setLight(controlWSBean.getMsg().get(0).getLight().intValue());
-                                        }
-                                        controlMultSensorEListViewAdapter.update(controlApiBean);
+                                            if(null!=controlWSBean.getMsg().get(0).getCelsius()){
+                                                controlApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).setCelsius(controlWSBean.getMsg().get(0).getCelsius().intValue());
+                                            }
+                                            if(null!=controlWSBean.getMsg().get(0).getHumidity()){
+                                                controlApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).setHumidity(controlWSBean.getMsg().get(0).getHumidity().intValue());
+                                            }
+                                            if(null!=controlWSBean.getMsg().get(0).getLight()){
+                                                controlApiBean.getData().getMultNodeSensor().get(i).getNode().get(j).setLight(controlWSBean.getMsg().get(0).getLight().intValue());
+                                            }
+                                            controlMultSensorEListViewAdapter.update(controlApiBean);
 
+                                        }
                                     }
                                 }
                             }
+
 
                             break;
                     }
