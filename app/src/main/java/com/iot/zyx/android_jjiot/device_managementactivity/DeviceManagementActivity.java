@@ -40,7 +40,7 @@ public class DeviceManagementActivity extends BaseActivity {
     @BindView(R.id.device_management_right_spn)
     Spinner deviceManagementRightSpn;
     DeviceGetParameter deviceGetParameter;
-    boolean isSpinnerFirst = true ;
+    boolean isSpinnerFirst = false ;
 
     @Override
     protected int setLayout() {

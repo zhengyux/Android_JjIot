@@ -53,6 +53,7 @@ public class AreaSpnAdapter extends BaseAdapter {
         ViewHolder viewHolder;
 
         if (convertView == null) {
+
             convertView = LayoutInflater.from(mcontext).inflate(R.layout.device_management_spn_item, null);
             ScreenAdapterTools.getInstance().loadView(convertView);
             viewHolder = new ViewHolder(convertView);
