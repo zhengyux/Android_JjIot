@@ -21,6 +21,7 @@ import com.iot.zyx.android_jjiot.add_zigbeeactivity.AddZigBeeAPIBean;
 import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
 import com.iot.zyx.android_jjiot.util.network.GsonUtil;
 import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
+import com.iot.zyx.android_jjiot.util.widget.RxDialogDeleteCancel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -184,7 +185,32 @@ public class DeviceManagementActivity extends BaseActivity {
                                         .setAction("确定", new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                DeleteDevice(GsonUtil.GsonString(addZigBeeAPIBean.getData().getList().get(position)));
+                                                final RxDialogDeleteCancel rxDialogDeleteCancel = new RxDialogDeleteCancel(DeviceManagementActivity.this);
+                                                rxDialogDeleteCancel.getmTv1().setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        addZigBeeAPIBean.getData().getList().get(position).setAction("1");
+                                                        DeleteDevice(GsonUtil.GsonString(addZigBeeAPIBean.getData().getList().get(position)));
+                                                        rxDialogDeleteCancel.cancel();
+                                                    }
+                                                });
+                                                rxDialogDeleteCancel.getmTv2().setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        addZigBeeAPIBean.getData().getList().get(position).setAction("2");
+                                                        DeleteDevice(GsonUtil.GsonString(addZigBeeAPIBean.getData().getList().get(position)));
+                                                        rxDialogDeleteCancel.cancel();
+                                                    }
+                                                });
+                                                rxDialogDeleteCancel.getmTv3().setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        addZigBeeAPIBean.getData().getList().get(position).setAction("3");
+                                                        DeleteDevice(GsonUtil.GsonString(addZigBeeAPIBean.getData().getList().get(position)));
+                                                        rxDialogDeleteCancel.cancel();
+                                                    }
+                                                });
+                                                rxDialogDeleteCancel.show();
                                             }
                                         }).show();
 

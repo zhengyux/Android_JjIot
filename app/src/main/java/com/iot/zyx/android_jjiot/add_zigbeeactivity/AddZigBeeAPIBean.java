@@ -85,7 +85,16 @@ public class AddZigBeeAPIBean {
             private String endpoint;
             private int type;
             private String IEEE;
+            private String action;
             private List<NodeBean> node;
+
+            public String getAction() {
+                return action;
+            }
+
+            public void setAction(String action) {
+                this.action = action;
+            }
 
             public String getAreaId() {
                 return areaId;

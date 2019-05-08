@@ -2,6 +2,7 @@ package com.iot.zyx.android_jjiot.add_zigbeeactivity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
@@ -10,13 +11,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.iot.zyx.android_jjiot.API;
+import com.iot.zyx.android_jjiot.BaseRespone;
 import com.iot.zyx.android_jjiot.add_deviceactivity.AddDeviceActivity;
 import com.iot.zyx.android_jjiot.BaseActivity;
 import com.iot.zyx.android_jjiot.BaseParameter;
 import com.iot.zyx.android_jjiot.R;
+import com.iot.zyx.android_jjiot.device_managementactivity.DeviceManagementActivity;
 import com.iot.zyx.android_jjiot.util.network.CallBackUtil;
 import com.iot.zyx.android_jjiot.util.network.GsonUtil;
 import com.iot.zyx.android_jjiot.util.network.OkhttpUtil;
+import com.iot.zyx.android_jjiot.util.widget.RxDialogDeleteCancel;
 import com.iot.zyx.android_jjiot.util.widget.RxListDialog;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -95,6 +99,31 @@ public class AddZigBeeActivity extends BaseActivity {
         }
     };
 
+    public void DeleteDevice(String str) {
+        OkhttpUtil.okHttpPostJson(API.IP+API.DELETE_DISABLED_DEVICE, str, new CallBackUtil.CallBackString() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                toastShort("服务器连接失败！");
+            }
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
+                    if (baseRespone.getResult().equals("00")) {
+                        toastShort("删除成功");
+                    } else {
+                        toastShort(baseRespone.getMessage());
+                    }
+                   // addZigBee();
+                }catch (Exception e){
+                    toastShort("删除数据错误");
+                }
+
+            }
+        });
+    }
+
     public void addZigBee(){
         BaseParameter baseParameter = new BaseParameter();
 
@@ -120,6 +149,46 @@ public class AddZigBeeActivity extends BaseActivity {
                                 Bundle bundle = new Bundle();
                                 bundle.putString("Device",GsonUtil.GsonString(addZigBeeAPIBean.getData().getList().get(position)));
                                 openActivityAndCloseThis(AddDeviceActivity.class,bundle);
+                            }
+                        });
+                        addZigBeeAPIAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+                            @Override
+                            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, final int position) {
+
+                                Snackbar.make(view, "确认删除" + addZigBeeAPIBean.getData().getList().get(position).getName() + "?", Snackbar.LENGTH_SHORT)
+                                        .setAction("确定", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                final RxDialogDeleteCancel rxDialogDeleteCancel = new RxDialogDeleteCancel(AddZigBeeActivity.this);
+                                                rxDialogDeleteCancel.getmTv1().setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        addZigBeeAPIBean.getData().getList().get(position).setAction("1");
+                                                        DeleteDevice(GsonUtil.GsonString(addZigBeeAPIBean.getData().getList().get(position)));
+                                                        rxDialogDeleteCancel.cancel();
+                                                    }
+                                                });
+                                                rxDialogDeleteCancel.getmTv2().setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        addZigBeeAPIBean.getData().getList().get(position).setAction("2");
+                                                        DeleteDevice(GsonUtil.GsonString(addZigBeeAPIBean.getData().getList().get(position)));
+                                                        rxDialogDeleteCancel.cancel();
+                                                    }
+                                                });
+                                                rxDialogDeleteCancel.getmTv3().setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        addZigBeeAPIBean.getData().getList().get(position).setAction("3");
+                                                        DeleteDevice(GsonUtil.GsonString(addZigBeeAPIBean.getData().getList().get(position)));
+                                                        rxDialogDeleteCancel.cancel();
+                                                    }
+                                                });
+                                                rxDialogDeleteCancel.show();
+                                            }
+                                        }).show();
+
+                                return true;
                             }
                         });
                     }else {
