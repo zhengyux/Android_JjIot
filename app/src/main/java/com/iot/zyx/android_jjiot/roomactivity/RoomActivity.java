@@ -92,11 +92,7 @@ public class RoomActivity extends BaseActivity {
         baseParameter = new BaseParameter();
         webSocket = OkhttpUtil.okHttpWebSocket(API.WSIP, mWebSocketListener);
         AreaGet();
-        getLampDevice();
-        getcurtainDevice();
-        getSwitchDevice();
-        getRemoteDevice();
-        getMultNodeSensorDevice();
+
     }
 
     @Override
@@ -144,10 +140,15 @@ public class RoomActivity extends BaseActivity {
 
                 try {
                     final AreaGetBean areaGetBean = GsonUtil.GsonToBean(response, AreaGetBean.class);
+                    baseParameter.setAreaId(String.valueOf(areaGetBean.getData().getList().get(0).getId()));
+                    getLampDevice();
+                    getcurtainDevice();
+                    getSwitchDevice();
+                    getRemoteDevice();
+                    getMultNodeSensorDevice();
                     for (int i = 0; i < areaGetBean.getData().getList().size(); i++) {
                         roomTab.addTab(roomTab.newTab().setText(areaGetBean.getData().getList().get(i).getName()));
                     }
-
                     roomTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                         @Override
                         public void onTabSelected(TabLayout.Tab tab) {

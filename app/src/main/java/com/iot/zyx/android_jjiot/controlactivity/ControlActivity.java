@@ -60,6 +60,7 @@ public class ControlActivity extends BaseActivity {
     @BindView(R.id.container_environment)
     LinearLayout containerEnvironment;
     BaseParameter baseParameter ;
+    AreaGetBean areaGetBean;
 
     @Override
     protected int setLayout() {
@@ -75,35 +76,10 @@ public class ControlActivity extends BaseActivity {
     protected void initData() {
         try {
             baseParameter = new BaseParameter();
-            activity = getIntent().getExtras().getString("activity");
-            if (!activity.isEmpty()) {
-                switch (activity) {
-                    case "1":
-
-                        getLampDevice();
-                        controlTitleTxt.setText("灯控");
-
-                        break;
-
-                    case "2":
-                        getcurtainDevice();
-                        controlTitleTxt.setText("窗帘");
-
-                        break;
-
-                    case "3":
-                        getSwitchDevice();
-                        controlTitleTxt.setText("开关");
-                        break;
-
-                    case "4":
-                        getMultNodeSensorDevice();
-                        containerEnvironment.setVisibility(View.GONE);
-                        controlTitleTxt.setText("室内环境");
-                        break;
-                }
-            }
             AreaGet();
+
+
+
             webSocket = OkhttpUtil.okHttpWebSocket(API.WSIP, mWebSocketListener);
         } catch (Exception e) {
             toastShort("数据异常");
@@ -146,7 +122,36 @@ public class ControlActivity extends BaseActivity {
             public void onResponse(String response) {
 
                 try {
-                    final AreaGetBean areaGetBean = GsonUtil.GsonToBean(response, AreaGetBean.class);
+                    areaGetBean = GsonUtil.GsonToBean(response, AreaGetBean.class);
+                    baseParameter.setAreaId(String.valueOf(areaGetBean.getData().getList().get(0).getId()));
+                    activity = getIntent().getExtras().getString("activity");
+                    if (!activity.isEmpty()) {
+                        switch (activity) {
+                            case "1":
+
+                                getLampDevice();
+                                controlTitleTxt.setText("灯控");
+
+                                break;
+
+                            case "2":
+                                getcurtainDevice();
+                                controlTitleTxt.setText("窗帘");
+
+                                break;
+
+                            case "3":
+                                getSwitchDevice();
+                                controlTitleTxt.setText("开关");
+                                break;
+
+                            case "4":
+                                getMultNodeSensorDevice();
+                                containerEnvironment.setVisibility(View.GONE);
+                                controlTitleTxt.setText("室内环境");
+                                break;
+                        }
+                    }
                     for (int i = 0; i < areaGetBean.getData().getList().size(); i++) {
                         controlTab.addTab(controlTab.newTab().setText(areaGetBean.getData().getList().get(i).getName()));
                     }
@@ -196,7 +201,6 @@ public class ControlActivity extends BaseActivity {
 
                         }
                     });
-
                 } catch (Exception e) {
                     toastShort(e.getMessage());
                 }
