@@ -43,6 +43,7 @@ public class AddZigBeeActivity extends BaseActivity {
     private AddZigBeeAPIAdapter addZigBeeAPIAdapter;
     mWebSocketListener mWebSocketListener;
     WebSocket webSocket;
+    RxListDialog rxListDialog;
 
     @Override
     protected int setLayout() {
@@ -112,10 +113,12 @@ public class AddZigBeeActivity extends BaseActivity {
                     BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
                     if (baseRespone.getResult().equals("00")) {
                         toastShort("删除成功");
+                        rxListDialog.cancel();
+                        addZigBee();
                     } else {
                         toastShort(baseRespone.getMessage());
                     }
-                   // addZigBee();
+
                 }catch (Exception e){
                     toastShort("删除数据错误");
                 }
@@ -138,7 +141,7 @@ public class AddZigBeeActivity extends BaseActivity {
                 try {
                     addZigBeeAPIBean = GsonUtil.GsonToBean(response,AddZigBeeAPIBean.class);
                     if(!addZigBeeAPIBean.getData().getList().isEmpty()){
-                        final RxListDialog rxListDialog = new RxListDialog(AddZigBeeActivity.this);
+                        rxListDialog = new RxListDialog(AddZigBeeActivity.this);
                         rxListDialog.getRecyclerView().setLayoutManager(new LinearLayoutManager(AddZigBeeActivity.this));
                         addZigBeeAPIAdapter = new AddZigBeeAPIAdapter(R.layout.dialog_addzigbee_recycler_item,addZigBeeAPIBean.getData().getList());
                         rxListDialog.getRecyclerView().setAdapter(addZigBeeAPIAdapter);
@@ -214,7 +217,6 @@ public class AddZigBeeActivity extends BaseActivity {
 
                 if(!addZigBeeWSBean.getMsg().isEmpty()){
 
-                    toastShort("发现新设备！");
                     addZigBee();
                 }
 

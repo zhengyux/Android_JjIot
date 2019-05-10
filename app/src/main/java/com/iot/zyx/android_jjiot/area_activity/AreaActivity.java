@@ -99,7 +99,9 @@ public class AreaActivity extends BaseActivity {
                     BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
                     if (baseRespone.getResult().equals("00")) {
                         toastShort("保存成功");
-                        finish();
+                        AreaGet();
+                        areaAreaEdt.setText("");
+                        areaNumEdt.setText("");
                     } else {
                         toastShort(baseRespone.getMessage());
                     }
@@ -174,6 +176,7 @@ public class AreaActivity extends BaseActivity {
                     BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
                     if (baseRespone.getResult().equals("00")) {
                         toastShort("删除成功");
+                        AreaGet();
                     } else {
                         toastShort(baseRespone.getMessage());
                     }

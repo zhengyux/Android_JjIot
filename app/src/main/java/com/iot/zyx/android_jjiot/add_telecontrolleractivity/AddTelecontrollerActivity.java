@@ -57,7 +57,11 @@ public class AddTelecontrollerActivity extends BaseActivity {
 
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getRemoteList();
+    }
 
     @OnClick({R.id.telecontroller_back_img, R.id.add_telecontroller_air_rl, R.id.add_telecontroller_pc_rl})
     public void onViewClicked(View view) {
@@ -140,6 +144,7 @@ public class AddTelecontrollerActivity extends BaseActivity {
                     BaseRespone baseRespone = GsonUtil.GsonToBean(response, BaseRespone.class);
                     if (baseRespone.getResult().equals("00")) {
                         toastShort("删除成功");
+                        getRemoteList();
                     } else {
                         toastShort(baseRespone.getMessage());
                     }
