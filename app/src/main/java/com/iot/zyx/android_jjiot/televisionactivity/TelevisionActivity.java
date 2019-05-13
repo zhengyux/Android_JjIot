@@ -85,7 +85,7 @@ public class TelevisionActivity extends BaseActivity {
     public void getRemoteList(){
         BaseParameter baseParameter = new BaseParameter();
         baseParameter.setType("0501");
-        OkhttpUtil.okHttpPostJson(API.IP + API.REMOTE_GET, GsonUtil.GsonString(null), new CallBackUtil.CallBackString() {
+        OkhttpUtil.okHttpPostJson(API.IP + API.REMOTE_GET, GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
 
