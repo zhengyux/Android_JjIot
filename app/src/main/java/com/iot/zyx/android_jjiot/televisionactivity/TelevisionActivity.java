@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.iot.zyx.android_jjiot.API;
 import com.iot.zyx.android_jjiot.BaseActivity;
+import com.iot.zyx.android_jjiot.BaseParameter;
 import com.iot.zyx.android_jjiot.BaseRespone;
 import com.iot.zyx.android_jjiot.R;
 import com.iot.zyx.android_jjiot.add_air_telecontrolleractivity.AirControlBean;
@@ -82,6 +83,8 @@ public class TelevisionActivity extends BaseActivity {
     }
 
     public void getRemoteList(){
+        BaseParameter baseParameter = new BaseParameter();
+        baseParameter.setType("0501");
         OkhttpUtil.okHttpPostJson(API.IP + API.REMOTE_GET, GsonUtil.GsonString(null), new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {

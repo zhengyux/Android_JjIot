@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.iot.zyx.android_jjiot.API;
 import com.iot.zyx.android_jjiot.BaseActivity;
+import com.iot.zyx.android_jjiot.BaseParameter;
 import com.iot.zyx.android_jjiot.BaseRespone;
 import com.iot.zyx.android_jjiot.R;
 import com.iot.zyx.android_jjiot.add_air_telecontrolleractivity.AirControlBean;
@@ -263,7 +264,9 @@ public class AirConditioningActivity extends BaseActivity {
     }
 
     public void getRemoteList(){
-        OkhttpUtil.okHttpPostJson(API.IP + API.REMOTE_GET,GsonUtil.GsonString(null), new CallBackUtil.CallBackString() {
+        BaseParameter baseParameter = new BaseParameter();
+        baseParameter.setType("0500");
+        OkhttpUtil.okHttpPostJson(API.IP + API.REMOTE_GET,GsonUtil.GsonString(baseParameter), new CallBackUtil.CallBackString() {
             @Override
             public void onFailure(Call call, Exception e) {
 
