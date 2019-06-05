@@ -148,7 +148,6 @@ public class AddTelecontrollerActivity extends BaseActivity {
                     } else {
                         toastShort(baseRespone.getMessage());
                     }
-                    getRemoteList();
                 }catch (Exception e){
                     toastShort("删除数据错误");
                 }
